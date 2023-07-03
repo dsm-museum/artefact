@@ -13,6 +13,16 @@ ARtefact is a framework for displaying 3D models, adding annotations and connect
 - Add additional content in annotation and a special info layer
 - Create a quiz for your visitors
 
+## Showcase
+
+<p align="middle">
+  <img src="./screenshot1.png" width="30%" style="border-radius: 16px;" />
+  <img src="./screenshot2.png" width="30%" style="border-radius: 16px;" />
+  <img src="./screenshot3.png" width="30%" style="border-radius: 16px;" />
+</p>
+
+> The current live version with our content can be found at <b>[https://3d.dsm.museum/ar](https://3d.dsm.museum/ar)</b>
+
 ## Installing / Getting started
 
 Install the dependencies needed to run the project
