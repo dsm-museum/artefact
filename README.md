@@ -170,4 +170,4 @@ manifest: {
 
 ## Licensing
 
-The code in this project is licensed under MIT license.
+Distributed under the MIT License. See the [license](./LICENSE) for more information.
