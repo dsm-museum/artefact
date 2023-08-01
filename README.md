@@ -1,10 +1,25 @@
+<a name="readme-top"></a>
 ![Logo of the project](header.png)
 
-# ARtefact
+<div align="center">
+
+[![License][license-shield]][license-url] [![View Demo][demo-shield]][demo-url]
+
+</div>
+
+# About the project
 
 ARtefact is a framework for displaying 3D models, adding annotations and connecting content to them. It is developed at the [German Maritime Museum](https://dsm.museum) and built with three.js and Quasar.
 
 > If you encounter any problems adding your own 3D models or content, feel free to message us on GitHub.
+
+### Built with
+
+[![Vue][vue-shield]][vue-url]
+
+[![Quasar][quasar-shield]][quasar-url]
+
+[![three.js][three-shield]][three-url]
 
 ## Features
 
@@ -25,7 +40,9 @@ ARtefact is a framework for displaying 3D models, adding annotations and connect
 
 ## Installing / Getting started
 
-Install the dependencies needed to run the project
+ARtefact needs at least Node 14 to run. For install instructions, visit the [Node.js documentation](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+
+After having installed Node.js and the npm package manager, install the dependencies needed to run the project
 
 ```bash
 npm install
@@ -50,7 +67,7 @@ Build the app for deploying it on a server
 quasar build -m pwa
 ```
 
-The app will be built to `dist/pwa`
+The app will be built to `dist/pwa` and can then be hosted with a webserver.
 
 ## Configuration
 
@@ -171,3 +188,17 @@ manifest: {
 ## Licensing
 
 Distributed under the MIT License. See the [license](./LICENSE) for more information.
+
+<!-- links and images -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
+[license-shield]: https://img.shields.io/github/license/dsm-museum/artefact.svg?style=for-the-badge
+[license-url]: https://github.com/dsm-museum/artefact/blob/main/LICENSE
+[demo-shield]: https://img.shields.io/badge/View_our_demo-002c50?style=for-the-badge
+[demo-url]: https://3d.dsm.museum/ar
+[vue-shield]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+[vue-url]: https://vuejs.org
+[quasar-shield]: https://img.shields.io/badge/Quasar-00b4ff?style=for-the-badge&logo=quasar
+[quasar-url]: https://quasar.dev/
+[three-shield]: https://img.shields.io/badge/three.js-000000?style=for-the-badge&logo=three.js
+[three-url]: https://threejs.org/
