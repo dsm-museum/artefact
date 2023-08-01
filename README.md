@@ -9,9 +9,9 @@
 
 # About the project
 
-ARtefact is a framework for displaying 3D models, adding annotations and connecting content to them. It is developed at the [German Maritime Museum](https://dsm.museum) and built with three.js and Quasar.
+<img src="./src/assets/artefact-logo-text.png" height="16px"> is a framework for displaying 3D models, adding annotations and connecting content to them, all in a Progressive Web App. It is developed at the [German Maritime Museum](https://dsm.museum) and built with three.js and Quasar.
 
-> If you encounter any problems adding your own 3D models or content, feel free to message us on GitHub.
+If you encounter any problems adding your own 3D models or content, feel free to contact us. We are here to help.
 
 ### Built with
 
@@ -36,11 +36,17 @@ ARtefact is a framework for displaying 3D models, adding annotations and connect
   <img src="./screenshot3.png" width="30%" style="border-radius: 16px;" />
 </p>
 
-> The current live version with our content can be found at <b>[https://3d.dsm.museum/ar](https://3d.dsm.museum/ar)</b>
+<div align="center">
+
+Our deployed version with adapted content can be found here:
+
+[![View Demo][demo-shield]][demo-url]
+
+</div>
 
 ## Installing / Getting started
 
-ARtefact needs at least Node 14 to run. For install instructions, visit the [Node.js documentation](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+<img src="./src/assets/artefact-logo-text.png" height="16px"> needs at least Node 14 to run. For install instructions, visit the [Node.js documentation](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
 After having installed Node.js and the npm package manager, install the dependencies needed to run the project
 
@@ -185,9 +191,24 @@ manifest: {
 ...
 ```
 
+<!-- CONTRIBUTING -->
+
+## Contributing
+
+Any contributions you make are **greatly appreciated** and will make ARtefact better over time.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
 ## Licensing
 
-Distributed under the MIT License. See the [license](./LICENSE) for more information.
+ARtefact is distributed under the MIT License. See the [license](./LICENSE) for more information.
 
 <!-- links and images -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
