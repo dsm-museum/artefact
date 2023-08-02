@@ -220,7 +220,7 @@ ARtefact is distributed under the MIT License. See the [license](./LICENSE) for 
 
 [license-shield]: https://img.shields.io/github/license/dsm-museum/artefact.svg?style=for-the-badge
 [license-url]: https://github.com/dsm-museum/artefact/blob/main/LICENSE
-[demo-shield]: https://img.shields.io/badge/View_our_demo-002c50?style=for-the-badge
+[demo-shield]: https://img.shields.io/badge/View_our_application-002c50?style=for-the-badge
 [demo-url]: https://3d.dsm.museum/ar
 [vue-shield]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [vue-url]: https://vuejs.org
