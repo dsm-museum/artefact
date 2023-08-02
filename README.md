@@ -7,9 +7,9 @@
 
 </div>
 
-# About the project
+# About the framework
 
-<img src="./src/assets/artefact-logo-text.png" height="16px"> is a framework for displaying 3D models, adding annotations and connecting content to them, all in a Progressive Web App. It is developed at the [German Maritime Museum](https://dsm.museum) and built with three.js and Quasar.
+<img alt="artefact" src="./src/assets/artefact-logo-text.png" height="16px"> is a framework for displaying 3D models, adding annotations and connecting content to them, all in a Progressive Web App. It is developed at the [German Maritime Museum](https://dsm.museum) and built with three.js and Quasar.
 
 If you encounter any problems adding your own 3D models or content, feel free to contact us. We are here to help.
 
@@ -23,10 +23,10 @@ If you encounter any problems adding your own 3D models or content, feel free to
 
 ## Features
 
-- Show your 3D models in an interactive viewer
-- Play an animation
-- Add additional content in annotation and a special info layer
-- Create a quiz for your visitors
+- Show your various 3D models in an interactive viewer
+- Play an animation that further explains your artefact
+- Test the knowledge of your visitos in a configurable and fun quiz
+- Attach annotations to interesting parts of your 3D model and add accompanying text info in a separate info layer (see below ▼)
 
 ## Showcase
 
@@ -46,7 +46,7 @@ Our deployed version with adapted content can be found here:
 
 ## Installing / Getting started
 
-<img src="./src/assets/artefact-logo-text.png" height="16px"> needs at least Node 14 to run. For install instructions, visit the [Node.js documentation](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+<img alt="artefact" src="./src/assets/artefact-logo-text.png" height="16px"> needs at least Node 14 to run. For install instructions, visit the [Node.js documentation](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
 After having installed Node.js and the npm package manager, install the dependencies needed to run the project
 
@@ -100,7 +100,7 @@ If you have a model named `MyShip`, the folder could look like this:
         └── [...]
 ```
 
-For every model, the app needs a config file specifying the model file, annotations and more. See the `src/models/example/config.json` file for an extended version:
+For every model, the app needs a config file specifying the model file, annotations and more. See the [`public/models/example/config.json`](./public/models/example/config.json) file for an example:
 
 ```json
 {
@@ -209,6 +209,12 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 ARtefact is distributed under the MIT License. See the [license](./LICENSE) for more information.
 
+<div align="center">
+
+[![Back][back-to-top-shield]][back-to-top-url]
+
+</div>
+
 <!-- links and images -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
@@ -222,3 +228,5 @@ ARtefact is distributed under the MIT License. See the [license](./LICENSE) for 
 [quasar-url]: https://quasar.dev/
 [three-shield]: https://img.shields.io/badge/three.js-000000?style=for-the-badge&logo=three.js
 [three-url]: https://threejs.org/
+[back-to-top-shield]: https://img.shields.io/badge/%E2%96%B2_Back_To_Top_%E2%96%B2-002C50?style=for-the-badge
+[back-to-top-url]: https://github.com/dsm-museum/artefact/tree/main/#readme-top
