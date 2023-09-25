@@ -182,7 +182,7 @@ function createExperience() {
     // Load additional 3d models if defined
     if (config.value.additionalModels) {
       for (let model of config.value.additionalModels) {
-        let path = `./models/${route.params.id}/${model.path}`
+        let path = `./models/${route.params.id}/${model}`
         experience.resources.load(path)
       }
     }
