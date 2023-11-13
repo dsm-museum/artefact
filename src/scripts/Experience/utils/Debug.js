@@ -1,3 +1,5 @@
+import { AxesHelper, Object3D } from 'three'
+
 function createDebugOutline() {
   console.log('debug')
   const headElement = document.head
@@ -15,4 +17,14 @@ function createDebugOutline() {
   headElement.append(styleElement)
 }
 
-export { createDebugOutline }
+function createAxis(object3d) {
+  let axis = new AxesHelper()
+
+  if (object3d instanceof Object3D) {
+    object3d.add(axis)
+  } else {
+    return axis
+  }
+}
+
+export { createDebugOutline, createAxis }

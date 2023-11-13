@@ -5,83 +5,38 @@ import { AnimationClip, AnimationMixer } from 'three'
  */
 export default class AnimationSystem {
   constructor() {
-    // Saves the different mixers
+    // Saves the different mixers, typically 1 mixer belongs to 1 animated mesh
     this.mixers = []
 
     // Saves the animation clips
+    // "myClip": {...}
     this.animationClips = []
-
-    // Save the raw animations array from the gltfFile
-    this.animations = []
 
     this.debug = false
   }
 
-  addAnimations(animations) {
-    for (let animation of animations) {
-      this.animations.push(animation)
-    }
-  }
+  // Creates a new mixer for the specified object (rootModel)
+  createMixer(rootModel, name = 'UnnamedMixer') {
+    // Create the mixer
+    let mixer = new AnimationMixer(rootModel)
 
-  /* Adds a new mixer to the system */
-  addMixer(rootObject, name = 'mainMeshMixer') {
-    let mixer = new AnimationMixer(rootObject)
     this.mixers.push({ name: name, mixer: mixer })
+    return mixer
   }
 
-  getMixerByName(name) {
-    let mixerObj = this.mixers.find((mixer) => mixer.name == name)
-
-    if (!mixerObj) {
-      throw new Error(`No mixer named ${name} found.`)
+  // Extracts and sets up animation clips for all the animations in the gltf file
+  createClips(animations, mixer) {
+    let actions = []
+    for (let i = 0; i < animations.length; i++) {
+      let action = mixer.clipAction(animations[i])
+      actions.push(action)
+      this.animationClips.push({
+        name: animations[i].name,
+        action: action,
+        mixer: mixer,
+      })
     }
 
-    return mixerObj.mixer
+    return actions
   }
-
-  getClipByName(name) {
-    if (!name) {
-      throw new Error('AnimationSystem.getClipByName: No name specified')
-    }
-
-    let clip = AnimationClip.findByName(this.animations, name)
-
-    if (!clip) {
-      throw `No AnimationClip with the name ${name} found.`
-    }
-
-    return clip
-  }
-
-  // Create a playable animation for the object/mixer
-  // (maybe change the name to getPlayableAnimation() or something more "understandable")
-  getAction(animationName, mixerName) {
-    // get the clip
-    let clip = this.getClipByName(animationName)
-
-    // get the corresponding mixer
-    let mixer = this.getMixerByName(mixerName)
-
-    // get an clipAction for the passed clip
-    return mixer.clipAction(clip)
-  }
-
-  listMixers() {
-    console.table(this.mixers)
-  }
-
-  listAnimationClips() {
-    console.table(this.animationClips)
-  }
-
-  setDebug(enabled = true) {
-    this.debug = enabled
-  }
-
-  // GETTERS
-  //get MixerByIndex(index) {} ?
-
-  //getMixerByName(name) {} ?
-
-  //getAnimationClip(name) {} ?
 }

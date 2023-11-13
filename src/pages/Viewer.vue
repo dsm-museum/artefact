@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { toRaw, onMounted, onUnmounted, ref, computed } from 'vue'
+import { toRaw, onMounted, onUnmounted, ref } from 'vue'
 import anime from "animejs/lib/anime.es"
 import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar';
@@ -68,6 +68,10 @@ let currentXRSession = ref({})
 let modelWasPlaced = false
 let arModelGroup = new Group()
 
+// Animations
+let mixers = ref([])
+let animationClips = ref([])
+
 // Signal definitions
 const emit = defineEmits(["statuschange"])
 
@@ -79,7 +83,7 @@ onMounted(async () => {
   config.value = modelconfigs[route.params.id]
   annotationsAndQuiz = mergeAnnotationsAndQuiz(config.value.annotations, config.value.quiz.questions)
 
-  createExperience()
+  await createExperience()
 
   // Insert annotations into the scene
   for (let data of annotationsAndQuiz) {
@@ -112,9 +116,6 @@ onMounted(async () => {
   // Prepare quiz content
   quiz = new Quiz(toRaw(config.value.quiz))
 
-  // Add the AR group to the scene
-  experience.scene.add(arModelGroup)
-
   // Add other event listeners
   addEventListeners()
 })
@@ -123,15 +124,56 @@ onUnmounted(() => {
   experience.dispose()
 })
 
-function createExperience() {
+async function createExperience() {
   experience = new Experience({
-    sources: [{
-      name: "model",
-      id: "model",
-      type: "gltfModel",
-      path: `./models/${route.params.id}/${config.value.model}`
-    }],
+    initialCameraPosition: toRaw(config.value.initialCameraPosition)
   })
+
+  // Add the AR group to the scene
+  experience.scene.add(arModelGroup)
+
+  // Load the main model
+  let mainModelUrl = `./models/${route.params.id}/${config.value.assets[0].url}`
+  let mainModel = await experience.resources.load(mainModelUrl)
+  arModelGroup.add(mainModel.scene)
+
+  let mixer = experience.animationSystem.createMixer(mainModel.scene, "mainMixer")
+  let actions = experience.animationSystem.createClips(mainModel.animations, mixer)
+
+  // Load all the placeholder models if they exist
+  for (let i = 1; i < config.value.assets.length; i++) {
+    let entry = config.value.assets[i]
+
+    if (!entry.replaces) {
+      let url = `./models/${route.params.id}/${config.value.assets[i].url}`
+      let model = await experience.resources.load(url)
+      model.scene.name = config.value.assets[i].id
+      arModelGroup.add(model.scene)
+
+      // Add animations if they exist
+      if (model.animations.length > 0) {
+        let mixer = experience.animationSystem.createMixer(model.scene, "mixer" + model.scene.name)
+        let actions = experience.animationSystem.createClips(model.animations, mixer)
+      }
+    } else {
+      let url = `./models/${route.params.id}/${config.value.assets[i].url}`
+      let model = await experience.resources.load(url)
+      model.scene.name = config.value.assets[i].id
+      // Add animations if they exist
+      if (model.animations.length > 0) {
+        let mixer = experience.animationSystem.createMixer(model.scene, "mixer" + model.scene.name)
+        let actions = experience.animationSystem.createClips(model.animations, mixer)
+      }
+      arModelGroup.add(model.scene)
+      let toReplace = arModelGroup.getObjectByName(config.value.assets[i].replaces)
+      console.log(toReplace);
+      arModelGroup.remove(toReplace)
+    }
+  }
+
+  showLoadingScreen.value = false
+
+
 
   // Connect the resize event for correct resizing of the scene
   experience.resizer.on("resize", () => {
@@ -150,34 +192,23 @@ function createExperience() {
   // The "loaded" event is triggered after the first 3d model is loaded.
   // If there are other 3d models defined in the "additionalModels" section of the config
   experience.resources.on("loaded", () => {
-    showLoadingScreen.value = false
 
     // Make the model non-reactive as that is needed for the renderer to show the animation
     let gltfFile = toRaw(experience.resources.items["model"])
 
+    //console.table(gltfFile.animations)
+
+    // Add the model to the movable group
+    // Do not add it to the scene but rather the arModelGroup
     arModelGroup.add(gltfFile.scene)
 
-    // Do not add it to the scene but rather the arModelGroup
-    //experience.scene.add(model.scene)
 
-    // Testing animation playback
-    //let mesh = gltfFile.scene.children.find(child => child.name === config.value.animationMesh)
-    //let mixer = new AnimationMixer(mesh)
+    // Create the mixer for the mesh
+    let mixer = experience.animationSystem.createMixer(gltfFile.scene, "mainMixer")
+    //mixers.value.push(mixer)
 
-    //mixer.clipAction(gltfFile.animations[0]).play()
-
-
-    // Adds the gltfFiles raw animations to the internal array
-    experience.animationSystem.addAnimations(gltfFile.animations)
-
-    // Get the mesh to play the animation on
-    let mesh = gltfFile.scene.children.find(child => child.name === config.value.animationMesh)
-
-    // Add the mixer for the main mesh
-    experience.animationSystem.addMixer(mesh, "mainMeshMixer")
-
-    // Adds the model to the animation system to start the animation later
-    //experience.animationSystem.register(mesh, "mainAnimation")
+    // Create the clip actions
+    let actions = experience.animationSystem.createClips(gltfFile.animations, mixer)
 
     // Load additional 3d models if defined
     if (config.value.additionalModels) {
@@ -186,12 +217,20 @@ function createExperience() {
         experience.resources.load(path)
       }
     }
+    showLoadingScreen.value = false
   })
 
   // Is triggered for every 3d model loading after the first file
-  experience.resources.on("modelReady", (file) => {
+  experience.resources.on("modelReady", (gltfFile) => {
     // add the loaded model to the arModelGroup
-    arModelGroup.add(file.scene)
+    arModelGroup.add(gltfFile.scene)
+
+    // Create the mixer for the mesh
+    let mixer = experience.animationSystem.createMixer(gltfFile.scene, "secondaryMixer")
+    //mixers.value.push(mixer)
+
+    // Create the clip actions
+    let actions = experience.animationSystem.createClips(gltfFile.animations, mixer)
   })
 
   experience.webXR.on("error", (errorTitle, errorDescription, errorMessage) => {
@@ -234,6 +273,8 @@ function resize() {
 }
 
 function update(timestamp, frame) {
+
+  //console.log(experience.camera.instance.position)
 
   // XR update
   if (frame) {
@@ -306,15 +347,20 @@ function update(timestamp, frame) {
 
 function toggleAnimation() {
   animationIsPlaying.value = !animationIsPlaying.value
+  playAnimations(animationIsPlaying.value)
+}
 
-  // Get the mainAnimation
-  let action = experience.animationSystem.getAction(config.value.animationName, "mainMeshMixer")
+function playAnimations(enabled) {
+  for (let animationClip of experience.animationSystem.animationClips) {
 
-  if (animationIsPlaying.value) {
-    action.paused = false
-    action.play()
-  } else {
-    action.paused = true
+    if (enabled) {
+      animationClip.action.paused = false
+      animationClip.action.play()
+      experience.annotationSystem.hideAnnotations(true)
+    } else {
+      animationClip.action.paused = true
+      experience.annotationSystem.hideAnnotations(false)
+    }
   }
 }
 

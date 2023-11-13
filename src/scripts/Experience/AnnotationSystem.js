@@ -1,4 +1,5 @@
-import { TextureLoader } from 'three'
+import { Object3D, TextureLoader, Vector3 } from 'three'
+import { TransformControls } from 'three/examples/jsm/controls/TransformControls'
 import Annotation from './Annotation'
 import Experience from './Experience'
 
@@ -18,7 +19,7 @@ export default class AnnotationSystem {
       this.experience.camera.instance === undefined ||
       this.experience.camera.canvas === undefined
     ) {
-      throw 'AnnotationSystem need a camera and canvas element to work.'
+      throw 'AnnotationSystem needs a camera and canvas element to work.'
     }
   }
 
@@ -38,6 +39,29 @@ export default class AnnotationSystem {
     this.annotationDOMContainer.appendChild(annotation.domElement)
 
     return annotation
+  }
+
+  createPlaceHelper(initialPosition = new Vector3(0, 0, 0)) {
+    let root = new Object3D()
+
+    if (initialPosition) {
+      root.position.set(initialPosition.x, initialPosition.y, initialPosition.z)
+    }
+
+    let transformControls = new TransformControls(
+      this.experience.camera.instance,
+      this.experience.renderer.instance.domElement
+    )
+
+    transformControls.attach(root)
+
+    transformControls.addEventListener('dragging-changed', (event) => {
+      this.experience.controls.instance.enabled = !event.value
+      console.log(root.position)
+    })
+
+    this.experience.scene.add(root)
+    this.experience.scene.add(transformControls)
   }
 
   update(inAR = false) {

@@ -1,8 +1,7 @@
 <template>
   <div class="row justify-center">
     <div class="q-px-md col-12 col-sm-8 col-md-5 q-py-md">
-      <h1 class="text-h5 q-mt-none q-mb-none text-weight-bold text-uppercase non-selectable">{{ $t('models') }}
-      </h1>
+      <h1 class="text-h5 q-mt-none q-mb-none text-weight-bold text-uppercase non-selectable">Modelle</h1>
 
       <!-- horizon line-->
       <div class="q-my-none q-mb-md" style="max-width: 50%; border-bottom: 20px solid #002c50"></div>
@@ -25,7 +24,7 @@
         <q-separator inset />
 
         <q-card-actions vertical>
-          <q-btn padding="md" flat color="primary" class="text-weight-bold q-ma-sm q-mx-md">{{ $t('view') }}</q-btn>
+          <q-btn padding="md" flat color="primary" class="text-weight-bold q-ma-sm q-mx-md">Ansehen</q-btn>
         </q-card-actions>
       </q-card>
     </div>

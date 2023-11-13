@@ -89,6 +89,7 @@ export default class Annotation {
 
     // Position is just one xyz position
     if (typeof position[0] == 'number') {
+      //console.log(position[0])
       target = this.createTargetVisualizer()
       target.position.set(position[0], position[1], position[2])
     }
@@ -103,7 +104,7 @@ export default class Annotation {
 
   // Adds a sphere around the annotation
   createTargetVisualizer() {
-    let targetGeometry = new SphereBufferGeometry(0.05, 32, 32)
+    let targetGeometry = new SphereBufferGeometry(0.013, 32, 32)
     let targetMaterial = new MeshBasicMaterial({
       color: this.annotationBackgroundColor,
       transparent: true,
@@ -113,6 +114,9 @@ export default class Annotation {
 
     // We need a parent-level Mesh to raycast against, using a sphere for that
     let targetMesh = new Mesh(targetGeometry, targetMaterial)
+    let vec3 = new Vector3()
+    targetMesh.getWorldPosition(vec3)
+    //console.log(vec3)
 
     // Add the icon as a 3d object
     const map = new TextureLoader().load(
@@ -127,7 +131,7 @@ export default class Annotation {
     this.icon = spriteMaterial
 
     const sprite = new Sprite(spriteMaterial)
-    sprite.scale.set(0.07, 0.07, 1.0)
+    sprite.scale.set(0.02, 0.02, 1.0)
 
     targetMesh.add(sprite)
 
@@ -207,6 +211,7 @@ export default class Annotation {
   hide(willHide = true) {
     this.icon.visible = !willHide
     this.domElement.style.pointerEvents = willHide ? 'none' : 'auto'
+    this.target.visible = !willHide
   }
 
   setQuestionIcon() {

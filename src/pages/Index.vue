@@ -29,7 +29,7 @@
           <q-separator inset />
 
           <q-card-actions vertical>
-            <q-btn padding="lg" flat color="primary" class="text-weight-bold q-ma-sm q-mx-md">{{ $t('view') }}</q-btn>
+            <q-btn padding="lg" flat color="primary" class="text-weight-bold q-ma-sm q-mx-md">Ansehen</q-btn>
           </q-card-actions>
 
         </q-card>

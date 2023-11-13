@@ -10,6 +10,7 @@ import Resources from './utils/Resources'
 import WebXRManager from '../Experience/WebXRManager'
 import Raycaster from './Raycaster'
 import { disposeThree } from './utils/threeCleanup'
+import { createAxis } from './utils/Debug'
 
 let instance = null
 
@@ -28,8 +29,8 @@ export default class Experience {
     this.timer = new Timer()
     this.scene = new Scene()
     this.webXR = new WebXRManager(_config.arSessionFeatures)
-    this.resources = new Resources(_config.sources)
-    this.camera = new Camera()
+    this.resources = new Resources()
+    this.camera = new Camera(_config.initialCameraPosition)
     this.controls = new Controls()
     this.renderer = new Renderer()
     this.annotationSystem = new AnnotationSystem(
@@ -39,6 +40,12 @@ export default class Experience {
     this.raycaster = new Raycaster()
 
     this.setDefaultLighting()
+
+    //this.scene.add(createAxis())
+
+    // Debug
+    this.annotationSystem.createPlaceHelper()
+    window.APP = this
   }
 
   dispose() {

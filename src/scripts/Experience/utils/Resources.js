@@ -5,10 +5,10 @@ import { TextureLoader } from 'three'
 import { LoadingManager } from 'three'
 
 export default class Resources extends EventEmitter {
-  constructor(sources) {
+  constructor() {
     super()
 
-    this.sources = sources
+    this.sources = []
 
     this.items = {}
     this.toLoad = this.sources.length
@@ -71,9 +71,10 @@ export default class Resources extends EventEmitter {
   }
 
   // Loads a 3d model and triggers the modelReady event
-  load(source) {
-    this.loaders.gltfLoader.load(source, (file) => {
+  async load(source) {
+    return this.loaders.gltfLoader.loadAsync(source)
+    /*this.loaders.gltfLoader.load(source, (file) => {
       this.trigger('modelReady', [file])
-    })
+    })*/
   }
 }

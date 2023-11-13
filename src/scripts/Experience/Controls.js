@@ -12,7 +12,7 @@ export default class Controls {
 
   setInstance() {
     this.instance = new OrbitControls(this.camera, this.canvas)
-    this.instance.target = new Vector3(0, 0.3, 0)
+    this.instance.target = new Vector3(0, 0.0, 0)
     this.instance.enableDamping = true
     this.instance.dampingFactor = 0.02
     this.instance.maxDistance = 6

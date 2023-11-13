@@ -14,15 +14,14 @@
 
 <script>
 import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+//import { useI18n } from 'vue-i18n'
 import MenuBar from 'src/components/MenuBar.vue'
 
 export default {
   setup() {
-    const { locale } = useI18n({ useScope: "global" });
+    //const { locale } = useI18n({ useScope: "global" });
     const rightDrawerOpen = ref(false);
     return {
-      locale,
       rightDrawerOpen,
       toggleRightDrawer() {
         rightDrawerOpen.value = !rightDrawerOpen.value;
