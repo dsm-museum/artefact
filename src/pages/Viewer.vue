@@ -67,6 +67,7 @@ let inAR = ref(false)
 let currentXRSession = ref({})
 let modelWasPlaced = false
 let arModelGroup = new Group()
+let mainModel
 
 // Animations
 let mixers = ref([])
@@ -87,7 +88,7 @@ onMounted(async () => {
 
   // Insert annotations into the scene
   for (let data of annotationsAndQuiz) {
-    let annotation = experience.annotationSystem.createAnnotation(data.annotation, config.value.urlPath)
+    let annotation = experience.annotationSystem.createAnchoredAnnotation(toRaw(data.annotation), config.value.urlPath, mainModel)
 
     arModelGroup.add(annotation.target)
 
@@ -107,7 +108,7 @@ onMounted(async () => {
             }
           })
         } else {
-          console.log("locked")
+          //console.log("locked")
         }
       }
     })
@@ -134,7 +135,7 @@ async function createExperience() {
 
   // Load the main model
   let mainModelUrl = `./models/${route.params.id}/${config.value.assets[0].url}`
-  let mainModel = await experience.resources.load(mainModelUrl)
+  mainModel = await experience.resources.load(mainModelUrl)
   arModelGroup.add(mainModel.scene)
 
   let mixer = experience.animationSystem.createMixer(mainModel.scene, "mainMixer")
@@ -166,13 +167,12 @@ async function createExperience() {
       }
       arModelGroup.add(model.scene)
       let toReplace = arModelGroup.getObjectByName(config.value.assets[i].replaces)
-      console.log(toReplace);
+      //console.log(toReplace);
       arModelGroup.remove(toReplace)
     }
   }
 
   showLoadingScreen.value = false
-
 
 
   // Connect the resize event for correct resizing of the scene
@@ -326,7 +326,7 @@ function update(timestamp, frame) {
   // Framework update
   experience.timer.update()
 
-  experience.camera.instance.updateMatrixWorld()
+  //experience.camera.instance.updateMatrixWorld()
   experience.annotationSystem.update(frame !== undefined)
 
   // Iterate over every mixer to update the animation
@@ -356,10 +356,10 @@ function playAnimations(enabled) {
     if (enabled) {
       animationClip.action.paused = false
       animationClip.action.play()
-      experience.annotationSystem.hideAnnotations(true)
+      //experience.annotationSystem.hideAnnotations(true)
     } else {
       animationClip.action.paused = true
-      experience.annotationSystem.hideAnnotations(false)
+      //experience.annotationSystem.hideAnnotations(false)
     }
   }
 }
@@ -486,7 +486,7 @@ function onXRSelect(event) {
 }
 
 function onTouchStart(event) {
-  console.log("onTouchStart")
+  //console.log("onTouchStart")
 }
 
 function openInfocard(id) {
@@ -562,7 +562,7 @@ function addEventListeners() {
       })
     }, 500)
 
-    console.log(quiz.answeredQuestions)
+    //console.log(quiz.answeredQuestions)
     // TODO: Unlock the next icon in the 3d view
     for (let annotation of experience.annotationSystem.annotations) {
       if (annotation.annotationData.id > quiz.answeredQuestions) {
@@ -572,7 +572,7 @@ function addEventListeners() {
 
         // find the right question
         let question = config.value.quiz.questions.find(question => question.id === id)
-        console.log(question)
+        //console.log(question)
 
         if (question.answered != true) {
           annotation.setQuestionIcon()

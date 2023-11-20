@@ -14,7 +14,7 @@
     },
     {
       "id": "ocean",
-      "url": "ocean_anim.glb",
+      "url": "ocean_anim_fixed.glb",
       "replaces": "ocean_noKeys"
     }
   ],
@@ -31,9 +31,10 @@
       "subtitle": "Das Schiff",
       "title": "Schwimmende Lebensretter",
       "icon": "media/schiff.png",
-      "position": [
-        0.22017379282519414, 0.05278327240376755, 0.0682806027915506
-      ],
+      "position": [108828, 108829, 108830],
+      "indicatorPosition": [0.2201, 0.0527, 0.068],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
       "media": "media/storm1.jpg",
       "content": [
         "Das Modell zeigt das Feuerschiff FEHMARNBELT. Die Bezeichnung Feuerschiff stammt von der tonnenförmigen großen Lampe hoch oben am Schiff. Festverankert auf hoher See dienten diese Schiffe als schwimmende Seezeichen für die Lenkung und Sicherheit des Schiffsverkehrs bei Nacht und Nebel. Zudem warnten sie vor Gefahren. Die FEHMARNBELT selbst musste den schwersten Stürmen standhalten und hat dadurch eine bewegte Geschichte hinter sich.",
@@ -46,9 +47,10 @@
       "subtitle": "Globale Perspektive",
       "title": "Mehr Sicherheit für alle",
       "icon": "media/global.png",
-      "position": [
-        -0.13842672984512777, -0.026432574483710863, -0.0810412821504296
-      ],
+      "position": [346875, 346876, 346877],
+      "indicatorPosition": [-0.1384, -0.0264, -0.081],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
       "media": "media/storm2.jpg",
       "content": [
         "Die Rettungsboote auf Feuerschiffen dienten dem Ernstfall. Oft wurden Feuerschiffbesatzungen zu Zeugen von Schiffsunglücken, bei denen sie mutig Hilfe leisteten. Zahlreiche Berichte erzählen von Besatzungen, die gegen bedrohliche Wellen anruderten, um die Seeleute havarierter Schiffe zu bergen. Dies war sehr gefährlich und manche Seenotretter blieben auf See.",
@@ -61,9 +63,10 @@
       "title": "Ein Leben zwischen Ruhe und Sturm",
       "icon": "media/mensch.png",
       "media": "media/storm3.jpg",
-      "position": [
-        0.11531940029993556, 0.039571574410960084, -0.08321343923885854
-      ],
+      "position": [12633, 12634, 12635],
+      "indicatorPosition": [0.1153, 0.0395, -0.0832],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
       "content": [
         "Die Schiffsbrücke war die Kommandozentrale der FEHMARNBELT. Von ihr aus wurde die Signalgebung und Kommunikation gesteuert. Bei einer gefährlichen Annäherung anderer Fahrzeuge gab die Besatzung von dort aus akustische Signale oder schoss Warnraketen ab. Obwohl Feuerschiffe besonders stabil gebaut waren, stellten Zusammenstöße eine ständige Gefahr dar.",
         "Die Arbeit auf Feuerschiffen, wie z.B. die Wartung der Lichtanlage, war bei Sturm und Seegang besonders schwer, da selbst bei heftigem Unwetter die Position nicht verlassen werden durfte. Folgte auf den Sturm Ruhe, hatte die Mannschaft Zeit zum Fischen, Erzählen und zu wissenschaftlicher Tätigkeit. Einige Wetter- und Strömungsbeobachtungen wurden weit vom Ufer entfernt und konstant am gleichen Ort durchgeführt. Besonders diese Beobachtungen lieferten wichtige Daten für die Forschung. Das ungewöhnliche Leben auf den festverankerten Fahrzeugen war sehr beengt. Landgänge waren dabei nicht möglich. Daher wurde die Besatzung in regelmäßigen Abständen abgelöst. Durch die gemeinsam verbrachte Zeit und Arbeit entstand aber ein enges Band zwischen den Männern. Das oben eingefügte Bild zeigt eine Feuerschiffbesatzung bei der Feier eines stürmischen Weihnachtsfestes."
@@ -75,7 +78,10 @@
       "title": "Große Faszination im Kleinen",
       "icon": "media/modell.png",
       "media": "media/feuerschiff_mobile.jpg",
-      "position": [-0.025727101183120896, 0.0, 0.12098577494428273],
+      "position": [23445, 23446, 23447],
+      "indicatorPosition": [-0.0257, 0.0, 0.1209],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
       "content": [
         "Der Hobby-Modellbauer Friedemann Neumeier baute ein Modell der FEHMARNBELT aus Zinkblech. Dafür setzte er sich erstmals mit der Löttechnik auseinander, die ihm durch die vielen kleinen Details des Schiffes sehr vertraut wurde. Der Münchner schnitzte bereits als Kind gern Schiffe aus Holz. Seine Verbindung zur maritimen Welt vertiefte er dann als Erwachsener bei der Bundesmarine. Wie er selbst sagt, sind Schiffe für ihn keine Gegenstände, sondern etwas Lebendiges. Die Leidenschaft für Modelle verwandelte auch seine eigene Wohnung in Süddeutschland inzwischen in ein richtiges maritimes Museum. Das Deutsche Schifffahrtsmuseum ist ihm für die Schenkung dieses besonderen Stücks maritimer Kultur sehr dankbar."
       ]
@@ -86,7 +92,10 @@
       "title": "Wegweisende Lichtsignale",
       "icon": "media/schiff.png",
       "media": "media/storm4.jpg",
-      "position": [0.0, 0.111291575697331, -0.10362612933390616],
+      "position": [191459, 191460, 191461],
+      "indicatorPosition": [0.0, 0.1112, -0.1036],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
       "content": [
         "Vor etwa dreihundert Jahren entdecken englische Geschäftsleute die rettende Lösung, Schiffe als schwimmende Leuchttürme zu nutzen. Das beeindruckendste an der FEHMARNBELT war ihr sechs Meter hoher Signalturm, welcher die Signallampe mit einem Durchmesser von zwei Metern trug. Der starke Scheinwerfer der Lampe mit den vier optischen Speziallinsen konnte von anderen Schiffen über einen weiten Umkreis gesehen werden. Damit gab das Feuerschiff Orientierung auf See. Jedes Feuerschiff konnte man an dieser Signallampe erkennen. Sie drehte sich in festgelegten Anordnungen und Frequenzen und sandte Lichtsignale aus.",
         "Diese Lichtsignale nennt man auch Leuchtfeuer. Außerdem dienten die Lichtsignale der Feuerschiffe dazu, vor unter der Wasseroberfläche lauernden Gefahren zu warnen, wie z. B. Sandbänke oder Felsen. Zusätzlich wurden die Signale von akustischen Signalen begleitet, wie dem regelmäßigen Betätigen einer Schiffsglocke in Tages- und Nachtschichten. Im hinteren Bereich der FEHMARNBELT ist eine große Funkantenne zu erkennen, über die Morsecodes ausgesendet wurden."

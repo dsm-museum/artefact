@@ -1,7 +1,15 @@
-import { Object3D, TextureLoader, Vector3 } from 'three'
+import {
+  BoxGeometry,
+  Mesh,
+  MeshStandardMaterial,
+  Object3D,
+  TextureLoader,
+  Vector3,
+} from 'three'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls'
 import Annotation from './Annotation'
 import Experience from './Experience'
+import AnchoredAnnotation from './AnchoredAnnotation'
 
 export default class AnnotationSystem {
   constructor(_annotationDOMContainer) {
@@ -29,8 +37,30 @@ export default class AnnotationSystem {
     }
   }
 
-  createAnnotation(annotationData, urlPath) {
-    let annotation = new Annotation(annotationData, urlPath)
+  /*createAnnotation(annotationData, urlPath, modelToAttachTo) {
+    let annotation = new AnchoredAnnotation(
+      annotationData,
+      urlPath,
+      modelToAttachTo
+    )
+
+    console.log(annotation)
+
+    // Add the annotation to the internal array
+    this.annotations.push(annotation)
+
+    // Add the annotation to the DOM-Overlay
+    this.annotationDOMContainer.appendChild(annotation.domElement)
+
+    return annotation
+  }*/
+
+  createAnchoredAnnotation(annotationData, urlPath, modelToAttachTo) {
+    let annotation = new AnchoredAnnotation(
+      annotationData,
+      urlPath,
+      modelToAttachTo
+    )
 
     // Add the annotation to the internal array
     this.annotations.push(annotation)
