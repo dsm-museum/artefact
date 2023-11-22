@@ -1,0 +1,70 @@
+{
+  "title": "Das APEX",
+  "description": "description",
+  "thumbnail": "media/feuerschiff_mobile.jpg",
+  "assets": [
+    {
+      "id": "model",
+      "url": "Apex_Entwurf_Stand_Juli_23.glb"
+    }
+  ],
+  "ar": true,
+  "scene": {
+    "backgroundColor": "#ff0000"
+  },
+  "annotationScale": 10,
+  "initialCameraPosition": [-2.2091, 2.6052, -4.7489],
+  "initialOrbitTarget": [0, 0, 0],
+  "annotations": [
+    {
+      "id": "the-ship",
+      "subtitle": "Das Schiff",
+      "title": "Schwimmende Lebensretter",
+      "icon": "media/mensch.png",
+      "meshIndex": "12",
+      "position": [853, 7790, 3934],
+      "indicatorPosition": [-1.5, 1.5, -1.5],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "media": "",
+      "content": [
+        "Das Modell zeigt das Feuerschiff FEHMARNBELT. Die Bezeichnung Feuerschiff stammt von der tonnenförmigen großen Lampe hoch oben am Schiff. Festverankert auf hoher See dienten diese Schiffe als schwimmende Seezeichen für die Lenkung und Sicherheit des Schiffsverkehrs bei Nacht und Nebel. Zudem warnten sie vor Gefahren. Die FEHMARNBELT selbst musste den schwersten Stürmen standhalten und hat dadurch eine bewegte Geschichte hinter sich.",
+        "Gebaut wurde sie 1908 an der Weser und war dann in der Nord- und Ostsee stationiert. Unser Modell zeigt das Schiff nach einem Umbau 1931, bei dem es einen Motor sowie einen 16 Meter hohen Feuerturm erhielt. Knapp dreißig Jahre später kam eine zeitgemäße Radar- und Schallsendeanlage hinzu.",
+        "Seit den 1980er-Jahren wurden Feuerschiffe durch Signalbojen ersetzt. Nach ihrer Ausmusterung rückte die FEHMARNBELT noch einmal ins Rampenlicht. In dem Film „Das Feuerschiff“ mit Klaus Maria Brandauer verwies ihr dramatischer Lichtkegel auf die einst so zentrale Bedeutung für den Seeverkehr. Inzwischen liegt sie in Lübeck als Museumsschiff wieder fest vor Anker."
+      ]
+    }
+  ],
+  "quiz": {
+    "title": "Das Quiz zur Fehmarnbelt",
+    "description": "Das Quiz zur Fehmarnbelt",
+    "questions": [
+      {
+        "id": "the-ship",
+        "question": "Durch was wurden Feuerschiffe ersetzt?",
+        "answers": [
+          {
+            "id": 0,
+            "text": "Signalbojen",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "Wasserpflanzen",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "Flaggen",
+            "correct": false
+          },
+          {
+            "id": 3,
+            "text": "Windmühlen",
+            "correct": false
+          }
+        ],
+        "explanationText": "Feuerschiffe wurden durch Signalbojen ersetzt."
+      }
+    ]
+  }
+}

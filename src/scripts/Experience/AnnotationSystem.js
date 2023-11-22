@@ -6,7 +6,6 @@ import {
   TextureLoader,
   Vector3,
 } from 'three'
-import { TransformControls } from 'three/examples/jsm/controls/TransformControls'
 import Annotation from './Annotation'
 import Experience from './Experience'
 import AnchoredAnnotation from './AnchoredAnnotation'
@@ -69,29 +68,6 @@ export default class AnnotationSystem {
     this.annotationDOMContainer.appendChild(annotation.domElement)
 
     return annotation
-  }
-
-  createPlaceHelper(initialPosition = new Vector3(0, 0, 0)) {
-    let root = new Object3D()
-
-    if (initialPosition) {
-      root.position.set(initialPosition.x, initialPosition.y, initialPosition.z)
-    }
-
-    let transformControls = new TransformControls(
-      this.experience.camera.instance,
-      this.experience.renderer.instance.domElement
-    )
-
-    transformControls.attach(root)
-
-    transformControls.addEventListener('dragging-changed', (event) => {
-      this.experience.controls.instance.enabled = !event.value
-      console.log(root.position)
-    })
-
-    this.experience.scene.add(root)
-    this.experience.scene.add(transformControls)
   }
 
   update(inAR = false) {

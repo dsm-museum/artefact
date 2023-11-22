@@ -48,8 +48,8 @@ export default class AnchoredAnnotation {
     this.model = model
     this.annotationBackgroundColor = new Color(0xffffff)
     this.debug = false
+    this.meshIndex = 0
 
-    this.meshGeometry = model.scene.children[0].geometry
     this.line = null
 
     this.domElement = this.createDomElement(annotationData.id)
@@ -57,7 +57,6 @@ export default class AnchoredAnnotation {
       annotationData.position,
       annotationData.indicatorPosition
     ) // .position are the three vertex indices here!!!
-
     this.annotationVector = new Vector3(0, 0, 0)
     this.fovHeight = this.getFovHeight()
   }
@@ -104,10 +103,16 @@ export default class AnchoredAnnotation {
     // Get the geometry of the mesh
     //this.model.scene.children[0].position.set(0, 0, 0)
 
-    let meshGeometry = this.model.scene.children[0].geometry
-    let positionAttribute = meshGeometry.getAttribute('position')
+    // Add the mesh index to get the vertices
+    if (this.annotationData.meshIndex != undefined) {
+      this.meshIndex = this.annotationData.meshIndex
+    }
+
+    this.meshGeometry = this.model.scene.children[this.meshIndex].geometry
+    let positionAttribute = this.meshGeometry.getAttribute('position')
 
     // Get the three indices from the position array
+    // TODO: Calculate bary coords from the three vertices
     let indexVertexA = position[0]
     let indexVertexB = position[1]
     let indexVertexC = position[2]
@@ -132,6 +137,7 @@ export default class AnchoredAnnotation {
     let line = this.createDashedLine(vertexPositionA, indicatorPosition)
     this.line = line
 
+    // TODO: Attach to the arModelGroup
     this.experience.scene.attach(line)
 
     if (this.debug) {
@@ -201,6 +207,7 @@ export default class AnchoredAnnotation {
 
     vertexPosition.fromBufferAttribute(positionAttribute, indexVertexA)
 
+    //this.model.scene.children[0].updateWorldMatrix()
     this.model.scene.children[0].localToWorld(vertexPosition)
 
     //const x = (targetPosition.x + 1) / window.innerWidth
@@ -242,6 +249,7 @@ export default class AnchoredAnnotation {
     const distance = this.target.position.distanceTo(
       this.experience.camera.instance.position
     )
+
     const objectSize = this.fovHeight / distance
 
     //  in ar, correct vertical DOM position

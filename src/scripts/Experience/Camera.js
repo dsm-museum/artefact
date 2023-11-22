@@ -33,9 +33,9 @@ export default class Camera {
 
   reset() {
     this.instance.position.set(
-      this.initialPosition.x,
-      this.initialPosition.y,
-      this.initialPosition.z
+      this.initialPosition[0],
+      this.initialPosition[1],
+      this.initialPosition[2]
     )
   }
 

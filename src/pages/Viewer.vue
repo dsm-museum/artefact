@@ -39,6 +39,7 @@ import QuizCardDialog from 'src/components/dialogs/QuizCardDialog.vue';
 import { modelconfigs } from 'src/boot/load_configs';
 import Quiz from 'src/scripts/Quiz/Quiz';
 import QuizResultDialog from 'src/components/dialogs/QuizResultDialog.vue';
+import { Inspector } from 'src/scripts/Experience/utils/Inspector'
 
 // Main Config
 let route
@@ -61,11 +62,13 @@ let quizDialog
 let isRunning = ref(false)
 let annotationsAndQuiz = ref([])
 
-// Augmented Reality
+// XR
 let deviceSupportsAR = ref(false)
 let inAR = ref(false)
 let currentXRSession = ref({})
 let modelWasPlaced = false
+let hitTestSourceRequested = ref(false)
+let hitTestSource = ref(null)
 let arModelGroup = new Group()
 let mainModel
 
@@ -84,13 +87,22 @@ onMounted(async () => {
   config.value = modelconfigs[route.params.id]
   annotationsAndQuiz = mergeAnnotationsAndQuiz(config.value.annotations, config.value.quiz.questions)
 
+  arModelGroup.name = "arModelGroup"
+
   await createExperience()
 
   // Insert annotations into the scene
   for (let data of annotationsAndQuiz) {
     let annotation = experience.annotationSystem.createAnchoredAnnotation(toRaw(data.annotation), config.value.urlPath, mainModel)
 
+    // TODO: Find better way to scale the annotation
+    if (config.value.annotationScale) {
+      console.log("scale found");
+      annotation.target.scale.setScalar(config.value.annotationScale)
+    }
+
     arModelGroup.add(annotation.target)
+    arModelGroup.add(annotation.line)
 
     experience.click(annotation.target, (event) => {
       if (!quiz.isRunning) {
@@ -130,12 +142,26 @@ async function createExperience() {
     initialCameraPosition: toRaw(config.value.initialCameraPosition)
   })
 
+  // Debug Inspector
+  /*let inspector = new Inspector(document.querySelector("#arScene"), experience.scene)
+  let transformControls = inspector.createTransformControls(experience.scene, experience.camera.instance, experience.renderer.instance)
+
+  transformControls.addEventListener('dragging-changed', (event) => {
+    experience.controls.instance.enabled = !event.value
+    console.log(transformControls.worldPosition);
+  })
+
+  let raycaster = inspector.createRaycaster(experience.camera.instance)*/
+
   // Add the AR group to the scene
   experience.scene.add(arModelGroup)
 
   // Load the main model
   let mainModelUrl = `./models/${route.params.id}/${config.value.assets[0].url}`
   mainModel = await experience.resources.load(mainModelUrl)
+
+  // Give a name
+  mainModel.name = "mainModel"
   arModelGroup.add(mainModel.scene)
 
   let mixer = experience.animationSystem.createMixer(mainModel.scene, "mainMixer")
@@ -233,7 +259,36 @@ async function createExperience() {
     let actions = experience.animationSystem.createClips(gltfFile.animations, mixer)
   })
 
-  experience.webXR.on("error", (errorTitle, errorDescription, errorMessage) => {
+  // ===== New WebXR =====
+
+  // use the new system
+  experience.webXRSystem.addEventListener("error", (err) => {
+    console.log("error", err)
+  })
+
+  experience.webXRSystem.addEventListener("xrsupported", (event) => {
+    deviceSupportsAR.value = event.message.isSupported
+  })
+
+  experience.webXRSystem.addEventListener("xrstarted", (event) => {
+    onSessionStarted()
+  })
+
+  experience.webXRSystem.addEventListener("xrended", (event) => {
+    console.log("Session Ended");
+    onSessionEnded()
+  })
+
+  experience.webXRSystem.setXRSessionFeatures("immersive-ar", {
+    requiredFeatures: ['hit-test'],
+    optionalFeatures: ['dom-overlay'],
+    domOverlay: { root: document.body },
+  })
+  experience.webXRSystem.checkXRSupport()
+
+  // ===== Old WebXR =====
+
+  /*experience.webXR.on("error", (errorTitle, errorDescription, errorMessage) => {
     $q.dialog({
       component: ErrorDialog,
       componentProps: {
@@ -257,7 +312,7 @@ async function createExperience() {
 
   experience.webXR.on("onSessionEnded", () => {
     onSessionEnded()
-  })
+  })*/
 
   experience.renderer.instance.setAnimationLoop((timestamp, frame) => {
     update(timestamp, frame)
@@ -282,20 +337,20 @@ function update(timestamp, frame) {
     const session = experience.renderer.instance.xr.getSession()
 
     // Request a hit test setup once
-    if (experience.webXR.hitTestSourceRequested === false) {
+    if (hitTestSourceRequested.value === false) {
       session.requestReferenceSpace("viewer").then(function (referenceSpace) {
         session.requestHitTestSource({ space: referenceSpace }).then(function (source) {
-          experience.webXR.hitTestSource = source
+          hitTestSource.value = source
         })
       })
 
       // The hit testing setup for the session is done
-      experience.webXR.hitTestSourceRequested = true
+      hitTestSourceRequested.value = true
     }
 
-    if (experience.webXR.hitTestSource) {
+    if (hitTestSource.value) {
       // Get the hits with the current source
-      const hitTestResults = frame.getHitTestResults(experience.webXR.hitTestSource)
+      const hitTestResults = frame.getHitTestResults(hitTestSource.value)
 
       // If we have at least one hit
       if (hitTestResults.length) {
@@ -304,21 +359,21 @@ function update(timestamp, frame) {
         const hit = hitTestResults[0]
 
         // Show the indicator
-        if (!experience.webXR.indicator.shownOnce) {
-          experience.webXR.indicator.shownOnce = true
-          experience.webXR.indicator.enable()
+        if (!experience.webXRSystem.xrIndicator.shownOnce) {
+          experience.webXRSystem.xrIndicator.shownOnce = true
+          experience.webXRSystem.xrIndicator.enable()
 
           //emit a signal to the AR guide that the artefact can be placed now
           emit('statuschange', 'placeInitial')
         } else {
           const pose = hit.getPose(referenceSpace).transform.matrix
 
-          experience.webXR.indicator.mesh.matrix.fromArray(pose)
+          experience.webXRSystem.xrIndicator.mesh.matrix.fromArray(pose)
         }
         //object.matrix
       } else {
         // no hitTestResults, hide the indicator again
-        experience.webXR.indicator.visible = false
+        experience.webXRSystem.xrIndicator.visible = false
       }
     }
   }
@@ -365,7 +420,18 @@ function playAnimations(enabled) {
 }
 
 function startAR() {
-  experience.webXR.startSession()
+  if (deviceSupportsAR.value === true) {
+    experience.webXRSystem.startXR()
+  } else {
+    $q.dialog({
+      component: ErrorDialog,
+      componentProps: {
+        errorTitle: "AR nicht unterstützt",
+        errorDescription: "Die AR-Funktion ist für dieses Gerät leider nicht verfügbar",
+        errorMessage: "AR session is not supported"
+      }
+    })
+  }
 }
 
 // Starts the quiz after sucessful confirmation
@@ -399,9 +465,9 @@ function showQuizIntro() {
   }
 }
 
-async function onSessionStarted(xrSession) {
+async function onSessionStarted() {
   // Should be handled by webxr and actually is already
-  currentXRSession.value = xrSession
+  currentXRSession.value = experience.webXRSystem.xrSession
   inAR.value = true
 
   // Hide the group that shall be placeable
@@ -411,17 +477,23 @@ async function onSessionStarted(xrSession) {
   arModelGroup.position.y = -5
 
   // Listener for the end of a WebXR session
-  experience.webXR.currentSession.addEventListener("end", onSessionEnded)
+  //experience.webXR.currentSession.addEventListener("end", onSessionEnded)
 
   // Listener for a click event
-  experience.webXR.currentSession.addEventListener("select", onXRSelect)
-  experience.webXR.currentSession.addEventListener("touchstart", onTouchStart)
+  //experience.webXR.currentSession.addEventListener("select", onXRSelect)
+  //experience.webXR.currentSession.addEventListener("touchstart", onTouchStart)
+
+  experience.webXRSystem.xrSession.addEventListener("select", onXRSelect)
 
   // Set the referenceSpaceType for the session (yes, session)
   experience.renderer.instance.xr.setReferenceSpaceType('local')
 
   // Set the current session to the active one
-  await experience.renderer.instance.xr.setSession(currentXRSession.value)
+
+  // ===============
+  // TODO: Warum wird hier awaited?=== === ===
+  // ===============
+  //await experience.renderer.instance.xr.setSession(currentXRSession.value)
 
   // Hide the canvas to make room for the camera feed
   //document.querySelector("#arCanvas").style.visibility = "hidden"
@@ -436,9 +508,10 @@ async function onSessionStarted(xrSession) {
 }
 
 function onSessionEnded() {
-  experience.webXR.hitTestSourceRequested = false
-  experience.webXR.hitTestSource = null
-  experience.webXR.indicator.reset()
+
+  hitTestSourceRequested.value = false
+  hitTestSource.value = null
+  experience.webXRSystem.xrIndicator.reset()
   inAR.value = false
 
   // Reset AR elements
@@ -455,15 +528,16 @@ function onSessionEnded() {
 
   // Hide the AR helper status again
   emit("statuschange", "hidden")
+  console.log("onSessionEnded")
 }
 
 /* function that executes on webXR input source primary action */
 function onXRSelect(event) {
-  if (experience.webXR.indicator.isEnabled()) {
+  if (experience.webXRSystem.xrIndicator.isEnabled()) {
     if (!modelWasPlaced) {
       arModelGroup.visible = true
 
-      let newPosition = new Vector3(0, 0, 0).setFromMatrixPosition(experience.webXR.indicator.mesh.matrix)
+      let newPosition = new Vector3(0, 0, 0).setFromMatrixPosition(experience.webXRSystem.xrIndicator.mesh.matrix)
 
       // animate position if needed
       anime({
@@ -480,13 +554,9 @@ function onXRSelect(event) {
 
       // Signal the AR guide that the artefact has been placed & suggest further actions
       emit("statuschange", "finished")
-      experience.webXR.indicator.disable()
+      experience.webXRSystem.xrIndicator.disable()
     }
   }
-}
-
-function onTouchStart(event) {
-  //console.log("onTouchStart")
 }
 
 function openInfocard(id) {

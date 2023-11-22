@@ -1,6 +1,4 @@
-import { MeshBasicMaterial } from 'three'
-import { Mesh } from 'three'
-import { RingGeometry } from 'three'
+import { MeshBasicMaterial, Mesh, RingGeometry } from 'three'
 import Experience from './Experience'
 import EventEmitter from './utils/EventEmitter'
 
