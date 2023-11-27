@@ -88,6 +88,15 @@ class WebXRSystem extends EventDispatcher {
       }
     }
   }
+
+  dispose() {
+    let session = this.experience.renderer.instance.xr.getSession()
+    console.log(session)
+
+    if (session) {
+      session.end()
+    }
+  }
 }
 
 export { WebXRSystem }

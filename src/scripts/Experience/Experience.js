@@ -49,15 +49,18 @@ export default class Experience {
 
   dispose() {
     disposeThree(this.renderer.instance, this.scene, false)
-    //this.webXR.dispose()
+    this.webXRSystem.dispose()
     this.annotationSystem.dispose()
     instance = null
   }
 
   setDefaultLighting() {
     let ambientLight = new AmbientLight(0xffffff, 1)
+    ambientLight.name = 'Ambient Light'
     let directionalLight = new DirectionalLight(0xffffff, 0.7)
+    directionalLight.name = 'Directional Light 1'
     let directionalLight2 = new DirectionalLight(0xffffff, 0.7)
+    directionalLight2.name = 'Directional Light 2'
 
     directionalLight2.position.set(-1, 0.7, -1)
     directionalLight.position.set(1, 0.5, 1.5)

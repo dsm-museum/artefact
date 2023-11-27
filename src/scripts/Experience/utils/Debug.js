@@ -1,4 +1,4 @@
-import { AxesHelper, Object3D } from 'three'
+import { AxesHelper, BoxGeometry, MeshBasicMaterial, Object3D } from 'three'
 
 function createDebugOutline() {
   console.log('debug')
@@ -27,4 +27,11 @@ function createAxis(object3d) {
   }
 }
 
-export { createDebugOutline, createAxis }
+function createDebugCube() {
+  let geom = new BoxGeometry(0.2, 0.2, 0.2)
+  let mat = new MeshBasicMaterial({ color: 0xff0000 })
+  let mesh = new Mesh(geom, mat)
+  return mesh
+}
+
+export { createDebugOutline, createDebugCube, createAxis }

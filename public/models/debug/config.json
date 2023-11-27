@@ -1,0 +1,63 @@
+{
+  "title": "Default Cube",
+  "description": "Test",
+  "thumbnail": "",
+  "assets": [
+    {
+      "id": "model",
+      "url": "defaultcube.glb"
+    }
+  ],
+  "ar": true,
+  "scene": {
+    "backgroundColor": "#ff0000"
+  },
+  "initialCameraPosition": [0.4, 0.4, -0.4],
+  "annotations": [
+    {
+      "id": "the-ship",
+      "subtitle": "Das Schiff",
+      "title": "Schwimmende Lebensretter",
+      "icon": "media/schiff.png",
+      "position": [0, 1, 2],
+      "indicatorPosition": [0.23, 0.23, 0.23],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "media": "",
+      "content": ["Test"]
+    }
+  ],
+  "quiz": {
+    "title": "Default Quiz",
+    "description": "Quiz",
+    "questions": [
+      {
+        "id": "the-ship",
+        "question": "Wozu dienten die Lichtsignale der FEHMARNBELT?",
+        "answers": [
+          {
+            "id": 0,
+            "text": "Sie warnten vor Gefahrenstellen und gaben anderen Schiffen Orientierung",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "Als Morsecodes, um wichtige Nachrichten zu übermitteln",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "Sie machten bei Dunkelheit deutlich, dass ein Schiff vor Anker liegt",
+            "correct": false
+          },
+          {
+            "id": 3,
+            "text": "Sie zeigten auf, dass eine Kursänderung hin zur Richtung des Windes stattfindet",
+            "correct": false
+          }
+        ],
+        "explanationText": "Sie warnten vor Gefahrenstellen und gaben anderen Schiffen Orientierung."
+      }
+    ]
+  }
+}

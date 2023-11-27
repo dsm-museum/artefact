@@ -20,6 +20,8 @@ export default class Camera {
       100
     )
 
+    this.instance.name = 'Main Camera'
+
     // TODO: Calculate the distance the camera needs to be in, to get the first object in frame
     //console.log(this.instance.fov)
 

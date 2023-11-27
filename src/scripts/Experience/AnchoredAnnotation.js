@@ -13,19 +13,8 @@ import {
   Line,
   Object3D,
   BoxHelper,
+  SphereGeometry,
 } from 'three'
-
-/*
- const points = [];
-points.push( new THREE.Vector3( - 10, 0, 0 ) );
-points.push( new THREE.Vector3( 0, 10, 0 ) );
-points.push( new THREE.Vector3( 10, 0, 0 ) );
-
-const geometry = new THREE.BufferGeometry().setFromPoints( points );
-
-const line = new THREE.Line( geometry, material );
-scene.add( line );
- */
 
 let textureLoader = new TextureLoader()
 
@@ -47,7 +36,7 @@ export default class AnchoredAnnotation {
     this.urlPath = urlPath
     this.model = model
     this.annotationBackgroundColor = new Color(0xffffff)
-    this.debug = false
+    this.debug = true
     this.meshIndex = 0
 
     this.line = null
@@ -84,7 +73,7 @@ export default class AnchoredAnnotation {
   }
 
   createTargetMesh(position, indicatorPosition) {
-    let targetGeometry = new SphereBufferGeometry(0.013, 32, 32) // TODO: Don't scale it here, but rather later?
+    let targetGeometry = new SphereGeometry(0.013, 32, 32) // TODO: Don't scale it here, but rather later?
     let targetMaterial = new MeshBasicMaterial({
       color: this.annotationBackgroundColor,
       transparent: true,
@@ -138,7 +127,7 @@ export default class AnchoredAnnotation {
     this.line = line
 
     // TODO: Attach to the arModelGroup
-    this.experience.scene.attach(line)
+    //this.experience.scene.attach(line)
 
     if (this.debug) {
       let box = new BoxHelper(targetMesh, 0x00ff00)
@@ -197,7 +186,7 @@ export default class AnchoredAnnotation {
   }
 
   update(inXR = false) {
-    this.target.updateWorldMatrix(true, true)
+    // === 3D Object Update ===
 
     // Update the vertex position just like in  `createTargetMesh`
     let vertexPosition = new Vector3()
@@ -210,16 +199,6 @@ export default class AnchoredAnnotation {
     //this.model.scene.children[0].updateWorldMatrix()
     this.model.scene.children[0].localToWorld(vertexPosition)
 
-    //const x = (targetPosition.x + 1) / window.innerWidth
-    //const y = ((-targetPosition.y + 1) / 2) * window.innerHeight
-
-    // THIS WORKS AND IT SETS THE TARGET INDICATORS
-    /*this.target.position.set(
-      vertexPosition.x,
-      vertexPosition.y,
-      vertexPosition.z
-    )*/
-
     let linePositionAttribute = this.line.geometry.getAttribute('position')
     linePositionAttribute.setXYZ(
       0,
@@ -228,14 +207,13 @@ export default class AnchoredAnnotation {
       vertexPosition.z
     )
 
+    // This is important
     linePositionAttribute.needsUpdate = true
+
+    // === Invisible DOM Element update ===
 
     this.target.getWorldPosition(this.annotationVector)
     this.annotationVector.project(this.experience.camera.instance)
-    //this.icon.lookAt(this.experience.camera.instance.position)
-
-    const targetPosition = this.target.position.clone()
-    targetPosition.project(this.experience.camera.instance)
 
     let x = Math.round(
       (0.5 + this.annotationVector.x / 2) *

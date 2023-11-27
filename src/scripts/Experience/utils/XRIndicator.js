@@ -20,6 +20,7 @@ class XRIndicator {
 
     mesh.matrixAutoUpdate = false
     mesh.visible = false
+    mesh.name = 'XRIndicator'
     this.mesh = mesh
   }
 

@@ -25,7 +25,7 @@ import { toRaw, onMounted, onUnmounted, ref } from 'vue'
 import anime from "animejs/lib/anime.es"
 import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar';
-import { Group, Vector3 } from 'three';
+import { BufferGeometry, Group, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, SphereBufferGeometry, Vector3 } from 'three';
 
 /* Own Imports */
 import Experience from 'src/scripts/Experience/Experience';
@@ -40,6 +40,7 @@ import { modelconfigs } from 'src/boot/load_configs';
 import Quiz from 'src/scripts/Quiz/Quiz';
 import QuizResultDialog from 'src/components/dialogs/QuizResultDialog.vue';
 import { Inspector } from 'src/scripts/Experience/utils/Inspector'
+import { createDebugOutline, createDebugCube } from 'src/scripts/Experience/utils/Debug';
 
 // Main Config
 let route
@@ -131,6 +132,8 @@ onMounted(async () => {
 
   // Add other event listeners
   addEventListeners()
+
+  //createDebugOutline()
 })
 
 onUnmounted(() => {
@@ -142,16 +145,19 @@ async function createExperience() {
     initialCameraPosition: toRaw(config.value.initialCameraPosition)
   })
 
-  // Debug Inspector
+  // ==== DEBUG ====
   /*let inspector = new Inspector(document.querySelector("#arScene"), experience.scene)
   let transformControls = inspector.createTransformControls(experience.scene, experience.camera.instance, experience.renderer.instance)
 
   transformControls.addEventListener('dragging-changed', (event) => {
     experience.controls.instance.enabled = !event.value
     console.log(transformControls.worldPosition);
-  })
+  })*/
 
-  let raycaster = inspector.createRaycaster(experience.camera.instance)*/
+  // ToDo: Make scene children on first level clickable
+  //let raycaster = inspector.createRaycaster(experience.camera.instance)
+
+  // DEBUG ========
 
   // Add the AR group to the scene
   experience.scene.add(arModelGroup)
@@ -163,6 +169,17 @@ async function createExperience() {
   // Give a name
   mainModel.name = "mainModel"
   arModelGroup.add(mainModel.scene)
+
+  // blue ^ line above the debug cube
+  const points = [];
+  points.push(new Vector3(- 0.25, 0, 0));
+  points.push(new Vector3(0, 0.21, 0));
+  points.push(new Vector3(0.25, 0, 0));
+
+  const material = new LineBasicMaterial({ color: 0x0000ff });
+  const geometry = new BufferGeometry().setFromPoints(points);
+  const line = new Line(geometry, material);
+  arModelGroup.add(line)
 
   let mixer = experience.animationSystem.createMixer(mainModel.scene, "mainMixer")
   let actions = experience.animationSystem.createClips(mainModel.animations, mixer)
@@ -284,40 +301,14 @@ async function createExperience() {
     optionalFeatures: ['dom-overlay'],
     domOverlay: { root: document.body },
   })
+
   experience.webXRSystem.checkXRSupport()
-
-  // ===== Old WebXR =====
-
-  /*experience.webXR.on("error", (errorTitle, errorDescription, errorMessage) => {
-    $q.dialog({
-      component: ErrorDialog,
-      componentProps: {
-        errorTitle: errorTitle,
-        errorDescription: errorDescription,
-        errorMessage: errorMessage
-      }
-    })
-  })
-
-  // For enabling the ar button in the top menu
-  experience.webXR.on("supportsAR", (xrInfo) => {
-    if (xrInfo) {
-      deviceSupportsAR.value = true
-    }
-  })
-
-  experience.webXR.on("onSessionStarted", (xrSession) => {
-    onSessionStarted(xrSession)
-  })
-
-  experience.webXR.on("onSessionEnded", () => {
-    onSessionEnded()
-  })*/
 
   experience.renderer.instance.setAnimationLoop((timestamp, frame) => {
     update(timestamp, frame)
   })
 
+  //inspector.buildSceneTree()
 }
 
 function resize() {
@@ -395,6 +386,13 @@ function update(timestamp, frame) {
 
   experience.controls.update()
   experience.raycaster.update()
+
+
+  // Debug: Change the model animation
+  /*if (mainModel) {
+    console.log(mainModel.scene);
+    mainModel.scene.position.x = Math.sin(timestamp * 0.0008) * 0.1
+  }*/
 
   // Keep this last, render the final frame
   experience.renderer.update()
@@ -474,7 +472,7 @@ async function onSessionStarted() {
   arModelGroup.visible = false
 
   // Setting up the fade in from the bottom
-  arModelGroup.position.y = -5
+  //arModelGroup.position.y = -5
 
   // Listener for the end of a WebXR session
   //experience.webXR.currentSession.addEventListener("end", onSessionEnded)
@@ -533,6 +531,7 @@ function onSessionEnded() {
 
 /* function that executes on webXR input source primary action */
 function onXRSelect(event) {
+  console.log(arModelGroup);
   if (experience.webXRSystem.xrIndicator.isEnabled()) {
     if (!modelWasPlaced) {
       arModelGroup.visible = true
@@ -549,7 +548,8 @@ function onXRSelect(event) {
         duration: 700,
       })
 
-      arModelGroup.updateMatrixWorld()
+      //arModelGroup.updateMatrixWorld()
+      //arModelGroup.updateWorldMatrix(false, true)
       modelWasPlaced = true
 
       // Signal the AR guide that the artefact has been placed & suggest further actions

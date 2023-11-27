@@ -76,6 +76,7 @@ export default class Annotation {
 
       // Create the line and add it to the target
       let line = this.createDashedLine(position)
+      line.name = 'line'
 
       // subtract the target position from the line
       //line.position.sub(target.position)
@@ -96,6 +97,7 @@ export default class Annotation {
 
     if (this.debug) {
       let box = new BoxHelper(target, 0x00ff00)
+      box.name = 'Box'
       this.experience.scene.add(box)
     }
 
@@ -264,6 +266,7 @@ export default class Annotation {
     })
     let geometry = new SphereBufferGeometry(0.1, 32, 32)
     let mesh = new Mesh(geometry, mat)
+    mesh.name = 'Debug Sphere'
     mesh.position.set(position[0], position[1], position[2])
     this.experience.scene.add(mesh)
   }
