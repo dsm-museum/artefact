@@ -39,7 +39,7 @@ import QuizCardDialog from 'src/components/dialogs/QuizCardDialog.vue';
 import { modelconfigs } from 'src/boot/load_configs';
 import Quiz from 'src/scripts/Quiz/Quiz';
 import QuizResultDialog from 'src/components/dialogs/QuizResultDialog.vue';
-import { Inspector } from 'src/scripts/Experience/utils/Inspector'
+//import { Inspector } from 'src/scripts/Experience/utils/Inspector'
 //import { createDebugOutline, createDebugCube } from 'src/scripts/Experience/utils/Debug';
 
 // Main Config
@@ -98,7 +98,6 @@ onMounted(async () => {
 
     // TODO: Find better way to scale the annotation
     if (config.value.annotationScale) {
-      console.log("scale found");
       annotation.target.scale.setScalar(config.value.annotationScale)
     }
 
@@ -146,7 +145,7 @@ async function createExperience() {
   })
 
   // ==== DEBUG ====
-  let inspector = new Inspector(document.querySelector("#arScene"), experience.scene)
+  /*let inspector = new Inspector(document.querySelector("#arScene"), experience.scene)
   let transformControls = inspector.createTransformControls(experience.scene, experience.camera.instance, experience.renderer.instance)
 
   transformControls.addEventListener('dragging-changed', (event) => {
@@ -155,7 +154,7 @@ async function createExperience() {
   })
 
   // ToDo: Make scene children on first level clickable
-  let raycaster = inspector.createRaycaster(experience.camera.instance)
+  let raycaster = inspector.createRaycaster(experience.camera.instance)*/
 
   // DEBUG ========
 

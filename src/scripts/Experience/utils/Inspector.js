@@ -114,12 +114,18 @@ export class Inspector {
 
       let intersects = raycaster.intersectObjects(scene.children)
 
-      console.log(intersects)
-      if (intersects.length > 0) {
+      let filtered = intersects.filter((elem) => {
+        return !['Line', 'AxesHelper', 'TransformControlsPlane'].includes(
+          elem.object.type
+        )
+      })
+
+      console.log(filtered)
+      /*if (intersects.length > 0) {
         if (intersects[0].object.type in ['Line', 'AxesHelper'] == false) {
           console.log(intersects[0])
         }
-      }
+      }*/
     }
 
     window.addEventListener('pointermove', onPointerMove)

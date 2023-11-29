@@ -3,8 +3,7 @@
     <div id="loading-screen" class="non-selectable bg-grey-2 text-primary absolute-full flex flex-center">
       <div class="content q-pa-lg text-center">
 
-        <q-img :src="require('src/assets/artefact-logo-transparent.svg')" fit="contain"
-          style="min-width:150px; max-width:300px;" />
+        <q-img :src="require('src/assets/logo.png')" fit="contain" style="min-width:150px; max-width:300px;" />
 
 
         <q-linear-progress class="q-mt-lg q-mb-sm" animation-speed="500" rounded size="30px" color="primary"

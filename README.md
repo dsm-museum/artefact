@@ -166,6 +166,14 @@ Montserrat is used as the default font for normal and bold font styles:
 
 ### App name and icon
 
+You can generate your own icon with the icongenie helper (https://quasar.dev/icongenie/command-list).
+
+To create a good set of icons with padding use the following command:
+
+```js
+./node_modules/.bin/icongenie generate -i ./src/assets/logo.png --padding 20,20
+```
+
 To change the name and icon of the Progressive Web App, change the `manifest` section of the `quasar.conf.js` file:
 
 ```js
