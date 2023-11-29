@@ -16,7 +16,7 @@ export class Inspector {
 
     this.panel = this.createPanel()
     this.parent.insertBefore(this.panel, this.parent.firstChild)
-    //this.buildSceneTree()
+    this.buildSceneTree()
   }
 
   createPanel() {
@@ -67,7 +67,6 @@ export class Inspector {
 
     // Add to the inspector
     blade.style.color = '#ffffff'
-    console.log(blade)
     this.panel.appendChild(blade)
   }
 
@@ -115,8 +114,11 @@ export class Inspector {
 
       let intersects = raycaster.intersectObjects(scene.children)
 
+      console.log(intersects)
       if (intersects.length > 0) {
-        //console.log(intersects[0])
+        if (intersects[0].object.type in ['Line', 'AxesHelper'] == false) {
+          console.log(intersects[0])
+        }
       }
     }
 

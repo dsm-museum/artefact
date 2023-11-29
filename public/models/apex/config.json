@@ -1,11 +1,11 @@
 {
   "title": "Das APEX",
-  "description": "description",
-  "thumbnail": "media/preview.jpg",
+  "description": "Beschreibung",
+  "thumbnail": "media/preview2.jpg",
   "assets": [
     {
       "id": "model",
-      "url": "Apex_Entwurf_Stand_Juli_23.glb"
+      "url": "Apex_Entwurf_Stand_November_23.glb"
     }
   ],
   "ar": true,
@@ -17,53 +17,215 @@
   "initialOrbitTarget": [0, 0, 0],
   "annotations": [
     {
-      "id": "the-ship",
-      "subtitle": "Das Schiff",
-      "title": "Schwimmende Lebensretter",
-      "icon": "media/mensch.png",
-      "meshIndex": "12",
-      "position": [853, 7790, 3934],
-      "indicatorPosition": [-1.5, 1.5, -1.5],
+      "id": "the-object",
+      "subtitle": "Das Objekt",
+      "title": "Wissenswertes zur Objektgeschichte des APEX",
+      "icon": "media/dasobjekt.png",
+      "meshName": "Schutzschale_baked001",
+      "position": [32553, 32572, 32609],
+      "indicatorPosition": [-2.25, 1.3, 0],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
       "content": [
-        "Das Modell zeigt das Feuerschiff FEHMARNBELT. Die Bezeichnung Feuerschiff stammt von der tonnenförmigen großen Lampe hoch oben am Schiff. Festverankert auf hoher See dienten diese Schiffe als schwimmende Seezeichen für die Lenkung und Sicherheit des Schiffsverkehrs bei Nacht und Nebel. Zudem warnten sie vor Gefahren. Die FEHMARNBELT selbst musste den schwersten Stürmen standhalten und hat dadurch eine bewegte Geschichte hinter sich.",
-        "Gebaut wurde sie 1908 an der Weser und war dann in der Nord- und Ostsee stationiert. Unser Modell zeigt das Schiff nach einem Umbau 1931, bei dem es einen Motor sowie einen 16 Meter hohen Feuerturm erhielt. Knapp dreißig Jahre später kam eine zeitgemäße Radar- und Schallsendeanlage hinzu.",
-        "Seit den 1980er-Jahren wurden Feuerschiffe durch Signalbojen ersetzt. Nach ihrer Ausmusterung rückte die FEHMARNBELT noch einmal ins Rampenlicht. In dem Film „Das Feuerschiff“ mit Klaus Maria Brandauer verwies ihr dramatischer Lichtkegel auf die einst so zentrale Bedeutung für den Seeverkehr. Inzwischen liegt sie in Lübeck als Museumsschiff wieder fest vor Anker."
+        "Kugelförmige Schalensegmente, die die Optik des Gerätes prägen"
       ]
+    },
+    {
+      "id": "the-objectgroup",
+      "subtitle": "Die Objektgruppe",
+      "title": "Schweizer Taschenmesser für den Ozeanboden",
+      "icon": "media/objektgruppe.png",
+      "meshName": "Schale015",
+      "position": [860, 1296, 1297],
+      "indicatorPosition": [-1.55, -0.4, -0.9],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "media": "",
+      "content": [
+        "Austauschbare Geräte für die Entnahme von Proben und Bodenschätzen."
+      ]
+    },
+    {
+      "id": "mensch-und-meer",
+      "subtitle": "Mensch und Meer",
+      "title": "Hintergrund zum Tiefseebergbau",
+      "icon": "media/mensch.png",
+      "meshName": "Deckel001",
+      "position": [36, 37, 38],
+      "indicatorPosition": [1.07, 2.99, -0.82],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "media": "",
+      "content": [
+        "Über diese längliche Metallplatte wurde das APEX mit dem Forschungsschiff Sonne verbunden."
+      ]
+    },
+    {
+      "id": "global-perspective",
+      "subtitle": "Globale Perspektive",
+      "title": "Stabile Beine auf dem Meeresgrund",
+      "icon": "media/global.png",
+      "meshName": "Fuß_baked006",
+      "position": [3741, 1481, 1482],
+      "indicatorPosition": [1.0, -0.1, -2.0],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "media": "",
+      "content": ["Schwenkbare Beine zur Aufstellung auf dem Meeresgrund"]
+    },
+    {
+      "id": "technical",
+      "subtitle": "Technische Perspektive",
+      "title": "Technik unter der Schale",
+      "icon": "media/technik.png",
+      "meshName": "Propeller002",
+      "position": [3114, 1678, 1677],
+      "indicatorPosition": [-1.2, 2, 1.4],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "media": "",
+      "content": ["Schubpropeller, die die Steuerung des Apex erlauben"]
     }
   ],
   "quiz": {
-    "title": "Das Quiz zur Fehmarnbelt",
-    "description": "Das Quiz zur Fehmarnbelt",
+    "title": "Das Quiz zum APEX",
+    "description": "Das Quiz zum APEX",
     "questions": [
       {
-        "id": "the-ship",
-        "question": "Durch was wurden Feuerschiffe ersetzt?",
+        "id": "the-object",
+        "question": "1",
         "answers": [
           {
             "id": 0,
-            "text": "Signalbojen",
+            "text": "a",
             "correct": true
           },
           {
             "id": 1,
-            "text": "Wasserpflanzen",
+            "text": "b",
             "correct": false
           },
           {
             "id": 2,
-            "text": "Flaggen",
+            "text": "c",
             "correct": false
           },
           {
             "id": 3,
-            "text": "Windmühlen",
+            "text": "d",
             "correct": false
           }
         ],
-        "explanationText": "Feuerschiffe wurden durch Signalbojen ersetzt."
+        "explanationText": "e"
+      },
+      {
+        "id": "the-objectgroup",
+        "question": "1",
+        "answers": [
+          {
+            "id": 0,
+            "text": "a",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "b",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "c",
+            "correct": false
+          },
+          {
+            "id": 3,
+            "text": "d",
+            "correct": false
+          }
+        ],
+        "explanationText": "e"
+      },
+      {
+        "id": "mensch-und-meer",
+        "question": "1",
+        "answers": [
+          {
+            "id": 0,
+            "text": "a",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "b",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "c",
+            "correct": false
+          },
+          {
+            "id": 3,
+            "text": "d",
+            "correct": false
+          }
+        ],
+        "explanationText": "e"
+      },
+      {
+        "id": "global-perspective",
+        "question": "1",
+        "answers": [
+          {
+            "id": 0,
+            "text": "a",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "b",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "c",
+            "correct": false
+          },
+          {
+            "id": 3,
+            "text": "d",
+            "correct": false
+          }
+        ],
+        "explanationText": "e"
+      },
+      {
+        "id": "technical",
+        "question": "1",
+        "answers": [
+          {
+            "id": 0,
+            "text": "a",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "b",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "c",
+            "correct": false
+          },
+          {
+            "id": 3,
+            "text": "d",
+            "correct": false
+          }
+        ],
+        "explanationText": "e"
       }
     ]
   }

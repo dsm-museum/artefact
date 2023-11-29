@@ -40,7 +40,7 @@ import { modelconfigs } from 'src/boot/load_configs';
 import Quiz from 'src/scripts/Quiz/Quiz';
 import QuizResultDialog from 'src/components/dialogs/QuizResultDialog.vue';
 import { Inspector } from 'src/scripts/Experience/utils/Inspector'
-import { createDebugOutline, createDebugCube } from 'src/scripts/Experience/utils/Debug';
+//import { createDebugOutline, createDebugCube } from 'src/scripts/Experience/utils/Debug';
 
 // Main Config
 let route
@@ -146,16 +146,16 @@ async function createExperience() {
   })
 
   // ==== DEBUG ====
-  /*let inspector = new Inspector(document.querySelector("#arScene"), experience.scene)
+  let inspector = new Inspector(document.querySelector("#arScene"), experience.scene)
   let transformControls = inspector.createTransformControls(experience.scene, experience.camera.instance, experience.renderer.instance)
 
   transformControls.addEventListener('dragging-changed', (event) => {
     experience.controls.instance.enabled = !event.value
     console.log(transformControls.worldPosition);
-  })*/
+  })
 
   // ToDo: Make scene children on first level clickable
-  //let raycaster = inspector.createRaycaster(experience.camera.instance)
+  let raycaster = inspector.createRaycaster(experience.camera.instance)
 
   // DEBUG ========
 
@@ -171,7 +171,7 @@ async function createExperience() {
   arModelGroup.add(mainModel.scene)
 
   // blue ^ line above the debug cube
-  const points = [];
+  /*const points = [];
   points.push(new Vector3(- 0.25, 0, 0));
   points.push(new Vector3(0, 0.21, 0));
   points.push(new Vector3(0.25, 0, 0));
@@ -179,7 +179,7 @@ async function createExperience() {
   const material = new LineBasicMaterial({ color: 0x0000ff });
   const geometry = new BufferGeometry().setFromPoints(points);
   const line = new Line(geometry, material);
-  arModelGroup.add(line)
+  arModelGroup.add(line)*/
 
   let mixer = experience.animationSystem.createMixer(mainModel.scene, "mainMixer")
   let actions = experience.animationSystem.createClips(mainModel.animations, mixer)
@@ -297,8 +297,7 @@ async function createExperience() {
   })
 
   experience.webXRSystem.setXRSessionFeatures("immersive-ar", {
-    requiredFeatures: ['hit-test'],
-    optionalFeatures: ['dom-overlay'],
+    requiredFeatures: ['hit-test', 'dom-overlay'],
     domOverlay: { root: document.body },
   })
 
@@ -319,8 +318,6 @@ function resize() {
 }
 
 function update(timestamp, frame) {
-
-  //console.log(experience.camera.instance.position)
 
   // XR update
   if (frame) {
@@ -361,7 +358,6 @@ function update(timestamp, frame) {
 
           experience.webXRSystem.xrIndicator.mesh.matrix.fromArray(pose)
         }
-        //object.matrix
       } else {
         // no hitTestResults, hide the indicator again
         experience.webXRSystem.xrIndicator.visible = false
@@ -372,7 +368,6 @@ function update(timestamp, frame) {
   // Framework update
   experience.timer.update()
 
-  //experience.camera.instance.updateMatrixWorld()
   experience.annotationSystem.update(frame !== undefined)
 
   // Iterate over every mixer to update the animation
@@ -471,15 +466,10 @@ async function onSessionStarted() {
   // Hide the group that shall be placeable
   arModelGroup.visible = false
 
+  //arModelGroup.position.z = -2
+
   // Setting up the fade in from the bottom
-  //arModelGroup.position.y = -5
-
-  // Listener for the end of a WebXR session
-  //experience.webXR.currentSession.addEventListener("end", onSessionEnded)
-
-  // Listener for a click event
-  //experience.webXR.currentSession.addEventListener("select", onXRSelect)
-  //experience.webXR.currentSession.addEventListener("touchstart", onTouchStart)
+  arModelGroup.position.y = -5
 
   experience.webXRSystem.xrSession.addEventListener("select", onXRSelect)
 
@@ -531,7 +521,6 @@ function onSessionEnded() {
 
 /* function that executes on webXR input source primary action */
 function onXRSelect(event) {
-  console.log(arModelGroup);
   if (experience.webXRSystem.xrIndicator.isEnabled()) {
     if (!modelWasPlaced) {
       arModelGroup.visible = true
@@ -539,6 +528,7 @@ function onXRSelect(event) {
       let newPosition = new Vector3(0, 0, 0).setFromMatrixPosition(experience.webXRSystem.xrIndicator.mesh.matrix)
 
       // animate position if needed
+
       anime({
         targets: [arModelGroup.position],
         x: newPosition.x,
@@ -548,12 +538,12 @@ function onXRSelect(event) {
         duration: 700,
       })
 
-      //arModelGroup.updateMatrixWorld()
-      //arModelGroup.updateWorldMatrix(false, true)
       modelWasPlaced = true
 
       // Signal the AR guide that the artefact has been placed & suggest further actions
       emit("statuschange", "finished")
+
+      // Hide the xrIndicator
       experience.webXRSystem.xrIndicator.disable()
     }
   }

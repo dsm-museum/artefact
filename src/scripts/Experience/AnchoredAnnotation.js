@@ -11,7 +11,6 @@ import {
   Mesh,
   BufferGeometry,
   Line,
-  Object3D,
   BoxHelper,
   SphereGeometry,
 } from 'three'
@@ -20,10 +19,10 @@ let textureLoader = new TextureLoader()
 
 let lineDashedMaterial = new LineDashedMaterial({
   color: 0xffffff,
-  linewidth: 5,
+  linewidth: 1,
   scale: 1,
-  dashSize: 0.01,
-  gapSize: 0.01,
+  dashSize: 0.04,
+  gapSize: 0.02,
 })
 
 export default class AnchoredAnnotation {
@@ -36,8 +35,7 @@ export default class AnchoredAnnotation {
     this.urlPath = urlPath
     this.model = model
     this.annotationBackgroundColor = new Color(0xffffff)
-    this.debug = true
-    this.meshIndex = 0
+    this.debug = false
 
     this.line = null
 
@@ -47,6 +45,7 @@ export default class AnchoredAnnotation {
       annotationData.indicatorPosition
     ) // .position are the three vertex indices here!!!
     this.annotationVector = new Vector3(0, 0, 0)
+    //this.endMesh = this.endMesh()
     this.fovHeight = this.getFovHeight()
   }
 
@@ -72,13 +71,28 @@ export default class AnchoredAnnotation {
     return elem
   }
 
+  endMesh() {
+    let targetGeometry = new SphereGeometry(0.013, 32, 32) // TODO: Don't scale it here, but rather later?
+    let targetMaterial = new MeshBasicMaterial({
+      color: 0xff0000,
+      transparent: true,
+      depthWrite: false,
+      opacity: 1.0,
+    })
+
+    // We need a parent mesh to raycast against
+    let targetMesh = new Mesh(targetGeometry, targetMaterial)
+    this.experience.scene.add(targetMesh)
+    return targetMesh
+  }
+
   createTargetMesh(position, indicatorPosition) {
     let targetGeometry = new SphereGeometry(0.013, 32, 32) // TODO: Don't scale it here, but rather later?
     let targetMaterial = new MeshBasicMaterial({
       color: this.annotationBackgroundColor,
       transparent: true,
       depthWrite: false,
-      opacity: 1.0,
+      opacity: 0.0,
     })
 
     // We need a parent mesh to raycast against
@@ -92,13 +106,20 @@ export default class AnchoredAnnotation {
     // Get the geometry of the mesh
     //this.model.scene.children[0].position.set(0, 0, 0)
 
-    // Add the mesh index to get the vertices
-    if (this.annotationData.meshIndex != undefined) {
-      this.meshIndex = this.annotationData.meshIndex
+    // Find the mesh to anchor the annotation to
+    if (this.annotationData.meshName != undefined) {
+      this.meshName = this.annotationData.meshName
+      this.model.scene.traverse((elem) => {
+        if (elem.name == this.meshName) {
+          this.mesh = elem
+          //console.log(elem)
+        }
+      })
     }
 
-    this.meshGeometry = this.model.scene.children[this.meshIndex].geometry
-    let positionAttribute = this.meshGeometry.getAttribute('position')
+    //console.log(this.mesh)
+
+    let positionAttribute = this.mesh.geometry.getAttribute('position')
 
     // Get the three indices from the position array
     // TODO: Calculate bary coords from the three vertices
@@ -110,7 +131,7 @@ export default class AnchoredAnnotation {
     vertexPositionA.fromBufferAttribute(positionAttribute, indexVertexA)
 
     // Get the world position of the endpoint of the annotation
-    this.model.scene.children[0].localToWorld(vertexPositionA)
+    this.mesh.localToWorld(vertexPositionA)
 
     // Set the position of the clickable target to the indicatorPosition
     targetMesh.position.set(
@@ -119,15 +140,9 @@ export default class AnchoredAnnotation {
       indicatorPosition[2]
     )
 
-    // Add the main mesh offset
-    //vertexPositionA.add(this.model.scene.children[0].position)
-
     // Create the line
     let line = this.createDashedLine(vertexPositionA, indicatorPosition)
     this.line = line
-
-    // TODO: Attach to the arModelGroup
-    //this.experience.scene.attach(line)
 
     if (this.debug) {
       let box = new BoxHelper(targetMesh, 0x00ff00)
@@ -188,18 +203,22 @@ export default class AnchoredAnnotation {
   update(inXR = false) {
     // === 3D Object Update ===
 
-    // Update the vertex position just like in  `createTargetMesh`
-    let vertexPosition = new Vector3()
-    let positionAttribute = this.meshGeometry.getAttribute('position')
+    // Update the vertex position just like in `createTargetMesh`
+    let vertexPosition = new Vector3(0, 0, 0)
 
-    let indexVertexA = this.annotationData.position[0]
+    // Get the position attribute from the buffer
+    let positionAttribute = this.mesh.geometry.getAttribute('position')
 
-    vertexPosition.fromBufferAttribute(positionAttribute, indexVertexA)
+    // Choose the vertex to anchor to
+    let vertex = this.annotationData.position[0]
 
-    //this.model.scene.children[0].updateWorldMatrix()
-    this.model.scene.children[0].localToWorld(vertexPosition)
+    // Copy the position into vertexPosition
+    vertexPosition.fromBufferAttribute(positionAttribute, vertex)
+
+    this.mesh.localToWorld(vertexPosition)
 
     let linePositionAttribute = this.line.geometry.getAttribute('position')
+
     linePositionAttribute.setXYZ(
       0,
       vertexPosition.x,
@@ -207,7 +226,25 @@ export default class AnchoredAnnotation {
       vertexPosition.z
     )
 
+    /*linePositionAttribute.setXYZ(
+      1,
+      this.target.position.x,
+      this.target.position.y,
+      this.target.position.z
+    )*/
+
+    // Das hier setzt es zwar in den Mittelpunkt des Modells, funktioniert aber sowohl mit und ohne AR
+    /*linePositionAttribute.setXYZ(
+      0,
+      this.model.scene.children[0].position.x,
+      this.model.scene.children[0].position.y,
+      this.model.scene.children[0].position.z
+    )*/
+
     // This is important
+    this.line.geometry.computeBoundingBox()
+    this.line.geometry.computeBoundingSphere()
+    this.line.geometry.verticesNeedUpdate = true
     linePositionAttribute.needsUpdate = true
 
     // === Invisible DOM Element update ===
@@ -230,19 +267,6 @@ export default class AnchoredAnnotation {
 
     const objectSize = this.fovHeight / distance
 
-    //  in ar, correct vertical DOM position
-    /*if (inAR) {
-      this.offsetY = -this.size * 2
-    } else {
-      this.offsetY = this.size / 2
-    }*/
-
-    /*let distance = this.experience.camera.instance.position.distanceTo(
-      this.target.position
-    )*/
-
-    //let scale = (1 / distance).toFixed(2) * 2
-
     this.domElement.style.transform = `translate(${x}px, ${y}px) scale(${objectSize})`
 
     return distance
@@ -250,6 +274,7 @@ export default class AnchoredAnnotation {
 
   hide(willHide = true) {
     this.icon.visible = !willHide
+    this.line.visible = !willHide
     this.domElement.style.pointerEvents = willHide ? 'none' : 'auto'
     this.target.visible = !willHide
   }
@@ -260,7 +285,7 @@ export default class AnchoredAnnotation {
       depthWrite: true,
     })
 
-    console.log(this.target.children[0])
+    //console.log(this.target.children[0])
 
     // Change the icon of the target sprite
     this.target.children[0].material = spriteMaterial
