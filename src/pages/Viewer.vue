@@ -403,10 +403,10 @@ function playAnimations(enabled) {
     if (enabled) {
       animationClip.action.paused = false
       animationClip.action.play()
-      //experience.annotationSystem.hideAnnotations(true)
+      experience.annotationSystem.hideAnnotations(true)
     } else {
       animationClip.action.paused = true
-      //experience.annotationSystem.hideAnnotations(false)
+      experience.annotationSystem.hideAnnotations(false)
     }
   }
 }
@@ -468,6 +468,7 @@ async function onSessionStarted() {
   //arModelGroup.position.z = -2
 
   // Setting up the fade in from the bottom
+  // Todo: Check if every child should be positioned manually, as the lines do not seeem to move correctly
   arModelGroup.position.y = -5
 
   experience.webXRSystem.xrSession.addEventListener("select", onXRSelect)
@@ -504,6 +505,7 @@ function onSessionEnded() {
   // Reset AR elements
   modelWasPlaced = false
   arModelGroup.visible = true
+  // Todo: Check if every child should be positioned manually, as the lines do not seeem to move correctly
   arModelGroup.position.set(0, 0, 0)
 
   // Make the canvas visible again
@@ -528,6 +530,7 @@ function onXRSelect(event) {
 
       // animate position if needed
 
+      // Todo: Check if every child should be positioned manually, as the lines do not seeem to move correctly
       anime({
         targets: [arModelGroup.position],
         x: newPosition.x,

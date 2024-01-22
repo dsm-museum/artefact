@@ -1,18 +1,18 @@
 {
   "title": "Das APEX",
-  "description": "Beschreibung",
+  "description": "Schon von Weitem fällt die leuchtend gelbe Hülle auf, die dem APEX sein charakteristisches Aussehen gibt. Diese Farbe ist auch in der dunklen Tiefsee gut zu sehen. Von 1987 bis 1990 wurde das APEX von der Preussag AG mit Geldern des Bundesministeriums für Forschung und Technologie gebaut. Trotz der aufwendigen technischen Entwicklung und obwohl erste Tests erfolgreich verliefen, kam es zu keinem regulären Einsatz. Sinkende Rohstoffpreise machten die Förderung von marinen Bodenschätzen im Vergleich zur Förderung an Land zu teuer. Ein weiterer Grund bestand darin, dass der Tiefseebergbau in dieser Zeit stärker reguliert wurde. 1994 vergab die Internationale Meeresbodenbehörde erste Schürfrechte für den Ozeanboden.",
   "thumbnail": "media/preview2.jpg",
   "assets": [
     {
       "id": "model",
-      "url": "Apex_Entwurf_Stand_November_23.glb"
+      "url": "Apex_Stand_01_24.glb"
     }
   ],
   "ar": true,
   "scene": {
     "backgroundColor": "#ff0000"
   },
-  "annotationScale": 10,
+  "annotationScale": 20,
   "initialCameraPosition": [-2.2091, 2.6052, -4.7489],
   "initialOrbitTarget": [0, 0, 0],
   "annotations": [
@@ -21,14 +21,14 @@
       "subtitle": "Das Objekt",
       "title": "Wissenswertes zur Objektgeschichte des APEX",
       "icon": "media/dasobjekt.png",
-      "meshName": "Schutzschale_baked001",
-      "position": [32553, 32572, 32609],
+      "meshName": "Schutzschale_baked002",
+      "position": [3200, 32572, 32609],
       "indicatorPosition": [-2.25, 1.3, 0],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
       "content": [
-        "Kugelförmige Schalensegmente, die die Optik des Gerätes prägen"
+        "Schon von Weitem fällt die leuchtend gelbe Hülle auf, die dem APEX sein charakteristisches Aussehen gibt. Diese Farbe ist auch in der dunklen Tiefsee gut zu sehen. Von 1987 bis 1990 wurde das APEX von der Preussag AG mit Geldern des Bundesministeriums für Forschung und Technologie gebaut. Trotz der aufwendigen technischen Entwicklung und obwohl erste Tests erfolgreich verliefen, kam es zu keinem regulären Einsatz. Sinkende Rohstoffpreise machten die Förderung von marinen Bodenschätzen im Vergleich zur Förderung an Land zu teuer. Ein weiterer Grund bestand darin, dass der Tiefseebergbau in dieser Zeit stärker reguliert wurde. 1994 vergab die Internationale Meeresbodenbehörde erste Schürfrechte für den Ozeanboden."
       ]
     },
     {
@@ -36,14 +36,14 @@
       "subtitle": "Die Objektgruppe",
       "title": "Schweizer Taschenmesser für den Ozeanboden",
       "icon": "media/objektgruppe.png",
-      "meshName": "Schale015",
+      "meshName": "Schale011",
       "position": [860, 1296, 1297],
       "indicatorPosition": [-1.55, -0.4, -0.9],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
       "content": [
-        "Austauschbare Geräte für die Entnahme von Proben und Bodenschätzen."
+        "Diese beiden Propeller erlaubten eine horizontale Bewegung unter Wasser, denn das APEX gehört zu den ferngesteuerten Unterwasserrobotern (ROV). Diese werden zu ganz unterschiedlichen Zwecken eingesetzt. Wie unser Gerät können sie den Meeresboden untersuchen und beproben. Sie bergen Personen in Seenot oder heben Objekte, die für Taucher zu unhandlich oder gefährlich sind, aus dem Wasser. Mit Kameras, Laser oder Radar ausgestattet führen Sie Überwachungen, Vermessungen und Dokumentationsaufgaben durch. Diesen Hightech-Geräten verdanken wir wertvolles Wissen über Temperaturen und Strömungen in den Meeren, die uns den direkten Einfluss des Klimawandels zeigen. Auch wie Meereslebewesen auf industrielle Fischerei und andere Umweltproblematiken reagieren, kann mit solchen Robotern untersucht werden."
       ]
     },
     {
@@ -51,14 +51,14 @@
       "subtitle": "Mensch und Meer",
       "title": "Hintergrund zum Tiefseebergbau",
       "icon": "media/mensch.png",
-      "meshName": "Deckel001",
+      "meshName": "Top_Deckel001",
       "position": [36, 37, 38],
       "indicatorPosition": [1.07, 2.99, -0.82],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
       "content": [
-        "Über diese längliche Metallplatte wurde das APEX mit dem Forschungsschiff Sonne verbunden."
+        "Über diese Metallplatte war das APEX mit dem Forschungsschiff SONNE verbunden. Mit Hilfe einer Kamera ließen sich eine Vielzahl von Einzelgeräten steuern. Dimmbare Lampen beleuchteten die dunkle Tiefsee, während Sensoren und Beprobungsgeräte Informationen über den Meeresgrund sammelten. Die Entnahme von Proben ist für die Meeresforschung sehr aufschlussreich. Frühe Forschungsreisende des 19. Jahrhunderts lernten durch sie nicht nur viel über die Zusammensetzung des Ozeanbodens, sondern entdeckten auch bis dahin unbekannte Meereslebewesen. Spätere Versuche, der Tiefsee ihre Geheimnisse mit komplexen Ingenieursleistungen zu entlocken, weckten ähnliche Emotionen wie die Raumfahrt. Das Vordringen in Regionen, in denen Menschen nur mit technischer Hilfe überleben können, wurde als prestigeträchtige Pionierleistung wahrgenommen."
       ]
     },
     {
@@ -66,26 +66,30 @@
       "subtitle": "Globale Perspektive",
       "title": "Stabile Beine auf dem Meeresgrund",
       "icon": "media/global.png",
-      "meshName": "Fuß_baked006",
+      "meshName": "Fuß_baked009",
       "position": [3741, 1481, 1482],
       "indicatorPosition": [1.0, -0.1, -2.0],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
-      "content": ["Schwenkbare Beine zur Aufstellung auf dem Meeresgrund"]
+      "content": [
+        "Mit den ausschwenkbaren Füßen stand das APEX fest auf dem Meeresgrund. Dieser ist über Kilometer hinweg von grauen Manganknollen bedeckt. An Meeresfelsen finden sich Kobaltkrusten, während heiße Quellen begehrte Schwefelablagerungen hervorbringen (Massivsulfide). Solche Vorkommen enthalten Seltene Erden und andere wertvolle Rohstoffe, die die Elektroindustrie dringend benötigt. Allerdings sind diese Gebiete vor allem Lebensräume von Meereslebewesen, die durch den Tiefseebergbau bedroht werden. Das Projekt MiningImpact des GEOMAR wies Schädigungen des Ozeanbodens für Jahrzehnte oder sogar Jahrhunderte nach. Das Konkurrieren um den Abbau der begehrten Rohstoffe an Land machen den Tiefseebergbau heute dennoch wieder attraktiv."
+      ]
     },
     {
       "id": "technical",
       "subtitle": "Technische Perspektive",
       "title": "Technik unter der Schale",
       "icon": "media/technik.png",
-      "meshName": "Propeller002",
-      "position": [3114, 1678, 1677],
+      "meshName": "Turbine006",
+      "position": [1, 2, 3],
       "indicatorPosition": [-1.2, 2, 1.4],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
-      "content": ["Schubpropeller, die die Steuerung des Apex erlauben"]
+      "content": [
+        "Dieser krallenartige Greifer ist eines von drei austauschbaren Modulen, die aus dem APEX ein besonders vielseitiges Gerät machen. Er diente dazu, lockeres Material aus dem Ozeanboden zu entnehmen. Für exaktere Arbeiten ließ er sich durch einen aufklappbaren Metallkasten, das sogenannten Sedimentlot, ersetzen. Damit wurden rechteckige Blöcke aus dem Meeresboden herausgeschnitten. Wollte man in Erfahrung bringen, was sich in noch größeren Tiefen verbarg, konnte mit einem langen Rohr ein Bohrkern aus dem Boden entnommen werden. Dieses Modul war in der Lage, sich auch durch härtestes Gestein zu fräsen. Auf Wunsch der Forschenden war es erstmals mit einer feinen Steuerungstechnik versehen, die schiefe Bohrungen verhinderte. Mit dem APEX konnte also sehr präzise nach geeigneten Orten für den Tiefseebergbau gesucht werden."
+      ]
     }
   ],
   "quiz": {
@@ -94,138 +98,138 @@
     "questions": [
       {
         "id": "the-object",
-        "question": "1",
+        "question": "Warum wurde das APEX nie regulär genutzt?",
         "answers": [
           {
             "id": 0,
-            "text": "a",
+            "text": "Bevor mit der Förderung begonnen werden konnte, mussten die Schürfrechte geklärt werden.",
             "correct": true
           },
           {
             "id": 1,
-            "text": "b",
+            "text": "Es stellte sich heraus, dass Bodenschätze vom Meeresgrund qualitativ schlecht sind.",
             "correct": false
           },
           {
             "id": 2,
-            "text": "c",
+            "text": "Das Fördern von marinen Bodenschätzen war aus technischen Gründen nicht möglich.",
             "correct": false
           },
           {
             "id": 3,
-            "text": "d",
+            "text": "Es wurden vor Inbetriebnahme Mängel an dem Gerät festgestellt.",
             "correct": false
           }
         ],
-        "explanationText": "e"
+        "explanationText": "Bevor mit der Förderung begonnen werden konnte, mussten die Schürfrechte geklärt werden."
       },
       {
         "id": "the-objectgroup",
-        "question": "1",
+        "question": "Wofür werden Unterwasserroboter nicht genutzt?",
         "answers": [
           {
             "id": 0,
-            "text": "a",
+            "text": "Für das Absenken von Temperaturen in den überhitzten Ozeanen",
             "correct": true
           },
           {
             "id": 1,
-            "text": "b",
+            "text": "Für die Seenotrettung.",
             "correct": false
           },
           {
             "id": 2,
-            "text": "c",
+            "text": "Für das Messen von Temperaturen und Strömungen in den Meeren.",
             "correct": false
           },
           {
             "id": 3,
-            "text": "d",
+            "text": "Für die Untersuchung von Höhlen.",
             "correct": false
           }
         ],
-        "explanationText": "e"
+        "explanationText": "Für das Absenken von Temperaturen in den überhitzten Ozeanen."
       },
       {
         "id": "mensch-und-meer",
-        "question": "1",
+        "question": "Warum lässt sich das APEX mit einem Marsroboter vergleichen?",
         "answers": [
           {
             "id": 0,
-            "text": "a",
+            "text": "Die Erforschung der Tiefsee und des Weltraums galten als prestigeträchtige Pionierleistungen.",
             "correct": true
           },
           {
             "id": 1,
-            "text": "b",
+            "text": "Projekte in der Tiefsee und im Weltall werden von Raumfahrtbehörden geplant.",
             "correct": false
           },
           {
             "id": 2,
-            "text": "c",
+            "text": "Für Meeres- und Weltraumroboter werden die gleichen Materialien verwendet.",
             "correct": false
           },
           {
             "id": 3,
-            "text": "d",
+            "text": "Es herrschen im Weltraum und in der Tiefsee gleiche Bedingungen.",
             "correct": false
           }
         ],
-        "explanationText": "e"
+        "explanationText": "Die Erforschung der Tiefsee und des Weltraums galten als prestigeträchtige Pionierleistungen."
       },
       {
         "id": "global-perspective",
-        "question": "1",
+        "question": "Warum stellt der Bergbau eine Gefahr für die Umwelt dar?",
         "answers": [
           {
             "id": 0,
-            "text": "a",
+            "text": "Die Rohstoffvorkommen sind Lebensraum von Meereslebewesen.",
             "correct": true
           },
           {
             "id": 1,
-            "text": "b",
+            "text": "Die Beprobung des Ozeanbodens löst Erdbeben aus.",
             "correct": false
           },
           {
             "id": 2,
-            "text": "c",
+            "text": "Die Förder-Roboter werden mit Uran betrieben.",
             "correct": false
           },
           {
             "id": 3,
-            "text": "d",
+            "text": "Beim Abbau werden gefährliche Stoffe aufgewirbelt.",
             "correct": false
           }
         ],
-        "explanationText": "e"
+        "explanationText": "Die Rohstoffvorkommen sind Lebensraum von Meereslebewesen."
       },
       {
         "id": "technical",
-        "question": "1",
+        "question": "Welche technische Innovation wünschten sich die Meeresforscher von den Ingenieuren des APEX?",
         "answers": [
           {
             "id": 0,
-            "text": "a",
+            "text": "Elektronik, die es erleichtert, einen senkrechten Bohrkern aus dem Ozeanboden zu entnehmen.",
             "correct": true
           },
           {
             "id": 1,
-            "text": "b",
+            "text": "Eine Sonde, die direkt am Meeresgrund Gesteine bestimmt.",
             "correct": false
           },
           {
             "id": 2,
-            "text": "c",
+            "text": "Ein Baggermodul, mit dem sich die Oberfläche abtragen lässt.",
             "correct": false
           },
           {
             "id": 3,
-            "text": "d",
+            "text": "Einen stärkeren Antrieb, um das APEX präziser bewegen zu können.",
             "correct": false
           }
         ],
-        "explanationText": "e"
+        "explanationText": "Elektronik, die es erleichtert, einen senkrechten Bohrkern aus dem Ozeanboden zu entnehmen."
       }
     ]
   }
