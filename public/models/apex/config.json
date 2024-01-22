@@ -19,7 +19,7 @@
     {
       "id": "the-object",
       "subtitle": "Das Objekt",
-      "title": "Wissenswertes zur Objektgeschichte des APEX",
+      "title": "Hightech für den Tiefseebergbau",
       "icon": "media/dasobjekt.png",
       "meshName": "Schutzschale_baked002",
       "position": [3200, 32572, 32609],
@@ -34,7 +34,7 @@
     {
       "id": "the-objectgroup",
       "subtitle": "Die Objektgruppe",
-      "title": "Schweizer Taschenmesser für den Ozeanboden",
+      "title": "Multifunktionale Roboter",
       "icon": "media/objektgruppe.png",
       "meshName": "Schale011",
       "position": [860, 1296, 1297],
@@ -49,7 +49,7 @@
     {
       "id": "mensch-und-meer",
       "subtitle": "Mensch und Meer",
-      "title": "Hintergrund zum Tiefseebergbau",
+      "title": "Unbekannte Welt Tiefsee",
       "icon": "media/mensch.png",
       "meshName": "Top_Deckel001",
       "position": [36, 37, 38],
@@ -64,7 +64,7 @@
     {
       "id": "global-perspective",
       "subtitle": "Globale Perspektive",
-      "title": "Stabile Beine auf dem Meeresgrund",
+      "title": "Gefahren des Tiefseebergbaus",
       "icon": "media/global.png",
       "meshName": "Fuß_baked009",
       "position": [3741, 1481, 1482],
@@ -79,7 +79,7 @@
     {
       "id": "technical",
       "subtitle": "Technische Perspektive",
-      "title": "Technik unter der Schale",
+      "title": "Empfindliche Technik unter der Schale",
       "icon": "media/technik.png",
       "meshName": "Turbine006",
       "position": [1, 2, 3],
