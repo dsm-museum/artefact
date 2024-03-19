@@ -5,16 +5,16 @@
   "assets": [
     {
       "id": "model",
-      "url": "Apex_Stand_01_24.glb"
+      "url": "Apex_Stand_01_24_scaled.glb"
     }
   ],
   "ar": true,
   "scene": {
     "backgroundColor": "#ff0000"
   },
-  "annotationScale": 20,
-  "initialCameraPosition": [-2.2091, 2.6052, -4.7489],
-  "initialOrbitTarget": [0, 0, 0],
+  "annotationScale": 2,
+  "initialCameraPosition": [0.34, 0.31, -0.49],
+  "initialOrbitTarget": [0, 0.15, 0],
   "annotations": [
     {
       "id": "the-object",
@@ -22,8 +22,8 @@
       "title": "Hightech für den Tiefseebergbau",
       "icon": "media/dasobjekt.png",
       "meshName": "Schutzschale_baked002",
-      "position": [3200, 32572, 32609],
-      "indicatorPosition": [-2.25, 1.3, 0],
+      "position": [15862, 15862, 15862],
+      "indicatorPosition": [0.05, 0.21, 0.22],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
@@ -36,14 +36,14 @@
       "subtitle": "Die Objektgruppe",
       "title": "Multifunktionale Roboter",
       "icon": "media/objektgruppe.png",
-      "meshName": "Schale011",
-      "position": [860, 1296, 1297],
-      "indicatorPosition": [-1.55, -0.4, -0.9],
+      "meshName": "Schale013",
+      "position": [543, 543, 543],
+      "indicatorPosition": [-0.24, 0.09, -0.11],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
       "content": [
-        "Diese beiden Propeller erlaubten eine horizontale Bewegung unter Wasser, denn das APEX gehört zu den ferngesteuerten Unterwasserrobotern (ROV). Diese werden zu ganz unterschiedlichen Zwecken eingesetzt. Wie unser Gerät können sie den Meeresboden untersuchen und beproben. Sie bergen Personen in Seenot oder heben Objekte, die für Taucher zu unhandlich oder gefährlich sind, aus dem Wasser. Mit Kameras, Laser oder Radar ausgestattet führen Sie Überwachungen, Vermessungen und Dokumentationsaufgaben durch. Diesen Hightech-Geräten verdanken wir wertvolles Wissen über Temperaturen und Strömungen in den Meeren, die uns den direkten Einfluss des Klimawandels zeigen. Auch wie Meereslebewesen auf industrielle Fischerei und andere Umweltproblematiken reagieren, kann mit solchen Robotern untersucht werden."
+        "Dieser krallenartige Greifer ist eines von drei austauschbaren Modulen, die aus dem APEX ein besonders vielseitiges Gerät machen. Er diente dazu, lockeres Material aus dem Ozeanboden zu entnehmen. Für exaktere Arbeiten ließ er sich durch einen aufklappbaren Metallkasten, das sogenannten Sedimentlot, ersetzen. Damit wurden rechteckige Blöcke aus dem Meeresboden herausgeschnitten. Wollte man in Erfahrung bringen, was sich in noch größeren Tiefen verbarg, konnte mit einem langen Rohr ein Bohrkern aus dem Boden entnommen werden. Dieses Modul war in der Lage, sich auch durch härtestes Gestein zu fräsen. Auf Wunsch der Forschenden war es erstmals mit einer feinen Steuerungstechnik versehen, die schiefe Bohrungen verhinderte. Mit dem APEX konnte also sehr präzise nach geeigneten Orten für den Tiefseebergbau gesucht werden."
       ]
     },
     {
@@ -52,8 +52,8 @@
       "title": "Unbekannte Welt Tiefsee",
       "icon": "media/mensch.png",
       "meshName": "Top_Deckel001",
-      "position": [36, 37, 38],
-      "indicatorPosition": [1.07, 2.99, -0.82],
+      "position": [3520, 3520, 3520],
+      "indicatorPosition": [0.15, 0.44, 0.06],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
@@ -66,9 +66,9 @@
       "subtitle": "Globale Perspektive",
       "title": "Gefahren des Tiefseebergbaus",
       "icon": "media/global.png",
-      "meshName": "Fuß_baked009",
-      "position": [3741, 1481, 1482],
-      "indicatorPosition": [1.0, -0.1, -2.0],
+      "meshName": "Hydraulikzylinder005",
+      "position": [1227, 1481, 1482],
+      "indicatorPosition": [0.22, 0.15, -0.19],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
@@ -81,14 +81,14 @@
       "subtitle": "Technische Perspektive",
       "title": "Empfindliche Technik unter der Schale",
       "icon": "media/technik.png",
-      "meshName": "Turbine006",
-      "position": [1, 2, 3],
-      "indicatorPosition": [-1.2, 2, 1.4],
+      "meshName": "Propeller004",
+      "position": [2995, 2995, 2995],
+      "indicatorPosition": [-0.19, 0.39, 0.16],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
       "content": [
-        "Dieser krallenartige Greifer ist eines von drei austauschbaren Modulen, die aus dem APEX ein besonders vielseitiges Gerät machen. Er diente dazu, lockeres Material aus dem Ozeanboden zu entnehmen. Für exaktere Arbeiten ließ er sich durch einen aufklappbaren Metallkasten, das sogenannten Sedimentlot, ersetzen. Damit wurden rechteckige Blöcke aus dem Meeresboden herausgeschnitten. Wollte man in Erfahrung bringen, was sich in noch größeren Tiefen verbarg, konnte mit einem langen Rohr ein Bohrkern aus dem Boden entnommen werden. Dieses Modul war in der Lage, sich auch durch härtestes Gestein zu fräsen. Auf Wunsch der Forschenden war es erstmals mit einer feinen Steuerungstechnik versehen, die schiefe Bohrungen verhinderte. Mit dem APEX konnte also sehr präzise nach geeigneten Orten für den Tiefseebergbau gesucht werden."
+        "Diese beiden Propeller erlaubten eine horizontale Bewegung unter Wasser, denn das APEX gehört zu den ferngesteuerten Unterwasserrobotern (ROV). Diese werden zu ganz unterschiedlichen Zwecken eingesetzt. Wie unser Gerät können sie den Meeresboden untersuchen und beproben. Sie bergen Personen in Seenot oder heben Objekte, die für Taucher zu unhandlich oder gefährlich sind, aus dem Wasser. Mit Kameras, Laser oder Radar ausgestattet führen Sie Überwachungen, Vermessungen und Dokumentationsaufgaben durch. Diesen Hightech-Geräten verdanken wir wertvolles Wissen über Temperaturen und Strömungen in den Meeren, die uns den direkten Einfluss des Klimawandels zeigen. Auch wie Meereslebewesen auf industrielle Fischerei und andere Umweltproblematiken reagieren, kann mit solchen Robotern untersucht werden."
       ]
     }
   ],
