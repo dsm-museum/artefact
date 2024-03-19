@@ -49,7 +49,8 @@ class WebXRSystem extends EventDispatcher {
             type: 'xrsupported',
             message: {
               isSupported: false,
-              reason: 'Session mode is not supported',
+              reason:
+                'Die benötigten AR-Features sind auf dem Gerät leider nicht verfügbar.',
             },
           })
         }
@@ -58,7 +59,10 @@ class WebXRSystem extends EventDispatcher {
       // XR not in navigator
       this.dispatchEvent({
         type: 'xrsupported',
-        message: { isSupported: false, reason: "'XR' not in navigator." },
+        message: {
+          isSupported: false,
+          reason: "Das Gerät unterstützt die 'WebXR'-Schnittstelle nicht.",
+        },
       })
     }
   }

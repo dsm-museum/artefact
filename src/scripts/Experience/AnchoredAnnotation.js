@@ -1,6 +1,5 @@
 import Experience from './Experience'
 import {
-  LineDashedMaterial,
   Vector3,
   TextureLoader,
   SpriteMaterial,
@@ -9,20 +8,35 @@ import {
   MeshBasicMaterial,
   Color,
   Mesh,
-  BufferGeometry,
-  Line,
   BoxHelper,
   SphereGeometry,
+  BoxGeometry,
+  MeshStandardMaterial,
 } from 'three'
+
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
+import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
+import { Line2 } from 'three/examples/jsm/lines/Line2.js'
 
 let textureLoader = new TextureLoader()
 
-let lineDashedMaterial = new LineDashedMaterial({
+/* let lineDashedMaterial = new LineDashedMaterial({
   color: 0xffffff,
   linewidth: 1,
   scale: 1,
   dashSize: 0.04,
   gapSize: 0.02,
+})*/
+
+let lineDashedMaterial = new LineMaterial({
+  color: 0xffffff,
+  linewidth: 0.001,
+  vertexColors: false,
+  dashed: true,
+  dashOffset: 0,
+  dashScale: 30,
+  dashSize: 0.5,
+  alphaToCoverage: true,
 })
 
 export default class AnchoredAnnotation {
@@ -170,26 +184,19 @@ export default class AnchoredAnnotation {
   }
 
   createDashedLine(vertexPosition, indicatorPosition) {
-    const points = []
+    let lineGeometry = new LineGeometry()
 
-    // from
-    points.push(
-      new Vector3(vertexPosition.x, vertexPosition.y, vertexPosition.z)
-    )
+    lineGeometry.setPositions([
+      vertexPosition.x,
+      vertexPosition.y,
+      vertexPosition.z,
+      indicatorPosition[0],
+      indicatorPosition[1],
+      indicatorPosition[2],
+    ])
 
-    // to
-    points.push(
-      new Vector3(
-        indicatorPosition[0],
-        indicatorPosition[1],
-        indicatorPosition[2]
-      )
-    )
-
-    let lineGeometry = new BufferGeometry().setFromPoints(points)
-    let line = new Line(lineGeometry, lineDashedMaterial)
+    let line = new Line2(lineGeometry, lineDashedMaterial)
     line.computeLineDistances()
-
     return line
   }
 
@@ -200,7 +207,7 @@ export default class AnchoredAnnotation {
     return height
   }
 
-  update(inXR = false) {
+  update() {
     // === 3D Object Update ===
 
     // Update the vertex position just like in `createTargetMesh`
@@ -217,35 +224,26 @@ export default class AnchoredAnnotation {
 
     this.mesh.localToWorld(vertexPosition)
 
-    let linePositionAttribute = this.line.geometry.getAttribute('position')
+    let worldPosAnnotation = new Vector3()
+    this.target.getWorldPosition(worldPosAnnotation)
 
-    linePositionAttribute.setXYZ(
+    this.line.geometry.attributes.position.setXYZ(
       0,
       vertexPosition.x,
       vertexPosition.y,
       vertexPosition.z
     )
 
-    /*linePositionAttribute.setXYZ(
+    this.line.geometry.attributes.position.setXYZ(
       1,
-      this.target.position.x,
-      this.target.position.y,
-      this.target.position.z
-    )*/
+      worldPosAnnotation.x,
+      worldPosAnnotation.y,
+      worldPosAnnotation.z
+    )
 
-    // Das hier setzt es zwar in den Mittelpunkt des Modells, funktioniert aber sowohl mit und ohne AR
-    /*linePositionAttribute.setXYZ(
-      0,
-      this.model.scene.children[0].position.x,
-      this.model.scene.children[0].position.y,
-      this.model.scene.children[0].position.z
-    )*/
-
-    // This is important
-    this.line.geometry.computeBoundingBox()
-    this.line.geometry.computeBoundingSphere()
-    this.line.geometry.verticesNeedUpdate = true
-    linePositionAttribute.needsUpdate = true
+    // update the line
+    this.line.geometry.attributes.position.needsUpdate = true
+    this.line.computeLineDistances()
 
     // === Invisible DOM Element update ===
 

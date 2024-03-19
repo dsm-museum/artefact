@@ -70,10 +70,10 @@ export default class AnnotationSystem {
     return annotation
   }
 
-  update(inAR = false) {
+  update() {
     if (this.annotations.length !== 0) {
       for (let annotation of this.annotations) {
-        annotation.update(inAR)
+        annotation.update()
       }
     }
   }
