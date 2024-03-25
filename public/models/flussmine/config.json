@@ -1,0 +1,215 @@
+{
+  "title": "Die Flussmine",
+  "description": "Die Flussmine Beschreibung",
+  "thumbnail": "media/flussmine_thumbnail.jpg",
+  "assets": [
+    {
+      "id": "model",
+      "url": "Flussmine_Animation.glb"
+    }
+  ],
+  "ar": true,
+  "scene": {
+    "backgroundColor": "#ff0000"
+  },
+  "annotationScale": 3,
+  "initialCameraPosition": [
+    0.28115139241360315, 0.2219624463360406, -0.2719395733827836
+  ],
+  "annotations": [
+    {
+      "id": "the-object",
+      "subtitle": "Das Objekt",
+      "title": "Über die Flussmine",
+      "icon": "media/schiff.png",
+      "position": [0, 0, 0],
+      "indicatorPosition": [0.2201, 0.0527, 0.068],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "meshName": "seemine_40k004",
+      "media": "",
+      "content": [
+        "Die Metallhülle der Mine besteht aus zwei hohlen Halbkugeln. Mit Hilfe des hier markierten Bauteils, einer sogenannten Ringmutter, sind sie miteinander verschraubt. Dieser Aufbau und die dunkle Färbung geben dem Objekt ein gefährliches Aussehen. Dabei hat es nur einen Durchmesser von ca. 40 cm. Sehr wahrscheinlich handelt es sich um eine britische Treibmine aus der Zeit des Zweiten Weltkrieges. Solche relativ kleinen Minen wurden in Flüssen und Flussmündungen eingesetzt. Ein Uhrwerk machte die Mine nach einer vorher festgelegten Zeit scharf.",
+        "Die Explosion konnte dann entweder über dieses Uhrwerk oder durch Kontakt zum Beispiel mit einem Schiff ausgelöst werden. Das Museumsstück enthält natürlich keinen Sprengstoff mehr. Auch die Mechanik in seinem Inneren wurde entfernt, damit es nicht wieder zur Waffe werden kann. In den 1970er Jahren schenkte das damalige Heimat- und Küstenmuseums in Wilhelmshaven diese Mine dem Deutschen Schifffahrtsmuseum in Bremerhaven."
+      ]
+    },
+    {
+      "id": "the-objectgroup",
+      "subtitle": "Die Objektgruppe",
+      "title": "Verschiedene Minen",
+      "icon": "media/modell.png",
+      "media": "",
+      "position": [0, 0, 0],
+      "indicatorPosition": [-0.0257, 0.0, 0.1209],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "meshName": "seemine_40k004",
+      "content": [
+        "Diese Schraube verschließt eine Öffnung. Durch sie konnten zusätzliche Gewichte wie etwa Bleikugeln hinzugefügt werden. Dadurch ließen sich der Auftrieb und die Schwimmlage der Mine noch besser steuern. Auch wirkten diese Kugeln bei der Explosion zusätzlich wie Geschosse. Als diese Mine während des 2. Weltkrieges gebaut wurde, war bereits eine lange Entwicklung solcher Waffen vorausgegangen. Erste Vorgänger wurden schon im späten 18. Jahrhundert eingesetzt. Ab dem 19. Jahrhundert wurden Seeminen dann immer häufiger im europäischen, asiatischen und amerikanischen Raum verwendet. In den folgenden Zeiten und Kriegen nutzte man sie weltweit.",
+        "Die Konstruktionen, Zündungen, Sprengladungen und Einsatzbereiche wurden dabei immer komplexer und spezialisierter. Auch die Möglichkeiten, Minen im Wasser auszulegen, wurden immer vielfältiger. Im gleichen Maße entwickelten sich aber auch die Methoden, sie aufzuspüren und unschädlich zu machen. In den Kriegen des 20. Jahrhunderts sorgte die Nutzung dieser Waffen für den Untergang oder die Beschädigung tausender Schiffe."
+      ]
+    },
+    {
+      "id": "global-perspective",
+      "subtitle": "Globale Perspektive",
+      "title": "Große Gefahr für die Seefahrt",
+      "icon": "media/global.png",
+      "position": [0, 0, 0],
+      "indicatorPosition": [-0.1, -0.0264, -0.151],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "meshName": "seemine_40k004",
+      "media": "",
+      "content": [
+        "Wie Dornen sehen die Auslöser des Sprengsatzes unserer Treibmine aus. Knicken diese Kontaktstäbe durch Berührung ab, kommt es sofort zur Explosion. In Kriegszeiten müssen Seeleute deshalb sehr vorsichtig sogenannte minengefährdete Orte umfahren. Minen können große Seegebiete für den Schiffsverkehr stark einschränken oder sogar sperren. Deshalb werden sie auch als Sperrwaffen bezeichnet. Länder verteidigen mit ihnen eigene Flüsse oder Meere gegen Feinde. Sie können aber auch in Meeresgebieten, die keiner bestimmten Nation gehören, die Durchfahrt des Gegners blockieren. Sogar in feindliche Gewässer schleust man sie ein. Da Minen auch friedliche Handelsschiffe versenken können, wurde ihr Einsatz bereits 1907 eingeschränkt (8. Abkommen der 2. Haager Friedenskonferenz). Neuere Vorgaben finden sich in den Regeln des humanitären Völkerrechts in bewaffneten Konflikten, denn solche Waffen bleiben eine große Gefahr für die Seefahrt."
+      ]
+    },
+    {
+      "id": "mensch-und-meer",
+      "subtitle": "Mensch und Meer",
+      "title": "Belastung für Menschen und das Meer",
+      "icon": "media/mensch.png",
+      "media": "",
+      "position": [0, 0, 0],
+      "indicatorPosition": [0.1153, 0.0395, -0.0832],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "meshName": "seemine_40k004",
+      "content": [
+        "Dieser weiße Gummistreifen dichtet die Mine gegen Wasser ab. Leider hält eine solche Dichtung nicht für immer. Auch die Metallteile werden durch das Wasser angegriffen. Daher ist die Sprengkraft nicht die einzige Gefahr, die unter der schwarzen Hülle lauert. Verrostet diese langsam, können die teilweise giftigen Sprengstoffe austreten und die Tiere und Pflanzen des Meeres schädigen. Das Deutsche Schifffahrtsmuseum hat in den letzten Jahren ein sehr großes und internationales Forschungsprojekt geleitet, dass sich genau mit diesem Problem beschäftigt hat. Doch auch die Explosion einer Seemine kann Menschen und Tiere noch Jahrzehnte nach dem Ende eines Krieges das Leben kosten. Windkraftanlagen, Pipelines, Ölbohrinseln oder andere sogenannte Offshore-Bauwerke können ebenfalls beschädigt werden. Bis heute werden immer wieder alte Seeminen an den Küsten der Meere angespült. Dort müssen sie dann unter großen Sicherheitsvorkehrungen unschädlich gemacht werden."
+      ]
+    },
+    {
+      "id": "technical",
+      "subtitle": "Technik",
+      "title": "Unsichtbare Gefahr",
+      "icon": "media/schiff.png",
+      "media": "",
+      "position": [0, 0, 0],
+      "indicatorPosition": [0.0, 0.1112, -0.1036],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "meshName": "seemine_40k004",
+      "content": [
+        "An diesem Metallbolzen kann bei unserer Mine zum Beispiel ein Gewicht befestigt werden. Dadurch lässt sich steuern, wie tief sie im Wasser schwimmt. Ist sie leichter, lauert sie direkt unter der Wasseroberfläche. Ist sie schwerer, schwebt sie knapp über dem Grund. Sogenannte Grundminen liegen sogar direkt auf dem Meeresboden auf. In allen Fällen ist diese tückische Waffe für Schiffe nur sehr schlecht zu sehen. Unsere Mine wurde in Flüssen und Flussmündungen eingesetzt und konnte frei mit den Strömungen treiben, weshalb man sie auch als Treibmine bezeichnet. Andere Minentypen wie etwa Ankertauminen schweben zwar auch unter Wasser, werden dort aber fest verankert. Auch in der Funktionsweise gab und gibt es eine große Vielfalt.",
+        "Unsere Mine würde etwa im direkten Kontakt mit einem Hindernis explodieren. Dabei kann es sich um ein Schiff, ein größeres Tier oder Bauwerke wie zum Beispiel Brückenpfeiler handeln. Andere Minenarten hatten sogenannte Fernzünder. Auslöser konnten dann Veränderungen sein, die vorbeifahrende Schiffe im Wasser verursachten. Das waren z. B. laute Geräusche, ein höherer Wasserdruck oder Veränderungen des Magnetfeldes."
+      ]
+    }
+  ],
+  "quiz": {
+    "title": "Das Quiz zur Flussmine",
+    "description": "Das Quiz zur Flussmine",
+    "questions": [
+      {
+        "id": "the-object",
+        "question": "War es möglich die Mine, zu einer bestimmten Zeit, auch ohne Kontakt mit einem Objekt, explodieren zu lassen?",
+        "answers": [
+          {
+            "id": 0,
+            "text": "Ja",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "Nein",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "Nur, wenn das Objekt eine vorher festgelegte Farbe hat",
+            "correct": false
+          }
+        ],
+        "explanationText": "Die Explosion konnte sowohl durch das Uhrwerk im Inneren oder durch Kontakt mit einem Objekt ausgelöst werden."
+      },
+      {
+        "id": "the-objectgroup",
+        "question": "Ab wann wurden erste Versionen von Seeminen eingesetzt?",
+        "answers": [
+          {
+            "id": 0,
+            "text": "Erste Arten von Seeminen wurden schon im 18. Jahrhundert eingesetzt",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "Erste Arten von Seeminen gab es schon im Mittelalter",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "Die ersten Seeminen wurden im 1. Weltkrieg erfunden",
+            "correct": false
+          }
+        ],
+        "explanationText": "Im späten 18. Jahrhundert gab es bereits erste Arten von Seeminen"
+      },
+      {
+        "id": "global-perspective",
+        "question": "Warum werden Seeminen als Sperrwaffen bezeichnet?",
+        "answers": [
+          {
+            "id": 0,
+            "text": "Mit ihnen lassen sich große Gebiete für die Schifffahrt sperren",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "Sie sind sehr groß (sperrig)",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "Sie wurden 1731 von Heinrich Emanuel Georg Otto Sperr erfunden",
+            "correct": false
+          }
+        ],
+        "explanationText": "Da sie den Schiffsverkehr stark einschränken und somit sperren können, werden Seeminen als Sperrwaffen bezeichnet."
+      },
+      {
+        "id": "technical",
+        "question": "Was kann die Fernzündung einer Seemine auslösen?",
+        "answers": [
+          {
+            "id": 0,
+            "text": "Änderungen im Wasserdruck der Lautstärke unter Wasser oder im Magnetfeld durch vorbeifahrende Schiffe",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "Schlechtes WLAN",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "Funkverkehr auf Schiffen",
+            "correct": false
+          }
+        ],
+        "explanationText": "Da die Minen empfindlich für Veränderungen sind, können bereits vorbeifahrende Schiffe sie auslösen."
+      },
+      {
+        "id": "mensch-und-meer",
+        "question": "Warum sind alte Seeminen für die Umwelt besonders gefährlich?",
+        "answers": [
+          {
+            "id": 0,
+            "text": "Sie enthalten Chemikalien, die giftig für Meereslebewesen sein können",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "Pottwale verschlucken sie",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "Unter Wasser erdrücken sie Pflanzen auf dem Meeresgrund",
+            "correct": false
+          }
+        ],
+        "explanationText": "Wenn die Dichtungen oder die Metallhülle durch die lange Zeit im Wasser beschädigt werden, können giftige Chemikalien austreten"
+      }
+    ]
+  }
+}
