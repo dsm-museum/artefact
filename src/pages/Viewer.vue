@@ -9,8 +9,8 @@
 
     <q-page-sticky id="arMenu-container" position="top" :offset="[0, 24]" style="z-index: 99">
       <a-r-menu id="arMenu" :isRunning="isRunning" :hasQuiz="config.quiz != undefined" :animationReady="animationReady"
-        :deviceSupportsAR="deviceSupportsAR" :arEnabled="config.ar" :animationIsPlaying="animationIsPlaying" :inAR="inAR"
-        @onStartAR="startAR" @onToggleAnimation="toggleAnimation" @onShowQuizIntro="showQuizIntro">
+        :deviceSupportsAR="deviceSupportsAR" :arEnabled="config.ar" :animationIsPlaying="animationIsPlaying"
+        :inAR="inAR" @onStartAR="startAR" @onToggleAnimation="toggleAnimation" @onShowQuizIntro="showQuizIntro">
       </a-r-menu>
     </q-page-sticky>
 
@@ -65,6 +65,7 @@ let annotationsAndQuiz = ref([])
 
 // XR
 let deviceSupportsAR = ref(false)
+let deviceSupportsARReason = ref(null)
 let inAR = ref(false)
 let currentXRSession = ref({})
 let modelWasPlaced = false
@@ -101,8 +102,8 @@ onMounted(async () => {
       annotation.target.scale.setScalar(config.value.annotationScale)
     }
 
-    arModelGroup.add(annotation.target)
-    arModelGroup.add(annotation.line)
+    arModelGroup.attach(annotation.target)
+    arModelGroup.attach(annotation.line)
 
     experience.click(annotation.target, (event) => {
       if (!quiz.isRunning) {
@@ -144,6 +145,13 @@ async function createExperience() {
     initialCameraPosition: toRaw(config.value.initialCameraPosition)
   })
 
+  // set orbit position
+  if (config.value.initialOrbitTarget) {
+    let target = config.value.initialOrbitTarget
+    experience.controls.instance.target = new Vector3(target[0], target[1], target[2])
+  }
+
+
   // ==== DEBUG ====
   /*let inspector = new Inspector(document.querySelector("#arScene"), experience.scene)
   let transformControls = inspector.createTransformControls(experience.scene, experience.camera.instance, experience.renderer.instance)
@@ -167,7 +175,7 @@ async function createExperience() {
 
   // Give a name
   mainModel.name = "mainModel"
-  arModelGroup.add(mainModel.scene)
+  arModelGroup.attach(mainModel.scene)
 
   // blue ^ line above the debug cube
   /*const points = [];
@@ -191,7 +199,7 @@ async function createExperience() {
       let url = `./models/${route.params.id}/${config.value.assets[i].url}`
       let model = await experience.resources.load(url)
       model.scene.name = config.value.assets[i].id
-      arModelGroup.add(model.scene)
+      arModelGroup.attach(model.scene)
 
       // Add animations if they exist
       if (model.animations.length > 0) {
@@ -207,7 +215,7 @@ async function createExperience() {
         let mixer = experience.animationSystem.createMixer(model.scene, "mixer" + model.scene.name)
         let actions = experience.animationSystem.createClips(model.animations, mixer)
       }
-      arModelGroup.add(model.scene)
+      arModelGroup.attach(model.scene)
       let toReplace = arModelGroup.getObjectByName(config.value.assets[i].replaces)
       //console.log(toReplace);
       arModelGroup.remove(toReplace)
@@ -242,7 +250,7 @@ async function createExperience() {
 
     // Add the model to the movable group
     // Do not add it to the scene but rather the arModelGroup
-    arModelGroup.add(gltfFile.scene)
+    arModelGroup.attach(gltfFile.scene)
 
 
     // Create the mixer for the mesh
@@ -265,7 +273,7 @@ async function createExperience() {
   // Is triggered for every 3d model loading after the first file
   experience.resources.on("modelReady", (gltfFile) => {
     // add the loaded model to the arModelGroup
-    arModelGroup.add(gltfFile.scene)
+    arModelGroup.attach(gltfFile.scene)
 
     // Create the mixer for the mesh
     let mixer = experience.animationSystem.createMixer(gltfFile.scene, "secondaryMixer")
@@ -284,6 +292,9 @@ async function createExperience() {
 
   experience.webXRSystem.addEventListener("xrsupported", (event) => {
     deviceSupportsAR.value = event.message.isSupported
+    if(event.message.reason) {
+      deviceSupportsARReason.value = event.message.reason
+    }
   })
 
   experience.webXRSystem.addEventListener("xrstarted", (event) => {
@@ -307,6 +318,12 @@ async function createExperience() {
   })
 
   //inspector.buildSceneTree()
+}
+
+function rotateObject() {
+  if (inAR.value) {
+    arModelGroup.rotation.y += deltaX.value / 500
+  }
 }
 
 function resize() {
@@ -419,8 +436,8 @@ function startAR() {
       component: ErrorDialog,
       componentProps: {
         errorTitle: "AR nicht unterstützt",
-        errorDescription: "Die AR-Funktion ist für dieses Gerät leider nicht verfügbar",
-        errorMessage: "AR session is not supported"
+        errorDescription: "Die AR-Funktion ist für dieses Gerät leider nicht verfügbar.",
+        errorMessage: deviceSupportsARReason.value
       }
     })
   }
