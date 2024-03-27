@@ -33,4 +33,9 @@
 
 <script setup>
 import { modelconfigs } from 'src/boot/load_configs';
+
+// TODO: Filter and / or sort here based on the "order" in the config.json files
+// If no order is given for one folder, just append it to the ordered items
+
+console.log(modelconfigs)
 </script>

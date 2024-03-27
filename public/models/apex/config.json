@@ -2,6 +2,7 @@
   "title": "Das APEX",
   "description": "Schon von Weitem fällt die leuchtend gelbe Hülle auf, die dem APEX sein charakteristisches Aussehen gibt. Diese Farbe ist auch in der dunklen Tiefsee gut zu sehen. Von 1987 bis 1990 wurde das APEX von der Preussag AG mit Geldern des Bundesministeriums für Forschung und Technologie gebaut. Trotz der aufwendigen technischen Entwicklung und obwohl erste Tests erfolgreich verliefen, kam es zu keinem regulären Einsatz. Sinkende Rohstoffpreise machten die Förderung von marinen Bodenschätzen im Vergleich zur Förderung an Land zu teuer. Ein weiterer Grund bestand darin, dass der Tiefseebergbau in dieser Zeit stärker reguliert wurde. 1994 vergab die Internationale Meeresbodenbehörde erste Schürfrechte für den Ozeanboden.",
   "thumbnail": "media/preview2.jpg",
+  "order": 1,
   "assets": [
     {
       "id": "model",

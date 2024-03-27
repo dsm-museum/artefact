@@ -580,6 +580,9 @@ function closeInfocard() {
 function startQuiz() {
   quiz.start()
 
+  // This changes the "Quiz" button to show a closing "X"
+  isRunning.value = true
+
   let firstQuestion = null
 
   for (let annotation of experience.annotationSystem.annotations) {
@@ -596,6 +599,9 @@ function startQuiz() {
 
 function resetQuiz() {
   quiz.reset()
+
+  // This shows the "quiz" icon again
+  isRunning.value = false
 
   // Set the icons back to the original
   for (const annotation of experience.annotationSystem.annotations) {

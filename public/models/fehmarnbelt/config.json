@@ -1,6 +1,7 @@
 {
   "title": "Die FEHMARNBELT",
   "description": "Das Modell zeigt das Feuerschiff FEHMARNBELT. Die Bezeichnung Feuerschiff stammt von der tonnenförmigen großen Lampe hoch oben am Schiff. Festverankert auf hoher See dienten diese Schiffe als schwimmende Seezeichen für die Lenkung und Sicherheit des Schiffsverkehrs bei Nacht und Nebel. Zudem warnten sie vor Gefahren. Die FEHMARNBELT selbst musste den schwersten Stürmen standhalten und hat dadurch eine bewegte Geschichte hinter sich.",
+  "order": 2,
   "thumbnail": "media/feuerschiff_mobile.jpg",
   "assets": [
     {

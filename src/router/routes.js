@@ -4,8 +4,8 @@ const routes = [
   {
     // The main path, shows the index page by default
     path: '/',
-    component: () => import('layouts/IndexLayout.vue'),
-    children: [{ path: '', component: () => import('pages/Index.vue') }],
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '', component: () => import('pages/Models.vue') }],
   },
   {
     // Lists all the models available in the app

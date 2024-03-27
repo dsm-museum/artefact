@@ -9,6 +9,7 @@ import {
 import Annotation from './Annotation'
 import Experience from './Experience'
 import AnchoredAnnotation from './AnchoredAnnotation'
+import { sRGBEncoding } from 'three'
 
 export default class AnnotationSystem {
   constructor(_annotationDOMContainer) {
@@ -17,8 +18,8 @@ export default class AnnotationSystem {
     this.debug = false
     this.annotationDOMContainer = _annotationDOMContainer
     this.textureLoader = new TextureLoader()
-    this.correctAnswerIcon = this.loadIcon('./icons/correct-answer.png')
-    this.wrongAnswerIcon = this.loadIcon('./icons/wrong-answer.png')
+    this.correctAnswerIcon = this.loadIcon('./icons/correct-icon.png')
+    this.wrongAnswerIcon = this.loadIcon('./icons/false-icon.png')
     this.questionIcon = this.loadIcon('./icons/question-icon.png')
     this.lockIcon = this.loadIcon('./icons/lock-icon.png')
 
@@ -93,6 +94,7 @@ export default class AnnotationSystem {
 
   loadIcon(path) {
     let texture = this.textureLoader.load(path)
+    texture.encoding = sRGBEncoding
     return texture
   }
 }
