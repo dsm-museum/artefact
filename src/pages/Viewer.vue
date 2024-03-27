@@ -9,8 +9,8 @@
 
     <q-page-sticky id="arMenu-container" position="top" :offset="[0, 24]" style="z-index: 99">
       <a-r-menu id="arMenu" :isRunning="isRunning" :hasQuiz="config.quiz != undefined" :animationReady="animationReady"
-        :deviceSupportsAR="deviceSupportsAR" :arEnabled="config.ar" :animationIsPlaying="animationIsPlaying" :inAR="inAR"
-        @onStartAR="startAR" @onToggleAnimation="toggleAnimation" @onShowQuizIntro="showQuizIntro">
+        :deviceSupportsAR="deviceSupportsAR" :arEnabled="config.ar" :animationIsPlaying="animationIsPlaying"
+        :inAR="inAR" @onStartAR="startAR" @onToggleAnimation="toggleAnimation" @onShowQuizIntro="showQuizIntro">
       </a-r-menu>
     </q-page-sticky>
 
@@ -563,6 +563,9 @@ function closeInfocard() {
 function startQuiz() {
   quiz.start()
 
+  // This changes the "Quiz" button to show a closing "X"
+  isRunning.value = true
+
   let firstQuestion = null
 
   for (let annotation of experience.annotationSystem.annotations) {
@@ -579,6 +582,9 @@ function startQuiz() {
 
 function resetQuiz() {
   quiz.reset()
+
+  // This shows the "quiz" icon again
+  isRunning.value = false
 
   // Set the icons back to the original
   for (const annotation of experience.annotationSystem.annotations) {
