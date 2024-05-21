@@ -9,7 +9,7 @@
       <q-card v-for="model of modelconfigs" :key="model" @click="$router.push(`/models/${model.urlPath}`)" v-ripple
         class="my-card cursor-pointer q-hoverable q-mb-lg">
         <span class="q-focus-helper"></span>
-        <q-img :ratio="16 / 9" spinner-color="primary" fit="cover" position="50% 80%"
+        <q-img :ratio="16 / 9" spinner-color="primary" fit="cover" position="50% 50%"
           :src="'./models/' + model.urlPath + '/' + model.thumbnail">
         </q-img>
 

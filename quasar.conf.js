@@ -95,8 +95,8 @@ module.exports = configure(function (ctx) {
       server: {
         type: 'https',
         options: {
-          key: 'C:\\httpscert\\localhost-key.pem',
-          cert: 'C:\\httpscert\\localhost.pem',
+          key: 'C:\\httpscert\\localhost-key-new.pem',
+          cert: 'C:\\httpscert\\localhost-new.pem',
         },
       },
       port: 8080,
