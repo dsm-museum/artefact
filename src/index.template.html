@@ -12,6 +12,13 @@
       name="viewport"
       content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (ctx.mode.cordova || ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>"
     />
+    <script
+      src="https://analytics.dsm.museum/dsm-static/dimensions-webuser-v2311011.js"
+      integrity="sha384-fi9IxE3ilyycrMH8HMBx47qCRnUeAjC7j1yiV/QC1ies1hEkVF9be3B/VIVckdKA"
+      async
+      crossorigin="anonymous"
+      referrerpolicy="origin-when-cross-origin"
+    ></script>
 
     <link
       rel="icon"
@@ -132,5 +139,14 @@
   <body>
     <!-- DO NOT touch the following DIV -->
     <div id="q-app"></div>
+    <noscript>
+      <p>
+        <img
+          src="https://analytics.dsm.museum/omotam.php?idsite=2&rec=1"
+          style="border: 0"
+          alt=""
+        />
+      </p>
+    </noscript>
   </body>
 </html>

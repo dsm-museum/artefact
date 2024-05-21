@@ -179,6 +179,7 @@ export default class AnchoredAnnotation {
     this.icon = spriteMaterial
 
     let sprite = new Sprite(spriteMaterial)
+    sprite.renderOrder = 1
     sprite.scale.set(0.02, 0.02, 1.0)
     return sprite
   }

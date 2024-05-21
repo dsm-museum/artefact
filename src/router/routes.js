@@ -13,6 +13,17 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '', component: () => import('pages/Models.vue') }],
   },
+  /* Custom route for flussmine */
+  {
+    path: '/models/flussmine',
+    component: () => import('layouts/ARLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('src/pages/CustomViewerFlussmine.vue'),
+      },
+    ],
+  },
   {
     // Generates a route for configured models in public/models
     path: '/models/:id',
