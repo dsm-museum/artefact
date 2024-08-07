@@ -1,5 +1,5 @@
 <template>
-  <q-dialog ref="dialogRef" @hide="onDialogHide">
+  <q-dialog ref="dialogRef" :persistent="persistent" @hide="onDialogHide">
     <q-card>
 
       <q-card-section class="bg-primary text-white">
@@ -10,7 +10,7 @@
         {{ errorDescription }}
       </q-card-section>
 
-      <q-card-section class="q-py-none">
+      <q-card-section v-if="errorMessage" class="q-py-none">
         <q-expansion-item label="Fehler anzeigen">
           <pre id="log" class="rounded-borders">{{ errorMessage }}</pre>
         </q-expansion-item>
@@ -28,6 +28,11 @@
 import { useDialogPluginComponent } from 'quasar'
 
 const props = defineProps({
+  persistent: {
+    type: Boolean,
+    default: false,
+    required: false
+  },
   errorTitle: {
     type: String,
     default: "Ein Fehler ist aufgetreten",

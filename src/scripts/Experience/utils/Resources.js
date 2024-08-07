@@ -72,9 +72,15 @@ export default class Resources extends EventEmitter {
 
   // Loads a 3d model and triggers the modelReady event
   async load(source) {
-    return this.loaders.gltfLoader.loadAsync(source)
-    /*this.loaders.gltfLoader.load(source, (file) => {
-      this.trigger('modelReady', [file])
-    })*/
+    let result = this.loaders.gltfLoader.loadAsync(source)
+    result.catch(() => {
+      console.error(
+        `The specified model "${source}" could not be loaded. Please check if the path is correct.`
+      )
+    })
+
+    this.trigger('progress', [this.loaded, this.toLoad, source.name])
+
+    return result
   }
 }

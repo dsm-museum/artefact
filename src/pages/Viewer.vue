@@ -52,7 +52,7 @@ let animationReady = ref(true)
 let animationIsPlaying = ref(false)
 let showLoadingScreen = ref(true)
 let loadingProgress = ref(0)
-let progressLabel = ref(0)
+let progressLabel = ref("0")
 let progressDescription = ref("")
 let infocardRef = ref(null)
 
@@ -94,41 +94,45 @@ onMounted(async () => {
   await createExperience()
 
   // Insert annotations into the scene
-  for (let data of annotationsAndQuiz) {
-    let annotation = experience.annotationSystem.createAnchoredAnnotation(toRaw(data.annotation), config.value.urlPath, mainModel)
+  if (mainModel) {
+    for (let data of annotationsAndQuiz) {
+      let annotation = experience.annotationSystem.createAnchoredAnnotation(toRaw(data.annotation), config.value.urlPath, mainModel)
 
-    // TODO: Find better way to scale the annotation
-    if (config.value.annotationScale) {
-      annotation.target.scale.setScalar(config.value.annotationScale)
-    }
-
-    arModelGroup.attach(annotation.target)
-    arModelGroup.attach(annotation.line)
-
-    experience.click(annotation.target, (event) => {
-      if (!quiz.isRunning) {
-        openInfocard(data.id)
-      } else {
-        if (data.index <= quiz.answeredQuestions) {
-
-          quizDialog = $q.dialog({
-            component: QuizCardDialog,
-            componentProps: {
-              quiz: quiz,
-              orderInfo: annotationsAndQuiz,
-              urlPath: config.value.urlPath,
-              tab: data.id
-            }
-          })
-        } else {
-          //console.log("locked")
-        }
+      // TODO: Find better way to scale the annotation
+      if (config.value.annotationScale) {
+        annotation.target.scale.setScalar(config.value.annotationScale)
       }
-    })
+
+      arModelGroup.attach(annotation.target)
+      arModelGroup.attach(annotation.line)
+
+      experience.click(annotation.target, (event) => {
+        if (!quiz.isRunning) {
+          openInfocard(data.id)
+        } else {
+          if (data.index <= quiz.answeredQuestions) {
+
+            quizDialog = $q.dialog({
+              component: QuizCardDialog,
+              componentProps: {
+                quiz: quiz,
+                orderInfo: annotationsAndQuiz,
+                urlPath: config.value.urlPath,
+                tab: data.id
+              }
+            })
+          } else {
+            //console.log("locked")
+          }
+        }
+      })
+    }
   }
 
   // Prepare quiz content
-  quiz = new Quiz(toRaw(config.value.quiz))
+  if (config.value.quiz) {
+    quiz = new Quiz(toRaw(config.value.quiz))
+  }
 
   // Add other event listeners
   addEventListeners()
@@ -171,25 +175,32 @@ async function createExperience() {
 
   // Load the main model
   let mainModelUrl = `./models/${route.params.id}/${config.value.assets[0].url}`
-  mainModel = await experience.resources.load(mainModelUrl)
+  try {
+    mainModel = await experience.resources.load(mainModelUrl)
+  } catch (error) {
+    console.error(`No model was found. Stopping Animation and Annotation loading.`);
 
-  // Give a name
-  mainModel.name = "mainModel"
-  arModelGroup.attach(mainModel.scene)
+    $q.dialog({
+      component: ErrorDialog,
+      persistent: true,
+      componentProps: {
+        errorTitle: "3D-Modell nicht gefunden",
+        errorDescription: "Leider konnte das 3D-Modell nicht geladen werden.",
+        errorMessage: null,
+        persistent: true
+      }
+    })
+    mainModel = null
+  }
 
-  // blue ^ line above the debug cube
-  /*const points = [];
-  points.push(new Vector3(- 0.25, 0, 0));
-  points.push(new Vector3(0, 0.21, 0));
-  points.push(new Vector3(0.25, 0, 0));
+  if (mainModel !== null) {
+    // Give a name
+    mainModel.name = "mainModel"
+    arModelGroup.attach(mainModel.scene)
 
-  const material = new LineBasicMaterial({ color: 0x0000ff });
-  const geometry = new BufferGeometry().setFromPoints(points);
-  const line = new Line(geometry, material);
-  arModelGroup.add(line)*/
-
-  let mixer = experience.animationSystem.createMixer(mainModel.scene, "mainMixer")
-  let actions = experience.animationSystem.createClips(mainModel.animations, mixer)
+    let mixer = experience.animationSystem.createMixer(mainModel.scene, "mainMixer")
+    let actions = experience.animationSystem.createClips(mainModel.animations, mixer)
+  }
 
   // Load all the placeholder models if they exist
   for (let i = 1; i < config.value.assets.length; i++) {
@@ -222,8 +233,38 @@ async function createExperience() {
     }
   }
 
-  showLoadingScreen.value = false
+  // This hides loading progress jumps organically, by adding up to 100% over a specified time
+  function increaseProgress() {
+    const minAmount = 7
+    const maxAmount = 30
+    const minDuration = 100
+    const maxDuration = 350
 
+    function updateProgress() {
+      if (loadingProgress.value < 100) {
+        const randomProgressAmount = Math.floor(Math.random() * (maxAmount - minAmount + 1)) + minAmount;
+        const randomDuration = Math.floor(Math.random() * (maxDuration - minDuration + 1)) + minDuration;
+        console.log(loadingProgress.value, randomDuration);
+
+        loadingProgress.value = Math.min(loadingProgress.value + randomProgressAmount, 100);
+        progressLabel.value = loadingProgress.value + '%'
+
+        setTimeout(updateProgress, randomDuration);
+      } else {
+        setTimeout(() => {
+          showLoadingScreen.value = false
+        }, 300);
+      }
+    }
+
+    updateProgress();
+  }
+
+  if (mainModel != null) {
+    increaseProgress()
+  } else {
+    progressLabel.value = ':('
+  }
 
   // Connect the resize event for correct resizing of the scene
   experience.resizer.on("resize", () => {
@@ -267,6 +308,7 @@ async function createExperience() {
         experience.resources.load(path)
       }
     }
+
     showLoadingScreen.value = false
   })
 
@@ -292,7 +334,7 @@ async function createExperience() {
 
   experience.webXRSystem.addEventListener("xrsupported", (event) => {
     deviceSupportsAR.value = event.message.isSupported
-    if(event.message.reason) {
+    if (event.message.reason) {
       deviceSupportsARReason.value = event.message.reason
     }
   })

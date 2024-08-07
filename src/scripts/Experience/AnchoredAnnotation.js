@@ -142,7 +142,10 @@ export default class AnchoredAnnotation {
     let indexVertexC = position[2]
 
     let vertexPositionA = new Vector3()
+
     vertexPositionA.fromBufferAttribute(positionAttribute, indexVertexA)
+    //vertexPositionB.fromBufferAttribute(positionAttribute, indexVertexB)
+    //vertexPositionC.fromBufferAttribute(positionAttribute, indexVertexC)
 
     // Get the world position of the endpoint of the annotation
     this.mesh.localToWorld(vertexPositionA)
@@ -187,14 +190,33 @@ export default class AnchoredAnnotation {
   createDashedLine(vertexPosition, indicatorPosition) {
     let lineGeometry = new LineGeometry()
 
-    lineGeometry.setPositions([
-      vertexPosition.x,
-      vertexPosition.y,
-      vertexPosition.z,
-      indicatorPosition[0],
-      indicatorPosition[1],
-      indicatorPosition[2],
-    ])
+    if (
+      isNaN(vertexPosition.x) ||
+      isNaN(vertexPosition.y) ||
+      isNaN(vertexPosition.z)
+    ) {
+      console.error(
+        `The dashed line for the annotation "${this.annotationData.id}: ${this.annotationData.title}" could not be created. Check the "position" field in the config.json`
+      )
+      // If something is wrong with the position of the line, create an "empty" line
+      lineGeometry.setPositions([
+        indicatorPosition[0],
+        indicatorPosition[1],
+        indicatorPosition[2],
+        indicatorPosition[0],
+        indicatorPosition[1],
+        indicatorPosition[2],
+      ])
+    } else {
+      lineGeometry.setPositions([
+        vertexPosition.x,
+        vertexPosition.y,
+        vertexPosition.z,
+        indicatorPosition[0],
+        indicatorPosition[1],
+        indicatorPosition[2],
+      ])
+    }
 
     let line = new Line2(lineGeometry, lineDashedMaterial)
     line.computeLineDistances()
@@ -228,23 +250,25 @@ export default class AnchoredAnnotation {
     let worldPosAnnotation = new Vector3()
     this.target.getWorldPosition(worldPosAnnotation)
 
-    this.line.geometry.attributes.position.setXYZ(
-      0,
-      vertexPosition.x,
-      vertexPosition.y,
-      vertexPosition.z
-    )
+    if (this.line) {
+      this.line.geometry.attributes.position.setXYZ(
+        0,
+        vertexPosition.x,
+        vertexPosition.y,
+        vertexPosition.z
+      )
 
-    this.line.geometry.attributes.position.setXYZ(
-      1,
-      worldPosAnnotation.x,
-      worldPosAnnotation.y,
-      worldPosAnnotation.z
-    )
+      this.line.geometry.attributes.position.setXYZ(
+        1,
+        worldPosAnnotation.x,
+        worldPosAnnotation.y,
+        worldPosAnnotation.z
+      )
 
-    // update the line
-    this.line.geometry.attributes.position.needsUpdate = true
-    this.line.computeLineDistances()
+      // update the line
+      this.line.geometry.attributes.position.needsUpdate = true
+      this.line.computeLineDistances()
+    }
 
     // === Invisible DOM Element update ===
 
@@ -273,7 +297,9 @@ export default class AnchoredAnnotation {
 
   hide(willHide = true) {
     this.icon.visible = !willHide
-    this.line.visible = !willHide
+    if (this.line) {
+      this.line.visible = !willHide
+    }
     this.domElement.style.pointerEvents = willHide ? 'none' : 'auto'
     this.target.visible = !willHide
   }
