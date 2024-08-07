@@ -9,7 +9,8 @@
       </div>
 
       <div class="bg-white">
-        <q-tabs v-model="currentTab" class="text-black" active-color="primary" indicator-color="primary" align="justify">
+        <q-tabs v-model="currentTab" class="text-black" active-color="primary" indicator-color="primary"
+          align="justify">
           <q-tab :id="info.question.id + '-tab'" v-for="info in orderInfo" :key="info.index" :name="info.question.id"
             :icon="getIcon(info)" :content-class="getColor(info)" :disable="isDisabled(info.index)">
           </q-tab>
@@ -29,11 +30,11 @@
 
 <script setup>
 import { useDialogPluginComponent } from 'quasar'
-import { ref, toRef, toRaw } from 'vue'
+import { ref, toRef, toRaw, watch } from 'vue'
 import AnswerList from '../quiz/AnswerList.vue'
 
 // quiz contains the whole quiz class instance and tab is the tab id that has been clicked on
-const props = defineProps(['quiz', 'orderInfo', 'tab', 'urlPath'])
+const props = defineProps(['quiz', 'orderInfo', 'tab', 'urlPath', 'nextQuestionTrigger'])
 
 const tab1 = "about-the-ship"
 
@@ -41,8 +42,12 @@ const emits = defineEmits([
   ...useDialogPluginComponent.emits,
   'closeInfocardEvent',
   'animateCameraEvent',
-  'evaluate',
+  'evaluate'
 ])
+
+watch(props.nextQuestionTrigger, (newState, oldState) => {
+  getNext()
+})
 
 // PROPS
 //const quizRef = toRef(props, 'quiz')
@@ -105,9 +110,9 @@ function close() {
 
 function evaluate(question, selectedAnswer) {
   quizRef.value.evaluateAnswer(question, selectedAnswer)
-
-  getNext()
 }
+
+
 
 const { dialogRef, onDialogOk, onDialogCancel, onDialogHide } = useDialogPluginComponent()
 

@@ -12,6 +12,7 @@
       name="viewport"
       content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (ctx.mode.cordova || ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>"
     />
+    <% if(ctx.prod) { %>
     <script
       src="https://analytics.dsm.museum/dsm-static/dimensions-webuser-v2311011.js"
       integrity="sha384-fi9IxE3ilyycrMH8HMBx47qCRnUeAjC7j1yiV/QC1ies1hEkVF9be3B/VIVckdKA"
@@ -19,6 +20,7 @@
       crossorigin="anonymous"
       referrerpolicy="origin-when-cross-origin"
     ></script>
+    <% } %>
 
     <link
       rel="icon"
