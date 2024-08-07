@@ -131,8 +131,6 @@ export default class AnchoredAnnotation {
       })
     }
 
-    //console.log(this.mesh)
-
     let positionAttribute = this.mesh.geometry.getAttribute('position')
 
     // Get the three indices from the position array
