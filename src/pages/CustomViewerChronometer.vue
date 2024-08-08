@@ -63,7 +63,7 @@ let quiz
 let quizDialog
 let isRunning = ref(false)
 let annotationsAndQuiz = ref([])
-let nextQuestion = ref(0)
+let nextQuestionTrigger = ref(0)
 
 // XR
 let deviceSupportsAR = ref(false)
@@ -122,7 +122,7 @@ onMounted(async () => {
                 orderInfo: annotationsAndQuiz,
                 urlPath: config.value.urlPath,
                 tab: data.id,
-                nextQuestionTrigger: nextQuestion
+                nextQuestionTrigger: nextQuestionTrigger
               }
             })
           } else {
@@ -701,13 +701,12 @@ function addEventListeners() {
           okText: "Weiter"
         }
       }).onDismiss(() => {
-        nextQuestion.value = nextQuestion.value + 1
+        nextQuestionTrigger.value = nextQuestionTrigger.value + 1
         quiz.finishQuiz()
       }).onOk(() => {
         // Advance the quiz
         // send event to QuizCardDialog via the nextQuestion prop
-        nextQuestion.value = nextQuestion.value + 1
-        console.log("onOK");
+        nextQuestionTrigger.value = nextQuestionTrigger.value + 1
       })
     }, 500)
 
