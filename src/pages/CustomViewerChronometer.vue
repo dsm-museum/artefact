@@ -259,10 +259,10 @@ async function createExperience() {
       if (loadingProgress.value < 100) {
         const randomProgressAmount = Math.floor(Math.random() * (maxAmount - minAmount + 1)) + minAmount;
         const randomDuration = Math.floor(Math.random() * (maxDuration - minDuration + 1)) + minDuration;
-        console.log(loadingProgress.value, randomDuration);
+        //console.log(loadingProgress.value, randomDuration);
 
         loadingProgress.value = Math.min(loadingProgress.value + randomProgressAmount, 100);
-        console.log(loadingProgress.value);
+        //console.log(loadingProgress.value);
 
         progressLabel.value = loadingProgress.value
 
