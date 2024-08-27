@@ -17,6 +17,7 @@ import {
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
 import { Line2 } from 'three/examples/jsm/lines/Line2.js'
+import anime from 'animejs'
 
 let textureLoader = new TextureLoader()
 
@@ -36,6 +37,8 @@ let lineDashedMaterial = new LineMaterial({
   dashOffset: 0,
   dashScale: 30,
   dashSize: 0.5,
+  transparent: true,
+  opacity: 1.0,
   alphaToCoverage: true,
 })
 
@@ -121,17 +124,31 @@ export default class AnchoredAnnotation {
     //this.model.scene.children[0].position.set(0, 0, 0)
 
     // Find the mesh to anchor the annotation to
+    console.log(`AnchoredAnnotation: Handling "${this.annotationData.title}" with mesh name: ${this.annotationData.meshName} and vertex id: ${this.annotationData.position[0]}`)
+
     if (this.annotationData.meshName != undefined) {
       this.meshName = this.annotationData.meshName
       this.model.scene.traverse((elem) => {
+        //console.log(elem);
+        
         if (elem.name == this.meshName) {
           this.mesh = elem
-          //console.log(elem)
+          //console.log(`${this.meshName} found`); 
         }
       })
     }
 
-    let positionAttribute = this.mesh.geometry.getAttribute('position')
+    let positionAttribute
+
+    //console.log(this.mesh);
+    
+    // this.mesh can be a group...
+    if (this.mesh && this.mesh.geometry) {
+      positionAttribute = this.mesh.geometry.getAttribute('position')
+    } else {
+      console.error(`${this.annotationData.meshName} has no geometry. Is it a group?`)
+      console.log(this.mesh)
+    }
 
     // Get the three indices from the position array
     // TODO: Calculate bary coords from the three vertices
@@ -171,6 +188,8 @@ export default class AnchoredAnnotation {
 
     let spriteMaterial = new SpriteMaterial({
       map: map,
+      transparent: true,
+      opacity: 1.0,
       depthWrite: true,
     })
 
@@ -270,10 +289,21 @@ export default class AnchoredAnnotation {
   }
 
   hide(willHide = true) {
-    this.icon.visible = !willHide
-    this.line.visible = !willHide
+    anime({
+      targets: this.icon,
+      opacity: !willHide ? 1.0 : 0.2,
+      easing: 'easeInOutQuad',
+      duration: 200
+    })
+
+    anime({
+      targets: this.line.material,
+      opacity: !willHide ? 1.0 : 0.7,
+      easing: 'easeInOutQuad',
+      duration: 200
+    })
+
     this.domElement.style.pointerEvents = willHide ? 'none' : 'auto'
-    this.target.visible = !willHide
   }
 
   setQuestionIcon() {
