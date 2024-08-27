@@ -313,12 +313,6 @@ export default class AnchoredAnnotation {
   }
 
   hide(willHide = true) {
-<<<<<<< HEAD
-    this.icon.visible = !willHide
-    if (this.line) {
-      this.line.visible = !willHide
-    }
-=======
     anime({
       targets: this.icon,
       opacity: !willHide ? 1.0 : 0.2,
@@ -333,7 +327,6 @@ export default class AnchoredAnnotation {
       duration: 200
     })
 
->>>>>>> chronometer
     this.domElement.style.pointerEvents = willHide ? 'none' : 'auto'
   }
 
