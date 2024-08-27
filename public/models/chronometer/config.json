@@ -1,0 +1,227 @@
+{
+  "title": "Das Chronometer",
+  "description": "Beschreibung des Chronometer hier",
+  "thumbnail": "",
+  "order": 5,
+  "assets": [
+    {
+      "id": "model",
+      "url": "Chronometer_Web.1.0.glb"
+    }
+  ],
+  "ar": true,
+  "scene": {
+    "backgroundColor": "#ff0000"
+  },
+  "annotationScale": 1,
+  "initialCameraPosition": [0.5, 0.5, 0.5],
+  "initialOrbitTarget": [0, 0.15, 0],
+  "annotations": [
+    {
+      "id": "the-object",
+      "subtitle": "Das Objekt",
+      "title": "Das Chronometer „Tiede 118“",
+      "icon": "media/clock.png",
+      "meshName": "Box",
+      "position": [13327, 15862, 15862],
+      "indicatorPosition": [-0.03, 0.21, -0.15],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "media": "",
+      "content": ["Das Chronometer „Tiede 118"]
+    },
+    {
+      "id": "the-objectgroup",
+      "subtitle": "Die Objektgruppe",
+      "title": "Navigation nach Sonne, Zeit und Gradnetz",
+      "icon": "media/clock.png",
+      "meshName": "Glasscheibe",
+      "position": [101, 543, 543],
+      "indicatorPosition": [0.15, 0.09, 0.0],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "media": "",
+      "content": ["Die Objektgruppe Inhalt hier"]
+    },
+    {
+      "id": "mensch-und-meer",
+      "subtitle": "Mensch und Meer",
+      "title": "Das Längenproblem: Havarien und Erfindungen",
+      "icon": "media/clock.png",
+      "meshName": "I-09128-00_lowPoly005",
+      "position": [175, 3520, 3520],
+      "indicatorPosition": [0.15, 0.02, 0.15],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "media": "",
+      "content": ["Mensch und Meer Inhalt hier"]
+    },
+    {
+      "id": "global-perspective",
+      "subtitle": "Globale Perspektive",
+      "title": "Seeschifffahrt und Globalisierung",
+      "icon": "media/clock.png",
+      "meshName": "I-09128-00_lowPoly005",
+      "position": [2512, 1481, 1482],
+      "indicatorPosition": [-0.14, 0.1, 0.05],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "media": "",
+      "content": ["Globale Perspektive Inhalt hier"]
+    },
+    {
+      "id": "technical",
+      "subtitle": "Technische Perspektive",
+      "title": "Der Chronometer-Mechanismus",
+      "icon": "media/clock.png",
+      "meshName": "Chronometer_bottom_part_gear_with_mount_#3",
+      "position": [886, 2995, 2995],
+      "indicatorPosition": [-0.06, 0.08, 0.22],
+      "cameraPosition": [0.0, 0.0, 0.0],
+      "cameraNormal": [0.0, 0.0, 0.0],
+      "media": "",
+      "content": ["Technische Perspektive Inhalt hier"]
+    }
+  ],
+  "quiz": {
+    "title": "Das Quiz zum APEX",
+    "description": "Das Quiz zum APEX",
+    "questions": [
+      {
+        "id": "the-object",
+        "question": "Warum wurde das APEX nie regulär genutzt?",
+        "answers": [
+          {
+            "id": 0,
+            "text": "Bevor mit der Förderung begonnen werden konnte, mussten die Schürfrechte geklärt werden.",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "Es stellte sich heraus, dass Bodenschätze vom Meeresgrund qualitativ schlecht sind.",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "Das Fördern von marinen Bodenschätzen war aus technischen Gründen nicht möglich.",
+            "correct": false
+          },
+          {
+            "id": 3,
+            "text": "Es wurden vor Inbetriebnahme Mängel an dem Gerät festgestellt.",
+            "correct": false
+          }
+        ],
+        "explanationText": "Bevor mit der Förderung begonnen werden konnte, mussten die Schürfrechte geklärt werden."
+      },
+      {
+        "id": "the-objectgroup",
+        "question": "Wofür werden Unterwasserroboter nicht genutzt?",
+        "answers": [
+          {
+            "id": 0,
+            "text": "Für das Absenken von Temperaturen in den überhitzten Ozeanen",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "Für die Seenotrettung.",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "Für das Messen von Temperaturen und Strömungen in den Meeren.",
+            "correct": false
+          },
+          {
+            "id": 3,
+            "text": "Für die Untersuchung von Höhlen.",
+            "correct": false
+          }
+        ],
+        "explanationText": "Für das Absenken von Temperaturen in den überhitzten Ozeanen."
+      },
+      {
+        "id": "mensch-und-meer",
+        "question": "Warum lässt sich das APEX mit einem Marsroboter vergleichen?",
+        "answers": [
+          {
+            "id": 0,
+            "text": "Die Erforschung der Tiefsee und des Weltraums galten als prestigeträchtige Pionierleistungen.",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "Projekte in der Tiefsee und im Weltall werden von Raumfahrtbehörden geplant.",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "Für Meeres- und Weltraumroboter werden die gleichen Materialien verwendet.",
+            "correct": false
+          },
+          {
+            "id": 3,
+            "text": "Es herrschen im Weltraum und in der Tiefsee gleiche Bedingungen.",
+            "correct": false
+          }
+        ],
+        "explanationText": "Die Erforschung der Tiefsee und des Weltraums galten als prestigeträchtige Pionierleistungen."
+      },
+      {
+        "id": "global-perspective",
+        "question": "Warum stellt der Bergbau eine Gefahr für die Umwelt dar?",
+        "answers": [
+          {
+            "id": 0,
+            "text": "Die Rohstoffvorkommen sind Lebensraum von Meereslebewesen.",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "Die Beprobung des Ozeanbodens löst Erdbeben aus.",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "Die Förder-Roboter werden mit Uran betrieben.",
+            "correct": false
+          },
+          {
+            "id": 3,
+            "text": "Beim Abbau werden gefährliche Stoffe aufgewirbelt.",
+            "correct": false
+          }
+        ],
+        "explanationText": "Die Rohstoffvorkommen sind Lebensraum von Meereslebewesen."
+      },
+      {
+        "id": "technical",
+        "question": "Welche technische Innovation wünschten sich die Meeresforscher von den Ingenieuren des APEX?",
+        "answers": [
+          {
+            "id": 0,
+            "text": "Elektronik, die es erleichtert, einen senkrechten Bohrkern aus dem Ozeanboden zu entnehmen.",
+            "correct": true
+          },
+          {
+            "id": 1,
+            "text": "Eine Sonde, die direkt am Meeresgrund Gesteine bestimmt.",
+            "correct": false
+          },
+          {
+            "id": 2,
+            "text": "Ein Baggermodul, mit dem sich die Oberfläche abtragen lässt.",
+            "correct": false
+          },
+          {
+            "id": 3,
+            "text": "Einen stärkeren Antrieb, um das APEX präziser bewegen zu können.",
+            "correct": false
+          }
+        ],
+        "explanationText": "Elektronik, die es erleichtert, einen senkrechten Bohrkern aus dem Ozeanboden zu entnehmen."
+      }
+    ]
+  }
+}

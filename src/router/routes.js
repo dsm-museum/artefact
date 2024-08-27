@@ -25,6 +25,16 @@ const routes = [
     ],
   },
   {
+    path: '/models/chronometer',
+    component: () => import('layouts/ARLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('src/pages/CustomViewerChronometer.vue'),
+      },
+    ],
+  },
+  {
     // Generates a route for configured models in public/models
     path: '/models/:id',
     component: () => import('layouts/ARLayout.vue'),
