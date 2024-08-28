@@ -302,7 +302,6 @@ async function createExperience() {
         const randomDuration =
           Math.floor(Math.random() * (maxDuration - minDuration + 1)) +
           minDuration
-        console.log(loadingProgress.value, randomDuration)
 
         loadingProgress.value = Math.min(
           loadingProgress.value + randomProgressAmount,

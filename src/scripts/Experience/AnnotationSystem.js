@@ -1,7 +1,6 @@
 import {
   TextureLoader,
 } from 'three'
-import Annotation from './Annotation'
 import Experience from './Experience'
 import AnchoredAnnotation from './AnchoredAnnotation'
 import { SRGBColorSpace } from 'three'
@@ -31,24 +30,6 @@ export default class AnnotationSystem {
       annotation.domElement.remove()
     }
   }
-
-  /*createAnnotation(annotationData, urlPath, modelToAttachTo) {
-    let annotation = new AnchoredAnnotation(
-      annotationData,
-      urlPath,
-      modelToAttachTo
-    )
-
-    console.log(annotation)
-
-    // Add the annotation to the internal array
-    this.annotations.push(annotation)
-
-    // Add the annotation to the DOM-Overlay
-    this.annotationDOMContainer.appendChild(annotation.domElement)
-
-    return annotation
-  }*/
 
   createAnchoredAnnotation(annotationData, urlPath, modelToAttachTo) {
     let annotation = new AnchoredAnnotation(

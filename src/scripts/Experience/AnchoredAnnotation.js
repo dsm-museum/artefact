@@ -9,37 +9,18 @@ import {
   Color,
   Mesh,
   BoxHelper,
-  BufferGeometry,
-  Line,
 } from 'three'
 
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import { LineSegments2 } from 'three/addons/lines/LineSegments2'
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry'
 import anime from 'animejs'
+import { LineBasicMaterial } from 'three'
+import { BufferGeometry } from 'three'
+import { Line } from 'three'
+import { Matrix4 } from 'three'
 
 let textureLoader = new TextureLoader()
-
-/* let lineDashedMaterial = new LineDashedMaterial({
-  color: 0xffffff,
-  linewidth: 1,
-  scale: 1,
-  dashSize: 0.04,
-  gapSize: 0.02,
-})*/
-
-let lineDashedMaterial = new LineMaterial({
-  color: 0xffffff,
-  linewidth: 0.001,
-  vertexColors: false,
-  dashed: true,
-  dashOffset: 0,
-  dashScale: 30,
-  dashSize: 0.5,
-  transparent: true,
-  opacity: 1.0,
-  alphaToCoverage: true,
-})
 
 export default class AnchoredAnnotation {
   constructor(annotationData, urlPath = './', model) {
@@ -53,15 +34,16 @@ export default class AnchoredAnnotation {
     this.annotationBackgroundColor = new Color(0xffffff)
     this.debug = false
 
-    this.line = null
+    this.mesh = this.getMesh(annotationData.meshName)
 
+    this.line = this.createDashedLine()
     this.domElement = this.createDomElement(annotationData.id)
     this.target = this.createTargetMesh(
       annotationData.position,
       annotationData.indicatorPosition
     ) // .position are the three vertex indices here!!!
+
     this.annotationVector = new Vector3(0, 0, 0)
-    //this.endMesh = this.endMesh()
     this.fovHeight = this.getFovHeight()
   }
 
@@ -87,100 +69,31 @@ export default class AnchoredAnnotation {
     return elem
   }
 
-  endMesh() {
-    let targetGeometry = new SphereGeometry(0.013, 32, 32) // TODO: Don't scale it here, but rather later?
-    let targetMaterial = new MeshBasicMaterial({
-      color: 0xff0000,
-      transparent: true,
-      depthWrite: false,
-      opacity: 1.0,
-    })
-
-    // We need a parent mesh to raycast against
-    let targetMesh = new Mesh(targetGeometry, targetMaterial)
-    this.experience.scene.add(targetMesh)
-    return targetMesh
-  }
-
+  /* The target mesh is an invisible sphere, slightly bigger than the icon. It is the object that is raycast against */
   createTargetMesh(position, indicatorPosition) {
-    let targetGeometry = new SphereGeometry(0.013, 32, 32) // TODO: Don't scale it here, but rather later?
+    let targetGeometry = new SphereGeometry(0.026, 16, 16) // TODO: Don't scale it here, but rather later?
     let targetMaterial = new MeshBasicMaterial({
       color: this.annotationBackgroundColor,
       transparent: true,
       depthWrite: false,
-      opacity: 0.0,
+      opacity: 0.5,
     })
 
     // We need a parent mesh to raycast against
     let targetMesh = new Mesh(targetGeometry, targetMaterial)
-    targetMesh.add(this.createIcon())
 
-    // Set the position to the position of the center of the triangle defined by the three vertices in `position` of config.json
-    // Setting it to the position of the first vertex for now
-    // TODO: How to better connect Annotation and Mesh together?
-
-    // Get the geometry of the mesh
-    //this.model.scene.children[0].position.set(0, 0, 0)
-
-    // Find the mesh to anchor the annotation to
-    console.log(`AnchoredAnnotation: Handling "${this.annotationData.title}" with mesh name: ${this.annotationData.meshName} and vertex id: ${this.annotationData.position[0]}`)
-
-    if (this.annotationData.meshName != undefined) {
-      this.meshName = this.annotationData.meshName
-      this.model.scene.traverse((elem) => {
-        //console.log(elem);
-        
-        if (elem.name == this.meshName) {
-          this.mesh = elem
-          //console.log(`${this.meshName} found`); 
-        }
-      })
-    }
-
-    let positionAttribute
-
-    //console.log(this.mesh);
-    
-    // this.mesh can be a group...
-    if (this.mesh && this.mesh.geometry) {
-      positionAttribute = this.mesh.geometry.getAttribute('position')
-    } else {
-      console.error(`${this.annotationData.meshName} has no geometry. Is it a group?`)
-      console.log(this.mesh)
-    }
-
-    // Get the three indices from the position array
-    // TODO: Calculate bary coords from the three vertices
-    let indexVertexA = position[0]
-    let indexVertexB = position[1]
-    let indexVertexC = position[2]
-
-    let vertexPositionA = new Vector3()
-
-    vertexPositionA.fromBufferAttribute(positionAttribute, indexVertexA)
-    //vertexPositionB.fromBufferAttribute(positionAttribute, indexVertexB)
-    //vertexPositionC.fromBufferAttribute(positionAttribute, indexVertexC)
-
-    // Get the world position of the endpoint of the annotation
-    this.mesh.localToWorld(vertexPositionA)
-
-    // Set the position of the clickable target to the indicatorPosition
+    // position the target mesh icon at the specified location
     targetMesh.position.set(
       indicatorPosition[0],
       indicatorPosition[1],
       indicatorPosition[2]
     )
 
-    // Create the line
-    let line = this.createDashedLine(vertexPositionA, indicatorPosition)
-   
-    this.line = line
-    //targetMesh.add(line)
+    // Create the icon
+    let icon = this.createIcon()
 
-    if (this.debug) {
-      let box = new BoxHelper(targetMesh, 0x00ff00)
-      this.experience.scene.add(box)
-    }
+    // Add it to the target mesh
+    targetMesh.add(icon)
 
     return targetMesh
   }
@@ -205,29 +118,52 @@ export default class AnchoredAnnotation {
     return sprite
   }
 
-  createDashedLine(vertexPosition, indicatorPosition) {
-    console.log(vertexPosition);
-    console.log(indicatorPosition);
-    
-    
-    let segmentsGeometry = new LineSegmentsGeometry();
-    let positions = []
-    
-    
-    positions.push(vertexPosition.x, vertexPosition.y, vertexPosition.z)
-    positions.push(indicatorPosition[0], indicatorPosition[1], indicatorPosition[2])
+  createDashedLine() {
+    let line = null
+    let material = new LineBasicMaterial({ color: 0xffffff })
 
-    segmentsGeometry.setPositions(positions)
+    // Just initialize the line here, it gets updated anyway
+    let start = new Vector3(0, 0, 0)
+    let end = new Vector3(0, 0, 0)
+    let points = []
+    points.push(start)
+    points.push(end)
 
-    let segments = new LineSegments2(segmentsGeometry, new LineMaterial({
-      color: 0xffffff,
-      linewidth: 0.001,
-      worldUnits: true,
-      alphaToCoverage: true
-    }))
-    segments.computeLineDistances()
-    segments.scale.set(1, 1, 1)   
-    return segments
+    let geometry = new BufferGeometry().setFromPoints(points)
+    line = new Line(geometry, material)
+
+    // red
+    let startMesh = new Mesh(new SphereGeometry(0.01, 16, 16), new MeshBasicMaterial({color: 0xff0000}))
+    
+    // blue
+    let endMesh = new Mesh(new SphereGeometry(0.01, 16, 16), new MeshBasicMaterial({color: 0x0000ff}))
+    
+    line.add(startMesh)
+    line.add(endMesh)
+    
+    return line
+  }
+
+  getVertexPosition(vertexIndex) {
+    let position = new Vector3(0, 0, 0)
+
+    let positionAttribute = this.mesh.geometry.getAttribute('position')
+
+    position.fromBufferAttribute(positionAttribute, vertexIndex)
+    
+    this.mesh.localToWorld(position)
+
+    return position
+  }
+
+  getMesh(name) {
+    let mesh = null
+    this.model.scene.traverse((elem) => {
+      if (elem.name == name) {
+        mesh = elem
+      }
+    })
+    return mesh
   }
 
   getFovHeight() {
@@ -238,21 +174,19 @@ export default class AnchoredAnnotation {
   }
 
   update() {
-
-    let geometry = this.line.geometry
-    const positionAttribute = geometry.getAttribute("position")
-
-    let segmentsGeometry = new LineSegmentsGeometry();
-    let positions = []
+    this.mesh.updateMatrixWorld(true);
     
-    
-    positions.push(1, 1, 1)
+    // Update lines
+    let vertexPosition = this.getVertexPosition(this.annotationData.position[0])
 
-    this.line.geometry = segmentsGeometry
-    
+    // Move the red points (currently wrong in ar)
+    // Transform to the local space of the parent object, if necessary
+let localVertexPosition = this.line.worldToLocal(vertexPosition.clone());
 
+// Move the red point to the correct position
+this.line.children[0].position.copy(localVertexPosition);
+    
     // === Invisible DOM Element update ===
-
     this.target.getWorldPosition(this.annotationVector)
     this.annotationVector.project(this.experience.camera.instance)
 
@@ -281,14 +215,14 @@ export default class AnchoredAnnotation {
       targets: this.icon,
       opacity: !willHide ? 1.0 : 0.2,
       easing: 'easeInOutQuad',
-      duration: 200
+      duration: 200,
     })
 
     anime({
       targets: this.line.material,
       opacity: !willHide ? 1.0 : 0.7,
       easing: 'easeInOutQuad',
-      duration: 200
+      duration: 200,
     })
 
     this.domElement.style.pointerEvents = willHide ? 'none' : 'auto'
@@ -299,8 +233,6 @@ export default class AnchoredAnnotation {
       map: this.experience.annotationSystem.questionIcon,
       depthWrite: true,
     })
-
-    //console.log(this.target.children[0])
 
     // Change the icon of the target sprite
     this.target.children[0].material = spriteMaterial
@@ -336,15 +268,5 @@ export default class AnchoredAnnotation {
     })
 
     this.target.children[0].material = material
-  }
-
-  debugSphere(position) {
-    let mat = new MeshBasicMaterial({
-      color: 0xff0000,
-    })
-    let geometry = SphereGeometry(0.01, 32, 32)
-    let mesh = new Mesh(geometry, mat)
-    mesh.position.set(position.x, position.y, position.z)
-    this.experience.scene.add(mesh)
   }
 }
