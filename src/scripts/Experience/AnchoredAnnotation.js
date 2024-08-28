@@ -176,15 +176,29 @@ export default class AnchoredAnnotation {
   update() {
     this.mesh.updateMatrixWorld(true);
     
-    // Update lines
-    let vertexPosition = this.getVertexPosition(this.annotationData.position[0])
+    // Update lines, remember this is world space
+    let startVertexPosition = this.getVertexPosition(this.annotationData.position[0])
 
-    // Move the red points (currently wrong in ar)
+    let endPosition = new Vector3(this.annotationData.indicatorPosition[0], this.annotationData.indicatorPosition[1], this.annotationData.indicatorPosition[2])
+
     // Transform to the local space of the parent object, if necessary
-let localVertexPosition = this.line.worldToLocal(vertexPosition.clone());
+    // startVertexPosition is in world space, convert it to local coordinates, so it's correct in ar
+    let localVertexPosition = this.line.worldToLocal(startVertexPosition.clone());
 
-// Move the red point to the correct position
-this.line.children[0].position.copy(localVertexPosition);
+    // Move the red point to the correct position
+    this.line.children[0].position.copy(localVertexPosition);
+    this.line.children[1].position.copy(endPosition)
+
+    console.log(endPosition);
+    
+
+    let points = []
+    points.push(localVertexPosition)
+    points.push(endPosition)
+
+    let geometry = new BufferGeometry().setFromPoints(points)
+
+    this.line.geometry = geometry
     
     // === Invisible DOM Element update ===
     this.target.getWorldPosition(this.annotationVector)
