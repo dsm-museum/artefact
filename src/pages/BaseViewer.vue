@@ -94,13 +94,12 @@ let annotationsAndQuiz = ref([])
 let deviceSupportsAR = ref(false)
 let deviceSupportsARReason = ref(null)
 let inAR = ref(false)
-let currentXRSession = ref({})
 let modelWasPlaced = false
 let hitTestSourceRequested = ref(false)
 let hitTestSource = ref(null)
 
 // Grouping
-let arModelGroup = new Group()
+let sceneContents = new Group() // Holds all the contents, as we want to avoid moving the origin (origin = experience.scene.position)
 let mainModel
 
 // Signal definitions
@@ -123,7 +122,7 @@ onMounted(async () => {
   )
 
   // FIXME: Make this group unnecessary, we already have a scene which we can display
-  arModelGroup.name = 'arModelGroup'
+  sceneContents.name = 'sceneContents'
 
   // FIXME: This function does too much. I'd rather split it
   await createExperience()
@@ -144,9 +143,8 @@ onMounted(async () => {
         annotation.target.scale.setScalar(config.value.annotationScale)
       }
 
-      // FIXME: Get rid of the arModelGroup
-      arModelGroup.attach(annotation.target)
-      arModelGroup.attach(annotation.line)
+      sceneContents.add(annotation.target)
+      sceneContents.add(annotation.line)
 
       // Thats okay, but needs reworking, maybe put it in own function
       experience.click(annotation.target, (event) => {
@@ -202,8 +200,8 @@ async function createExperience() {
     )
   }
 
-  // Add the AR group to the scene
-  experience.scene.add(arModelGroup)
+  // Add the contents to the scene
+  experience.scene.add(sceneContents)
 
   // FIXME: Fix loading scheduling and loading screen
   // Load the main model
@@ -233,7 +231,7 @@ async function createExperience() {
   if (mainModel !== null) {
     // Give a name
     mainModel.name = 'mainModel'
-    arModelGroup.attach(mainModel.scene)
+    sceneContents.add(mainModel.scene)
 
     let mixer = experience.animationSystem.createMixer(
       mainModel.scene,
@@ -253,7 +251,7 @@ async function createExperience() {
       let url = `./models/${route.params.id}/${config.value.assets[i].url}`
       let model = await experience.resources.load(url)
       model.scene.name = config.value.assets[i].id
-      arModelGroup.attach(model.scene)
+      sceneContents.add(model.scene)
 
       // Add animations if they exist
       if (model.animations.length > 0) {
@@ -281,11 +279,11 @@ async function createExperience() {
           mixer
         )
       }
-      arModelGroup.attach(model.scene)
-      let toReplace = arModelGroup.getObjectByName(
+      sceneContents.add(model.scene)
+      let toReplace = experience.scene.getObjectByName(
         config.value.assets[i].replaces
       )
-      arModelGroup.remove(toReplace)
+      sceneContents.remove(toReplace)
     }
   }
 
@@ -349,8 +347,8 @@ async function createExperience() {
     let gltfFile = toRaw(experience.resources.items['model'])
 
     // Add the model to the movable group
-    // Do not add it to the scene but rather the arModelGroup
-    arModelGroup.attach(gltfFile.scene)
+    // Do not add it to the scene but rather the scene contents
+    sceneContents.add(gltfFile.scene)
 
     // Create the mixer for the mesh
     let mixer = experience.animationSystem.createMixer(
@@ -378,8 +376,8 @@ async function createExperience() {
 
   // Is triggered for every 3d model loading after the first file
   experience.resources.on('modelReady', (gltfFile) => {
-    // add the loaded model to the arModelGroup
-    arModelGroup.attach(gltfFile.scene)
+    // add the loaded model to the scene contents
+    sceneContents.add(gltfFile.scene)
 
     // Create the mixer for the mesh
     let mixer = experience.animationSystem.createMixer(
@@ -576,38 +574,20 @@ function showQuizIntro() {
 }
 
 async function onSessionStarted() {
-  // Should be handled by webxr and actually is already
-  currentXRSession.value = experience.webXRSystem.xrSession
   inAR.value = true
 
   // Hide the group that shall be placeable
-  arModelGroup.visible = false
-
-  //arModelGroup.position.z = -2
-
-  // Setting up the fade in from the bottom
-  // Todo: Check if every child should be positioned manually, as the lines do not seeem to move correctly
-  arModelGroup.position.y = -5
+  sceneContents.position.y = -2
+  sceneContents.scale.set(0, 0, 0)
+  sceneContents.visible = false
 
   experience.webXRSystem.xrSession.addEventListener('select', onXRSelect)
 
   // Set the referenceSpaceType for the session (yes, session)
   experience.renderer.instance.xr.setReferenceSpaceType('local')
 
-  // Set the current session to the active one
-
-  // ===============
-  // TODO: Warum wird hier awaited?=== === ===
-  // ===============
-  //await experience.renderer.instance.xr.setSession(currentXRSession.value)
-
-  // Hide the canvas to make room for the camera feed
-  //document.querySelector("#three-canvas").style.visibility = "hidden"
-
   // Instead change the opacity of the canvas to still receive pointer events
   document.querySelector('#three-canvas').style.opacity = 0
-
-  //document.querySelector("#three-canvas").style.display = "none"
 
   // Show a help message in the AR guide
   emit('statuschange', 'findSurface')
@@ -621,9 +601,8 @@ function onSessionEnded() {
 
   // Reset AR elements
   modelWasPlaced = false
-  arModelGroup.visible = true
-  // Todo: Check if every child should be positioned manually, as the lines do not seeem to move correctly
-  arModelGroup.position.set(0, 0, 0)
+  sceneContents.visible = true
+  sceneContents.position.set(0, 0, 0)
 
   // Make the canvas visible again
   // document.querySelector("#three-canvas").style.visibility = "initial"
@@ -634,26 +613,35 @@ function onSessionEnded() {
 
   // Hide the AR helper status again
   emit('statuschange', 'hidden')
-  console.log('onSessionEnded')
 }
 
-/* function that executes on webXR input source primary action */
+/* Function that executes on WebXR input source primary action */
 function onXRSelect(event) {
   if (experience.webXRSystem.xrIndicator.isEnabled()) {
     if (!modelWasPlaced) {
-      arModelGroup.visible = true
+      sceneContents.visible = true
 
       let newPosition = new Vector3(0, 0, 0).setFromMatrixPosition(
         experience.webXRSystem.xrIndicator.mesh.matrix
       )
 
       anime({
-        targets: [arModelGroup.position],
+        targets: [sceneContents.position],
         x: newPosition.x,
         y: newPosition.y,
         z: newPosition.z,
         easing: 'easeOutQuint',
         duration: 700,
+      })
+
+      anime({
+        targets: [sceneContents.scale],
+        x: 1.0,
+        y: 1.0,
+        z: 1.0,
+        easing: 'easeOutExpo',
+        duration: 500,
+        delay: 150
       })
 
       modelWasPlaced = true
