@@ -9,7 +9,6 @@ class WebXRSystem extends EventDispatcher {
     this.xrMode = null
     this.xrSession = null
     this.xrSessionFeatures = null
-    //
     this.xrIndicator = new XRIndicator()
     this.experience.scene.add(this.xrIndicator.mesh)
   }

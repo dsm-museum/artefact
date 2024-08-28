@@ -30,7 +30,7 @@ const routes = [
     children: [
       {
         path: '',
-        component: () => import('src/pages/CustomViewerChronometer.vue'),
+        component: () => import('src/pages/BaseViewer.vue'),
       },
     ],
   },

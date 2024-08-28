@@ -21,9 +21,10 @@ export default class Experience {
 
     instance = this
     window.experience = this
+    window.APP = this
 
     // Components
-    this.canvas = document.querySelector('#arCanvas')
+    this.canvas = document.querySelector('#three-canvas')
     this.resizer = new Resizer()
     this.timer = new Timer()
     this.scene = new Scene()
@@ -40,11 +41,6 @@ export default class Experience {
     this.raycaster = new Raycaster()
 
     this.setDefaultLighting()
-
-    //this.scene.add(createAxis())
-
-    // Debug
-    window.APP = this
   }
 
   dispose() {
