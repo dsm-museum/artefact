@@ -25,7 +25,7 @@ import { toRaw, onMounted, onUnmounted, ref } from 'vue'
 import anime from "animejs/lib/anime.es"
 import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar';
-import { BufferGeometry, Group, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, SphereBufferGeometry, Vector3 } from 'three';
+import { Group, Vector3 } from 'three';
 
 /* Own Imports */
 import Experience from 'src/scripts/Experience/Experience';

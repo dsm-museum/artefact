@@ -1,15 +1,10 @@
 import {
-  BoxGeometry,
-  Mesh,
-  MeshStandardMaterial,
-  Object3D,
   TextureLoader,
-  Vector3,
 } from 'three'
 import Annotation from './Annotation'
 import Experience from './Experience'
 import AnchoredAnnotation from './AnchoredAnnotation'
-import { sRGBEncoding } from 'three'
+import { SRGBColorSpace } from 'three'
 
 export default class AnnotationSystem {
   constructor(_annotationDOMContainer) {
@@ -94,7 +89,7 @@ export default class AnnotationSystem {
 
   loadIcon(path) {
     let texture = this.textureLoader.load(path)
-    texture.encoding = sRGBEncoding
+    texture.colorSpace = SRGBColorSpace
     return texture
   }
 }

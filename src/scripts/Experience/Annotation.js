@@ -2,7 +2,7 @@ import {
   Vector3,
   MeshBasicMaterial,
   Mesh,
-  SphereBufferGeometry,
+  SphereGeometry,
   TextureLoader,
   SpriteMaterial,
   Sprite,
@@ -106,7 +106,7 @@ export default class Annotation {
 
   // Adds a sphere around the annotation
   createTargetVisualizer() {
-    let targetGeometry = new SphereBufferGeometry(0.013, 32, 32)
+    let targetGeometry = new SphereGeometry(0.013, 32, 32)
     let targetMaterial = new MeshBasicMaterial({
       color: this.annotationBackgroundColor,
       transparent: true,
@@ -264,7 +264,7 @@ export default class Annotation {
     let mat = new MeshBasicMaterial({
       color: 0xff0000,
     })
-    let geometry = new SphereBufferGeometry(0.1, 32, 32)
+    let geometry = new SphereGeometry(0.1, 32, 32)
     let mesh = new Mesh(geometry, mat)
     mesh.name = 'Debug Sphere'
     mesh.position.set(position[0], position[1], position[2])

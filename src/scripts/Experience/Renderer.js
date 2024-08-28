@@ -1,11 +1,10 @@
 import {
   WebGLRenderer,
-  sRGBEncoding,
-  CineonToneMapping,
   ACESFilmicToneMapping,
 } from 'three'
 import EventEmitter from './utils/EventEmitter'
 import Experience from './Experience'
+import { SRGBColorSpace } from 'three'
 
 export default class Renderer extends EventEmitter {
   constructor() {
@@ -26,8 +25,8 @@ export default class Renderer extends EventEmitter {
       antialias: true,
       alpha: true,
     })
-    this.instance.physicallyCorrectLights = true
-    this.instance.outputEncoding = sRGBEncoding
+    //this.instance.useLegacyLights = false
+    this.instance.outputColorSpace = SRGBColorSpace
     this.instance.toneMapping = ACESFilmicToneMapping
     this.instance.toneMappingExposure = 1.0
     this.instance.xr.enabled = true

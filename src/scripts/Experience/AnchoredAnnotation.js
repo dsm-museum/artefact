@@ -4,19 +4,18 @@ import {
   TextureLoader,
   SpriteMaterial,
   Sprite,
-  SphereBufferGeometry,
+  SphereGeometry,
   MeshBasicMaterial,
   Color,
   Mesh,
   BoxHelper,
-  SphereGeometry,
-  BoxGeometry,
-  MeshStandardMaterial,
+  BufferGeometry,
+  Line,
 } from 'three'
 
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
-import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
-import { Line2 } from 'three/examples/jsm/lines/Line2.js'
+import { LineSegments2 } from 'three/addons/lines/LineSegments2'
+import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry'
 import anime from 'animejs'
 
 let textureLoader = new TextureLoader()
@@ -174,7 +173,9 @@ export default class AnchoredAnnotation {
 
     // Create the line
     let line = this.createDashedLine(vertexPositionA, indicatorPosition)
+   
     this.line = line
+    //targetMesh.add(line)
 
     if (this.debug) {
       let box = new BoxHelper(targetMesh, 0x00ff00)
@@ -205,39 +206,28 @@ export default class AnchoredAnnotation {
   }
 
   createDashedLine(vertexPosition, indicatorPosition) {
-    let lineGeometry = new LineGeometry()
+    console.log(vertexPosition);
+    console.log(indicatorPosition);
+    
+    
+    let segmentsGeometry = new LineSegmentsGeometry();
+    let positions = []
+    
+    
+    positions.push(vertexPosition.x, vertexPosition.y, vertexPosition.z)
+    positions.push(indicatorPosition[0], indicatorPosition[1], indicatorPosition[2])
 
-    if (
-      isNaN(vertexPosition.x) ||
-      isNaN(vertexPosition.y) ||
-      isNaN(vertexPosition.z)
-    ) {
-      console.error(
-        `The dashed line for the annotation "${this.annotationData.id}: ${this.annotationData.title}" could not be created. Check the "position" field in the config.json`
-      )
-      // If something is wrong with the position of the line, create an "empty" line
-      lineGeometry.setPositions([
-        indicatorPosition[0],
-        indicatorPosition[1],
-        indicatorPosition[2],
-        indicatorPosition[0],
-        indicatorPosition[1],
-        indicatorPosition[2],
-      ])
-    } else {
-      lineGeometry.setPositions([
-        vertexPosition.x,
-        vertexPosition.y,
-        vertexPosition.z,
-        indicatorPosition[0],
-        indicatorPosition[1],
-        indicatorPosition[2],
-      ])
-    }
+    segmentsGeometry.setPositions(positions)
 
-    let line = new Line2(lineGeometry, lineDashedMaterial)
-    line.computeLineDistances()
-    return line
+    let segments = new LineSegments2(segmentsGeometry, new LineMaterial({
+      color: 0xffffff,
+      linewidth: 0.001,
+      worldUnits: true,
+      alphaToCoverage: true
+    }))
+    segments.computeLineDistances()
+    segments.scale.set(1, 1, 1)   
+    return segments
   }
 
   getFovHeight() {
@@ -248,44 +238,18 @@ export default class AnchoredAnnotation {
   }
 
   update() {
-    // === 3D Object Update ===
 
-    // Update the vertex position just like in `createTargetMesh`
-    let vertexPosition = new Vector3(0, 0, 0)
+    let geometry = this.line.geometry
+    const positionAttribute = geometry.getAttribute("position")
 
-    // Get the position attribute from the buffer
-    let positionAttribute = this.mesh.geometry.getAttribute('position')
+    let segmentsGeometry = new LineSegmentsGeometry();
+    let positions = []
+    
+    
+    positions.push(1, 1, 1)
 
-    // Choose the vertex to anchor to
-    let vertex = this.annotationData.position[0]
-
-    // Copy the position into vertexPosition
-    vertexPosition.fromBufferAttribute(positionAttribute, vertex)
-
-    this.mesh.localToWorld(vertexPosition)
-
-    let worldPosAnnotation = new Vector3()
-    this.target.getWorldPosition(worldPosAnnotation)
-
-    if (this.line) {
-      this.line.geometry.attributes.position.setXYZ(
-        0,
-        vertexPosition.x,
-        vertexPosition.y,
-        vertexPosition.z
-      )
-
-      this.line.geometry.attributes.position.setXYZ(
-        1,
-        worldPosAnnotation.x,
-        worldPosAnnotation.y,
-        worldPosAnnotation.z
-      )
-
-      // update the line
-      this.line.geometry.attributes.position.needsUpdate = true
-      this.line.computeLineDistances()
-    }
+    this.line.geometry = segmentsGeometry
+    
 
     // === Invisible DOM Element update ===
 
@@ -378,7 +342,7 @@ export default class AnchoredAnnotation {
     let mat = new MeshBasicMaterial({
       color: 0xff0000,
     })
-    let geometry = new SphereBufferGeometry(0.01, 32, 32)
+    let geometry = SphereGeometry(0.01, 32, 32)
     let mesh = new Mesh(geometry, mat)
     mesh.position.set(position.x, position.y, position.z)
     this.experience.scene.add(mesh)
