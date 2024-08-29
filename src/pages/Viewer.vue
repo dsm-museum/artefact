@@ -1,5 +1,5 @@
 <template>
-  <q-page id="arScene">
+  <q-page id="three-scene">
     <loading-screen :show="showLoadingScreen" :progress="loadingProgress" :progress-label="progressLabel"
       :progress-description="progressDescription"></loading-screen>
 
@@ -16,7 +16,7 @@
 
     <q-resize-observer @resize="resize" />
 
-    <canvas id="arCanvas" />
+    <canvas id="three-canvas" />
   </q-page>
 </template>
 
@@ -155,9 +155,8 @@ async function createExperience() {
     experience.controls.instance.target = new Vector3(target[0], target[1], target[2])
   }
 
-
   // ==== DEBUG ====
-  /*let inspector = new Inspector(document.querySelector("#arScene"), experience.scene)
+  /*let inspector = new Inspector(document.querySelector("#three-scene"), experience.scene)
   let transformControls = inspector.createTransformControls(experience.scene, experience.camera.instance, experience.renderer.instance)
 
   transformControls.addEventListener('dragging-changed', (event) => {
@@ -535,20 +534,8 @@ async function onSessionStarted() {
   // Set the referenceSpaceType for the session (yes, session)
   experience.renderer.instance.xr.setReferenceSpaceType('local')
 
-  // Set the current session to the active one
-
-  // ===============
-  // TODO: Warum wird hier awaited?=== === ===
-  // ===============
-  //await experience.renderer.instance.xr.setSession(currentXRSession.value)
-
-  // Hide the canvas to make room for the camera feed
-  //document.querySelector("#arCanvas").style.visibility = "hidden"
-
   // Instead change the opacity of the canvas to still receive pointer events
-  document.querySelector("#arCanvas").style.opacity = 0
-
-  //document.querySelector("#arCanvas").style.display = "none"
+  document.querySelector("#three-canvas").style.opacity = 0
 
   // Show a help message in the AR guide
   emit("statuschange", "findSurface")
@@ -568,8 +555,7 @@ function onSessionEnded() {
   arModelGroup.position.set(0, 0, 0)
 
   // Make the canvas visible again
-  // document.querySelector("#arCanvas").style.visibility = "initial"
-  document.querySelector("#arCanvas").style.opacity = 1.0
+  document.querySelector("#three-canvas").style.opacity = 1.0
 
   // Reset the camera to the starting position
   experience.camera.reset()
@@ -745,11 +731,11 @@ body {
   overscroll-behavior: none;
 }
 
-#arScene {
+#three-scene {
   overflow: hidden;
 }
 
-#arCanvas {
+#three-canvas {
   background-color: #87ceeb;
   display: block;
 }
