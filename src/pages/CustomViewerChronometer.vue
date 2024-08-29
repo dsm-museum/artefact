@@ -25,7 +25,7 @@ import { toRaw, onMounted, onUnmounted, ref } from 'vue'
 import anime from "animejs/lib/anime.es"
 import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar';
-import { Group, Vector3 } from 'three';
+import { Group, LoopPingPong, Vector3 } from 'three';
 
 /* Own Imports */
 import Experience from 'src/scripts/Experience/Experience';
@@ -474,6 +474,7 @@ function toggleAnimation() {
 
 function playAnimations(enabled) {
   for (let animationClip of experience.animationSystem.animationClips) {
+    animationClip.action.loop = LoopPingPong
 
     if (enabled) {
       animationClip.action.paused = false

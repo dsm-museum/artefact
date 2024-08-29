@@ -1,5 +1,5 @@
 <template>
-  <q-page id="arScene">
+  <q-page id="three-scene">
     <loading-screen :show="showLoadingScreen" :progress="loadingProgress" :progress-label="progressLabel"
       :progress-description="progressDescription"></loading-screen>
 
@@ -16,7 +16,7 @@
 
     <q-resize-observer @resize="resize" />
 
-    <canvas id="arCanvas" />
+    <canvas id="three-canvas" />
   </q-page>
 </template>
 
@@ -156,21 +156,6 @@ async function createExperience() {
     experience.controls.instance.target = new Vector3(target[0], target[1], target[2])
   }
 
-
-  // ==== DEBUG ====
-  /*let inspector = new Inspector(document.querySelector("#arScene"), experience.scene)
-  let transformControls = inspector.createTransformControls(experience.scene, experience.camera.instance, experience.renderer.instance)
-
-  transformControls.addEventListener('dragging-changed', (event) => {
-    experience.controls.instance.enabled = !event.value
-    console.log(transformControls.worldPosition);
-  })
-
-  // ToDo: Make scene children on first level clickable
-  let raycaster = inspector.createRaycaster(experience.camera.instance)*/
-
-  // DEBUG ========
-
   // Add the AR group to the scene
   experience.scene.add(arModelGroup)
 
@@ -181,17 +166,6 @@ async function createExperience() {
   // Give a name
   mainModel.name = "mainModel"
   arModelGroup.attach(mainModel.scene)
-
-  // blue ^ line above the debug cube
-  /*const points = [];
-  points.push(new Vector3(- 0.25, 0, 0));
-  points.push(new Vector3(0, 0.21, 0));
-  points.push(new Vector3(0.25, 0, 0));
-
-  const material = new LineBasicMaterial({ color: 0x0000ff });
-  const geometry = new BufferGeometry().setFromPoints(points);
-  const line = new Line(geometry, material);
-  arModelGroup.add(line)*/
 
   let mixer = experience.animationSystem.createMixer(mainModel.scene, "mainMixer")
   let actions = experience.animationSystem.createClips(mainModel.animations, mixer)
@@ -496,7 +470,7 @@ async function onSessionStarted() {
   experience.renderer.instance.xr.setReferenceSpaceType('local')
 
   // Instead change the opacity of the canvas to still receive pointer events
-  document.querySelector("#arCanvas").style.opacity = 0
+  document.querySelector("#three-canvas").style.opacity = 0
 
   // Show a help message in the AR guide
   emit("statuschange", "findSurface")
@@ -516,8 +490,7 @@ function onSessionEnded() {
   arModelGroup.position.set(0, 0, 0)
 
   // Make the canvas visible again
-  // document.querySelector("#arCanvas").style.visibility = "initial"
-  document.querySelector("#arCanvas").style.opacity = 1.0
+  document.querySelector("#three-canvas").style.opacity = 1.0
 
   // Reset the camera to the starting position
   experience.camera.reset()
@@ -690,11 +663,11 @@ body {
   overscroll-behavior: none;
 }
 
-#arScene {
+#three-scene {
   overflow: hidden;
 }
 
-#arCanvas {
+#three-canvas {
   background-color: #87ceeb;
   display: block;
 }
