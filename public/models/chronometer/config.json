@@ -15,7 +15,7 @@
   },
   "annotationScale": 1,
   "initialCameraPosition": [0.5, 0.5, 0.5],
-  "initialOrbitTarget": [0, 0.15, 0],
+  "initialOrbitTarget": [0, 0, 0],
   "annotations": [
     {
       "id": "the-object",
