@@ -14,73 +14,76 @@
     "backgroundColor": "#ff0000"
   },
   "annotationScale": 1,
-  "initialCameraPosition": [0.5, 0.5, 0.5],
+  "initialCameraPosition": [0.22, 0.23, 0.44],
   "initialOrbitTarget": [0, 0, 0],
   "annotations": [
     {
       "id": "the-object",
       "subtitle": "Das Objekt",
       "title": "Das Chronometer „Tiede 118“",
-      "icon": "media/clock.png",
+      "icon": "media/dasobjekt.png",
       "meshName": "Box",
       "position": [13327, 15862, 15862],
       "indicatorPosition": [-0.03, 0.21, -0.15],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
-      "content": ["Das Chronometer „Tiede 118"]
+      "content": ["Früher gab es Uhren, die Chronometer oder Schiffsuhren genannt wurden. Sie waren sehr wichtig für die Navigation auf dem Meer und wurden von den 1760er Jahren bis ins 20. Jahrhundert verwendet. Die älteren Chronometer sahen aus wie Taschenuhren, aber dieses Exemplar hat eine Holzkiste, die typisch ist für das 19. Jahrhundert. Diese spezielle Schiffsuhr hat der Berliner Uhrmacher Christian Friedrich Tiede (1794-1877) hergestellt. Anhand der Seriennummer 118 kann man sie etwa auf die Zeit 1835 bis 1840 datieren. Die Holzkiste hat drei Teile. Jeden Tag öffnete ein Schiffsoffizier die oberste Deckelklappe, unter der ein Glasfenster war, um die Uhrzeit abzulesen. Der gesamte Deckel konnte nur mit dem dazugehörigen Schlüssel geöffnet werden, beispielsweise um die Uhr aufzuziehen. Das musste alle 56 Stunden oder 2,3 Tage passieren, wie die Gangreserve auf dem Ziffernblatt zeigt. Der Mechanismus im Inneren der Uhr besteht aus Messing und ist an einem Gelenk aufgehängt. Dadurch konnten Bewegungen des Schiffes im Seegang ausgeglichen werden und das Gerät war auch vor Erschütterungen geschützt."]
     },
     {
       "id": "the-objectgroup",
       "subtitle": "Die Objektgruppe",
       "title": "Navigation nach Sonne, Zeit und Gradnetz",
-      "icon": "media/clock.png",
+      "icon": "media/objektgruppe.png",
       "meshName": "Glasscheibe",
       "position": [101, 543, 543],
       "indicatorPosition": [0.15, 0.09, 0.0],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
-      "content": ["Die Objektgruppe Inhalt hier"]
+      "content": ["Das Verfahren zur Bestimmung des Längengrades auf See mithilfe der Schiffsuhr war relativ einfach. Kapitäne, andere Schiffsoffiziere und auch die Kadetten, das sind Auszubildende, haben es angewendet. Weil sich die Erde in 24 Stunden einmal komplett um ihre Achse dreht, also 15 Grad pro Stunde, konnte man aus dem Zeitunterschied zwischen zwei Orten auf der Erdoberfläche auch den Winkelunterschied zwischen diesen Orten ableiten. An Bord des Schiffes wurde die Schiffsuhr mitgeführt, die die Zeit am Bezugsort anzeigte, oft die Zeit von Greenwich bei London (0. Längengrad). Der Offizier an Bord bestimmte die Schiffszeit täglich, indem er den Stand der Sonne im Zenit (Mittagszeit) beobachtete. Wenn es zum Beispiel einen Zeitunterschied von +6 Stunden zwischen der Greenwich- Zeit und der Schiffszeit gab, konnte man daraus einen Winkelunterschied von 90 Grad (6 x 15) berechnen. Das Schiff befand sich dann also gerade an einer Position von 90 Grad östlicher Länge, im Indischen Ozean oder im Südpolarmeer."]
     },
     {
       "id": "mensch-und-meer",
       "subtitle": "Mensch und Meer",
       "title": "Das Längenproblem: Havarien und Erfindungen",
-      "icon": "media/clock.png",
+      "icon": "media/mensch.png",
       "meshName": "I-09128-00_lowPoly005",
       "position": [175, 3520, 3520],
       "indicatorPosition": [0.15, 0.02, 0.15],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
-      "content": ["Mensch und Meer Inhalt hier"]
+      "content": ["Im 16. und 17. Jahrhundert konnten europäische Seeleute mithilfe von Winkelmessinstrumenten wie dem Jacobsstab, dem Seeastrolabium und später dem Sextanten den Breitengrad auf See genau bestimmen. Das bedeutet, sie konnten die Position ihres Schiffes in Nord-Süd-Richtung zwischen dem Äquator und den Erdpolen feststellen. Es war aber viel schwieriger für Schiffskapitäne, den Längengrad, also die Ost-West- Position ihres Schiffes, genau zu bestimmen. Deshalb gab es im frühen 18. Jahrhundert viele Schiffsunglücke an Felsküsten oder Irrfahrten in unbekannten Ozeanen. Um dieses Problem zu lösen, versprach das englische Parlament im Jahr 1714 eine Belohnung von 20.000 Pfund für denjenigen, der eine praktische Lösung für das Längenproblem finden würde. Der englische Uhrmacher John Harrison (1693-1776) begann ab 1727 die Entwicklung eines Marinechronometers, also einer Schiffsuhr, die er 1759 als Modell H4 präsentierte. Diese Erfindung erwies sich bald als sehr nützlich für die Navigation auf dem Meer. Besonders während der zweiten Weltreise des Kartografen James Cook (1728-1779) in den Jahren 1772 bis 1775 wurde das Marinechronometer erfolgreich eingesetzt."]
     },
     {
       "id": "global-perspective",
       "subtitle": "Globale Perspektive",
       "title": "Seeschifffahrt und Globalisierung",
-      "icon": "media/clock.png",
+      "icon": "media/global.png",
       "meshName": "I-09128-00_lowPoly005",
       "position": [2512, 1481, 1482],
       "indicatorPosition": [-0.14, 0.1, 0.05],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
-      "content": ["Globale Perspektive Inhalt hier"]
+      "content": ["Globalisierung bedeutet, dass die ganze Welt wirtschaftlich miteinander verknüpft ist und Seeschiffe sind für die Globalisierung sehr wichtig. Schon im 19. Jahrhundert hat sich die Globalisierung durch neue Technologien im Transport und in der Kommunikation verstärkt. Zum Beispiel haben Dampfschiffe und regelmäßige Schiffsverbindungen den Transport von Waren und Menschen über die Ozeane beschleunigt. Auf Weltkarten konnte man die Erde als ein zusammenhängendes Gebiet sehen und man konnte erkennen, wie die Verkehrswege über das Meer verlaufen. Dadurch wirkten die Meere weniger beängstigend. Die Navigation auf See wurde mit Instrumenten wie der Schiffsuhr erleichtert. Um diese Instrumente zu benutzen, musste man grundlegendes Wissen über die kugelrunde Form der Erde, ihre Drehung um die eigene Achse und das Gradnetz haben."]
     },
     {
       "id": "technical",
       "subtitle": "Technische Perspektive",
       "title": "Der Chronometer-Mechanismus",
-      "icon": "media/clock.png",
+      "icon": "media/technik.png",
       "meshName": "Chronometer_bottom_part_gear_with_mount_#3",
       "position": [886, 2995, 2995],
       "indicatorPosition": [-0.06, 0.08, 0.22],
       "cameraPosition": [0.0, 0.0, 0.0],
       "cameraNormal": [0.0, 0.0, 0.0],
       "media": "",
-      "content": ["Technische Perspektive Inhalt hier"]
+      "content": ["Unter dem Ziffernblatt der Schiffsuhr mit den Stunden-, Minuten- und Sekundenzeigern befindet sich der eigentliche Mechanismus des Chronometers. Dieser Mechanismus besteht aus drei Teilen, die miteinander verbunden sind:",
+      "1. Beim Aufziehen des Chronometers wird eine Kette um eine Kegelschnecke gewickelt. Dadurch wird das Hauptfederblatt im zylinderförmigen Gehäuse gespannt. Das Hauptfederblatt ist die Energiequelle für das Chronometer. Die Kegelschnecke sorgt dafür, dass die Federenergie gleichmäßig abgebaut wird, während das Chronometer läuft.",
+      "2. Das Unruhrad mit einer Spiralfeder schwingt mit einer bestimmten Frequenz um seine Achse. Diese Frequenz bestimmt die Geschwindigkeit, mit der das Chronometer läuft. Das Unruhrad besteht aus zwei verschiedenen Metallen, um Temperaturschwankungen auszugleichen, die beispielsweise bei der Überquerung des Äquators auftreten können.",
+      "3. Die Chronometerhemmung besteht aus einem flachen Zahnrad und einer Blattfeder. Sie ermöglicht das Anhalten und Weiterlaufen des Zahnräderwerks, das die Antriebsenergie auf die Stunden-, Minuten- und Sekundenzeiger überträgt. Die Chronometerhemmung regelt also die Bewegung der Uhrenzeiger."]
     }
   ],
   "quiz": {
