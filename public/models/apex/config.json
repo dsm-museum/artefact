@@ -10,9 +10,6 @@
     }
   ],
   "ar": true,
-  "scene": {
-    "backgroundColor": "#ff0000"
-  },
   "annotationScale": 2,
   "cameraPosition": {"x": 0.34, "y": 0.31, "z": -0.49},
   "origin": { "x": 0, "y": 0.15, "z": 0},
@@ -23,7 +20,7 @@
       "title": "Hightech für den Tiefseebergbau",
       "icon": "media/dasobjekt.png",
       "meshName": "Schutzschale_baked001",
-      "position": [15862, 15862, 15862],
+      "verticesOnModel": [15862, 15862, 15862],
       "indicatorPosition": [0.05, 0.21, 0.22],
       "media": "",
       "content": [
@@ -36,7 +33,7 @@
       "title": "Multifunktionale Roboter",
       "icon": "media/objektgruppe.png",
       "meshName": "Schale021",
-      "position": [543, 543, 543],
+      "verticesOnModel": [543, 543, 543],
       "indicatorPosition": [-0.24, 0.09, -0.11],
       "media": "",
       "content": [
@@ -49,7 +46,7 @@
       "title": "Unbekannte Welt Tiefsee",
       "icon": "media/mensch.png",
       "meshName": "Top_Deckel002",
-      "position": [3520, 3520, 3520],
+      "verticesOnModel": [3520, 3520, 3520],
       "indicatorPosition": [0.15, 0.44, 0.06],
       "media": "",
       "content": [
@@ -62,7 +59,7 @@
       "title": "Gefahren des Tiefseebergbaus",
       "icon": "media/global.png",
       "meshName": "Hydraulikzylinder017",
-      "position": [1227, 1481, 1482],
+      "verticesOnModel": [1227, 1481, 1482],
       "indicatorPosition": [0.22, 0.15, -0.19],
       "media": "",
       "content": [
@@ -75,7 +72,7 @@
       "title": "Empfindliche Technik unter der Schale",
       "icon": "media/technik.png",
       "meshName": "Propeller002",
-      "position": [2995, 2995, 2995],
+      "verticesOnModel": [2995, 2995, 2995],
       "indicatorPosition": [-0.19, 0.39, 0.16],
       "media": "",
       "content": [

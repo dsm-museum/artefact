@@ -33,7 +33,7 @@ export default class AnchoredAnnotation {
     this.line = this.createDashedLine()
     this.domElement = this.createDomElement(annotationData.id)
     this.target = this.createTargetMesh(
-      annotationData.position,
+      annotationData.verticesOnModel,
       annotationData.indicatorPosition
     ) // .position are the three vertex indices here!!!
 
@@ -184,7 +184,7 @@ export default class AnchoredAnnotation {
 
     // Update position of the vertex, remember this is world space
     let startVertexPosition = this.getVertexPosition(
-      this.annotationData.position[0]
+      this.annotationData.verticesOnModel[0]
     )
 
     let endPosition = new Vector3(
