@@ -191,12 +191,12 @@ async function createExperience() {
   })
 
   // set orbit position
-  if (config.value.initialOrbitTarget) {
-    let target = config.value.initialOrbitTarget
+  if (config.value.origin) {
+    let target = config.value.origin
     experience.controls.instance.target = new Vector3(
-      target[0],
-      target[1],
-      target[2]
+      target.x,
+      target.y,
+      target.z
     )
   }
 
