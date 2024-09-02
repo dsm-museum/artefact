@@ -187,7 +187,7 @@ onUnmounted(() => {
 // FIXME: This function does too much
 async function createExperience() {
   experience = new Experience({
-    initialCameraPosition: toRaw(config.value.initialCameraPosition),
+    cameraPosition: toRaw(config.value.cameraPosition),
   })
 
   // set orbit position

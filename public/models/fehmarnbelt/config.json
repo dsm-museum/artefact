@@ -23,9 +23,7 @@
   "scene": {
     "backgroundColor": "#ff0000"
   },
-  "initialCameraPosition": [
-    0.28115139241360315, 0.2219624463360406, -0.2719395733827836
-  ],
+  "cameraPosition": { "x": 0.28, "y": 0.22, "z": -0.27},
   "annotations": [
     {
       "id": "the-ship",

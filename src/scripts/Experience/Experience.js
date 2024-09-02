@@ -31,7 +31,7 @@ export default class Experience {
     //this.webXR = new WebXRManager(_config.arSessionFeatures)
     this.webXRSystem = new WebXRSystem()
     this.resources = new Resources()
-    this.camera = new Camera(_config.initialCameraPosition)
+    this.camera = new Camera(_config.cameraPosition)
     this.controls = new Controls()
     this.renderer = new Renderer()
     this.annotationSystem = new AnnotationSystem(

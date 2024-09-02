@@ -14,7 +14,7 @@
     "backgroundColor": "#ff0000"
   },
   "annotationScale": 5,
-  "initialCameraPosition": [0.84, 0.22, -0.81],
+  "cameraPosition": { "x": 0.84, "y": 0.22, "z": -0.81},
   "annotations": [
     {
       "id": "the-object",

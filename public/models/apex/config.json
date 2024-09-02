@@ -14,7 +14,7 @@
     "backgroundColor": "#ff0000"
   },
   "annotationScale": 2,
-  "initialCameraPosition": [0.34, 0.31, -0.49],
+  "cameraPosition": {"x": 0.34, "y": 0.31, "z": -0.49},
   "initialOrbitTarget": [0, 0.15, 0],
   "annotations": [
     {

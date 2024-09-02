@@ -150,7 +150,7 @@ onUnmounted(() => {
 
 async function createExperience() {
   experience = new Experience({
-    initialCameraPosition: toRaw(config.value.initialCameraPosition)
+    cameraPosition: toRaw(config.value.cameraPosition)
   })
 
   // set orbit position

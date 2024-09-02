@@ -26,18 +26,18 @@ export default class Camera {
     //console.log(this.instance.fov)
 
     this.instance.position.set(
-      _initialPosition[0],
-      _initialPosition[1],
-      _initialPosition[2]
+      _initialPosition.x,
+      _initialPosition.y,
+      _initialPosition.z
     )
     this.scene.add(this.instance)
   }
 
   reset() {
     this.instance.position.set(
-      this.initialPosition[0],
-      this.initialPosition[1],
-      this.initialPosition[2]
+      this.initialPosition.x,
+      this.initialPosition.y,
+      this.initialPosition.z
     )
   }
 
