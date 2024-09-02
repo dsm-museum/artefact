@@ -143,16 +143,32 @@ export default class AnchoredAnnotation {
     return line
   }
 
-  getVertexPosition(vertexIndex) {
-    let position = new Vector3(0, 0, 0)
-
+  getVertexPosition(verticesOnModelList = [new Vector3(0, 0, 0)]) {
     let positionAttribute = this.mesh.geometry.getAttribute('position')
+    let centroid = new Vector3(0, 0, 0)
+    let positions = []
 
-    position.fromBufferAttribute(positionAttribute, vertexIndex)
+    // Get all vertex positions
+    for (let currentVertex of verticesOnModelList) {
+      let currentVertexPosition = new Vector3(0, 0, 0)
+      positions.push(
+        currentVertexPosition.fromBufferAttribute(
+          positionAttribute,
+          currentVertex
+        )
+      )
+    }
 
-    this.mesh.localToWorld(position)
+    // Add all positions together...
+    for (let position of positions) {
+      centroid.add(position)
+    }
 
-    return position
+    // ... and divide through the amount of vertices defined in the config.json
+    // to get the center of the vertices
+    centroid.divideScalar(positions.length)
+    this.mesh.localToWorld(centroid)
+    return centroid
   }
 
   getMesh(name) {
@@ -177,8 +193,10 @@ export default class AnchoredAnnotation {
 
     // Update position of the vertex, remember this is world space
     // TODO: Change to barycentric coordinates to get the center of all 3 verticesOnModel
-    let startVertexPosition = this.getVertexPosition(
-      this.annotationData.verticesOnModel[0]
+    let startVertexPosition = null
+
+    startVertexPosition = this.getVertexPosition(
+      this.annotationData.verticesOnModel
     )
 
     let endPosition = new Vector3(
