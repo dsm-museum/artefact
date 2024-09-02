@@ -32,10 +32,7 @@ export default class AnchoredAnnotation {
 
     this.line = this.createDashedLine()
     this.domElement = this.createDomElement(annotationData.id)
-    this.target = this.createTargetMesh(
-      annotationData.verticesOnModel,
-      annotationData.indicatorPosition
-    ) // .position are the three vertex indices here!!!
+    this.target = this.createTargetMesh(annotationData.position)
 
     this.annotationVector = new Vector3(0, 0, 0)
     this.fovHeight = this.getFovHeight()
@@ -64,7 +61,7 @@ export default class AnchoredAnnotation {
   }
 
   /* The target mesh is an invisible sphere, slightly bigger than the icon. It is the object that is raycast against */
-  createTargetMesh(position, indicatorPosition) {
+  createTargetMesh(position) {
     let targetGeometry = new SphereGeometry(0.026, 16, 16)
     let targetMaterial = new MeshBasicMaterial({
       color: this.annotationBackgroundColor,
@@ -77,11 +74,7 @@ export default class AnchoredAnnotation {
     let targetMesh = new Mesh(targetGeometry, targetMaterial)
 
     // position the target mesh icon at the specified location
-    targetMesh.position.set(
-      indicatorPosition[0],
-      indicatorPosition[1],
-      indicatorPosition[2]
-    )
+    targetMesh.position.set(position.x, position.y, position.z)
 
     // Create the icon
     let icon = this.createIcon()
@@ -183,14 +176,15 @@ export default class AnchoredAnnotation {
     this.mesh.updateMatrixWorld(true)
 
     // Update position of the vertex, remember this is world space
+    // TODO: Change to barycentric coordinates to get the center of all 3 verticesOnModel
     let startVertexPosition = this.getVertexPosition(
       this.annotationData.verticesOnModel[0]
     )
 
     let endPosition = new Vector3(
-      this.annotationData.indicatorPosition[0],
-      this.annotationData.indicatorPosition[1],
-      this.annotationData.indicatorPosition[2]
+      this.annotationData.position.x,
+      this.annotationData.position.y,
+      this.annotationData.position.z
     )
 
     // Transform to the local space of the parent object

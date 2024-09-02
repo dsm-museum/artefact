@@ -28,7 +28,7 @@
       "title": "Schwimmende Lebensretter",
       "icon": "media/schiff.png",
       "verticesOnModel": [108828, 108829, 108830],
-      "indicatorPosition": [0.2201, 0.0527, 0.068],
+      "position": {"x": 0.2201, "y": 0.0527, "z": 0.068},
       "meshName": "Feuerwehrschiff_poisson_150kbaked",
       "media": "media/storm1.jpg",
       "content": [
@@ -43,7 +43,7 @@
       "title": "Mehr Sicherheit für alle",
       "icon": "media/global.png",
       "verticesOnModel": [346875, 346876, 346877],
-      "indicatorPosition": [-0.1, -0.0264, -0.151],
+      "position": {"x": -0.1, "y": -0.0264, "z": -0.151},
       "meshName": "Feuerwehrschiff_poisson_150kbaked",
       "media": "media/storm2.jpg",
       "content": [
@@ -58,7 +58,7 @@
       "icon": "media/mensch.png",
       "media": "media/storm3.jpg",
       "verticesOnModel": [12633, 12634, 12635],
-      "indicatorPosition": [0.1153, 0.0395, -0.0832],
+      "position": {"x": 0.1153, "y": 0.0395, "z": -0.0832},
       "meshName": "Feuerwehrschiff_poisson_150kbaked",
       "content": [
         "Die Schiffsbrücke war die Kommandozentrale der FEHMARNBELT. Von ihr aus wurde die Signalgebung und Kommunikation gesteuert. Bei einer gefährlichen Annäherung anderer Fahrzeuge gab die Besatzung von dort aus akustische Signale oder schoss Warnraketen ab. Obwohl Feuerschiffe besonders stabil gebaut waren, stellten Zusammenstöße eine ständige Gefahr dar.",
@@ -72,7 +72,7 @@
       "icon": "media/modell.png",
       "media": "media/feuerschiff_mobile.jpg",
       "verticesOnModel": [23445, 23446, 23447],
-      "indicatorPosition": [-0.0257, 0.0, 0.1209],
+      "position": {"x": -0.0257, "y": 0.0, "z": 0.1209},
       "meshName": "Feuerwehrschiff_poisson_150kbaked",
       "content": [
         "Der Hobby-Modellbauer Friedemann Neumeier baute ein Modell der FEHMARNBELT aus Zinkblech. Dafür setzte er sich erstmals mit der Löttechnik auseinander, die ihm durch die vielen kleinen Details des Schiffes sehr vertraut wurde. Der Münchner schnitzte bereits als Kind gern Schiffe aus Holz. Seine Verbindung zur maritimen Welt vertiefte er dann als Erwachsener bei der Bundesmarine. Wie er selbst sagt, sind Schiffe für ihn keine Gegenstände, sondern etwas Lebendiges. Die Leidenschaft für Modelle verwandelte auch seine eigene Wohnung in Süddeutschland inzwischen in ein richtiges maritimes Museum. Das Deutsche Schifffahrtsmuseum ist ihm für die Schenkung dieses besonderen Stücks maritimer Kultur sehr dankbar."
@@ -85,7 +85,7 @@
       "icon": "media/schiff.png",
       "media": "media/storm4.jpg",
       "verticesOnModel": [191459, 191460, 191461],
-      "indicatorPosition": [0.0, 0.1112, -0.1036],
+      "position": {"x": 0.0, "y": 0.1112, "z": -0.1036},
       "meshName": "Feuerwehrschiff_poisson_150kbaked",
       "content": [
         "Vor etwa dreihundert Jahren entdecken englische Geschäftsleute die rettende Lösung, Schiffe als schwimmende Leuchttürme zu nutzen. Das beeindruckendste an der FEHMARNBELT war ihr sechs Meter hoher Signalturm, welcher die Signallampe mit einem Durchmesser von zwei Metern trug. Der starke Scheinwerfer der Lampe mit den vier optischen Speziallinsen konnte von anderen Schiffen über einen weiten Umkreis gesehen werden. Damit gab das Feuerschiff Orientierung auf See. Jedes Feuerschiff konnte man an dieser Signallampe erkennen. Sie drehte sich in festgelegten Anordnungen und Frequenzen und sandte Lichtsignale aus.",

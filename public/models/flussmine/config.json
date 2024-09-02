@@ -19,7 +19,7 @@
       "title": "Über die Flussmine",
       "icon": "media/object.png",
       "verticesOnModel": [34892, 0, 0],
-      "indicatorPosition": [0.2201, 0.0527, 0.068],
+      "position": {"x": 0.2201, "y": 0.0527, "z": 0.068},
       "meshName": "seemine_40k004",
       "media": "media/originalskizze2.jpg",
       "content": [
@@ -35,7 +35,7 @@
       "icon": "media/objectgroup.png",
       "media": "media/Mine_KolbergerHeide.jpg",
       "verticesOnModel": [36354, 0, 0],
-      "indicatorPosition": [-0.35, 0.1, -0.25],
+      "position": {"x": -0.35, "y": 0.1, "z": -0.25},
       "meshName": "seemine_40k004",
       "content": [
         "Diese Schraube verschließt eine Öffnung. Durch sie konnten zusätzliche Gewichte wie etwa Bleikugeln hinzugefügt werden. Dadurch ließen sich der Auftrieb und die Schwimmlage der Mine noch besser steuern. Auch wirkten diese Kugeln bei der Explosion zusätzlich wie Geschosse.",
@@ -49,7 +49,7 @@
       "title": "Große Gefahr für die Seefahrt",
       "icon": "media/global.png",
       "verticesOnModel": [39332, 0, 0],
-      "indicatorPosition": [-0.05, 0.16, 0.3],
+      "position": {"x": -0.05, "y": 0.16, "z": 0.3},
       "meshName": "seemine_40k004",
       "media": "media/Flussmine_Querschnitt_web.jpg",
       "content": [
@@ -65,7 +65,7 @@
       "icon": "media/mensch.png",
       "media": "media/minenhaufen.jpg",
       "verticesOnModel": [23502, 0, 0],
-      "indicatorPosition": [0.15, 0.05, -0.4],
+      "position": {"x": 0.15, "y": 0.05, "z": -0.4},
       "meshName": "seemine_40k004",
       "content": [
         "Dieser weiße Gummistreifen dichtet die Mine gegen Wasser ab. Leider hält eine solche Dichtung nicht für immer. Auch die Metallteile werden durch das Wasser angegriffen. Daher ist die Sprengkraft nicht die einzige Gefahr, die unter der schwarzen Hülle lauert. Verrostet diese langsam, können die teilweise giftigen Sprengstoffe austreten und die Tiere und Pflanzen des Meeres schädigen.",
@@ -80,7 +80,7 @@
       "icon": "media/technik.png",
       "media": "media/originalskizze1.jpg",
       "verticesOnModel": [318, 0, 0],
-      "indicatorPosition": [0.1, -0.55, -0.1],
+      "position": {"x": 0.1, "y": -0.55, "z": -0.1},
       "meshName": "seemine_40k004",
       "content": [
         "An diesem Metallbolzen kann bei unserer Mine zum Beispiel ein Gewicht befestigt werden. Dadurch lässt sich steuern, wie tief sie im Wasser schwimmt. Ist sie leichter, lauert sie direkt unter der Wasseroberfläche. Ist sie schwerer, schwebt sie knapp über dem Grund.",
