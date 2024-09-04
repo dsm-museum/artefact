@@ -73,8 +73,14 @@ $lg-breakpoint: 1920px;
 /* For our image viewer 'viewerjs'*/
 .viewer-title {
   color: white !important;
-  font-weight: 700;
-  background-color: #000000;
-  padding: 7px;
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.7);
   opacity: 1.0 !important;
+  max-width: 400px !important;
+  word-wrap: anywhere !important;
+  white-space: normal !important;
+}
+
+.viewer-title:not(:empty) {
+  padding: 7px;
 }

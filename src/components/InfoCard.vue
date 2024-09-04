@@ -36,9 +36,8 @@
 
               <div class="row q-col-gutter-md">
                 <div v-if="checkProperty(annotation, 'media')" class="col-xs-12 col-sm-12 col-md-5 col-lg-3">
-                  <q-img id="image"
-                    @click='showLightbox("./models/" + props.config.urlPath + "/" + annotation.media, "altText")'
-                    alt="altText" class="cursor-pointer"
+                  <q-img id="image" @click='showLightbox(annotation.mediaDescription)'
+                    :alt="annotation.mediaDescription ? annotation.mediaDescription : ''" class="cursor-pointer"
                     :src='"./models/" + props.config.urlPath + "/" + annotation.media' spinner-color="primary" />
                 </div>
 
@@ -60,7 +59,6 @@
 import 'viewerjs/dist/viewer.css'
 import Viewer from "viewerjs";
 import { ref, onMounted } from "vue";
-//import VueEasyLightbox from "vue-easy-lightbox";
 
 const props = defineProps({
   config: {
@@ -89,7 +87,7 @@ function close() {
   emit("closeInfocardEvent")
 }
 
-function showLightbox(imagePath, altText) {
+function showLightbox(mediaDescription) {
 
   if (viewer.value) {
     viewer.value.destroy()
@@ -101,8 +99,10 @@ function showLightbox(imagePath, altText) {
     navbar: false,
     button: false,
     viewed: false,
+    tooltip: false,
+    zoomRatio: 0.3,
     zIndex: 9999,
-    title: (image, imageData) => `${altText}`,
+    title: (image, imageData) => { return mediaDescription != undefined ? mediaDescription : "" },
     toolbar: {
       zoomIn: true,
       zoomOut: true,
