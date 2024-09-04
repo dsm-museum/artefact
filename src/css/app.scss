@@ -68,3 +68,13 @@ $lg-breakpoint: 1920px;
     max-width: 1440px;
   }
 }
+
+
+/* For our image viewer 'viewerjs'*/
+.viewer-title {
+  color: white !important;
+  font-weight: 700;
+  background-color: #000000;
+  padding: 7px;
+  opacity: 1.0 !important;
+}

@@ -1,10 +1,6 @@
 <template>
   <q-dialog id="info-card-dialog" v-model="isOpen" position="bottom" square maximized>
 
-    <!-- Main lightbox for all images -->
-    <vue-easy-lightbox :visible="lightboxOpen" :imgs="lightboxImage" :zoomScale=1
-      @hide="closeLightbox"></vue-easy-lightbox>
-
     <q-card style="background-color: transparent" class="no-shadow desktop-style">
 
 
@@ -39,12 +35,11 @@
               </div>
 
               <div class="row q-col-gutter-md">
-                <!-- TODO: V-if image -->
-                <!-- Image -->
                 <div v-if="checkProperty(annotation, 'media')" class="col-xs-12 col-sm-12 col-md-5 col-lg-3">
-                  <q-img @click='showLightbox("./models/" + props.config.urlPath + "/" + annotation.media)'
-                    class="cursor-pointer" :src='"./models/" + props.config.urlPath + "/" + annotation.media'
-                    spinner-color="primary" />
+                  <q-img id="image"
+                    @click='showLightbox("./models/" + props.config.urlPath + "/" + annotation.media, "altText")'
+                    alt="altText" class="cursor-pointer"
+                    :src='"./models/" + props.config.urlPath + "/" + annotation.media' spinner-color="primary" />
                 </div>
 
                 <!-- Text Content -->
@@ -62,8 +57,10 @@
 </template>
 
 <script setup>
+import 'viewerjs/dist/viewer.css'
+import Viewer from "viewerjs";
 import { ref, onMounted } from "vue";
-import VueEasyLightbox from "vue-easy-lightbox";
+//import VueEasyLightbox from "vue-easy-lightbox";
 
 const props = defineProps({
   config: {
@@ -75,16 +72,12 @@ const props = defineProps({
 
 const emit = defineEmits(["closeInfocardEvent", "animateCameraEvent"])
 
+let viewer = ref(null)
 let isOpen = ref(false)
 let tab = ref("")
 let lightboxOpen = ref(false)
-let lightboxImage = ref([])
 
-onMounted(async () => {
-  for (let index in props.config) {
-    console.log(index)
-  }
-})
+onMounted(async () => { })
 
 const open = (index) => {
   isOpen.value = true
@@ -96,9 +89,40 @@ function close() {
   emit("closeInfocardEvent")
 }
 
-function showLightbox(imageToShow) {
-  lightboxOpen.value = true
-  lightboxImage.value = imageToShow
+function showLightbox(imagePath, altText) {
+
+  if (viewer.value) {
+    viewer.value.destroy()
+    viewer.value = null
+  }
+
+  viewer.value = new Viewer(document.querySelector("#image"), {
+    inline: false,
+    navbar: false,
+    button: false,
+    viewed: false,
+    zIndex: 9999,
+    title: (image, imageData) => `${altText}`,
+    toolbar: {
+      zoomIn: true,
+      zoomOut: true,
+      oneToOne: false,
+      reset: true,
+      prev: false,
+      play: false,
+      next: false,
+      rotateLeft: false,
+      rotateRight: false,
+      flipHorizontal: false,
+      flipVertical: false,
+
+      close: function () {
+        viewer.value.hide()
+      }
+    },
+  })
+
+  viewer.value.show()
 }
 
 function closeLightbox() {
