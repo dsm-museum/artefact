@@ -1,40 +1,16 @@
 <template>
   <q-page id="three-page">
-    <loading-screen
-      :show="showLoadingScreen"
-      :progress="loadingProgress"
-      :progress-label="progressLabel"
-      :progress-description="progressDescription"
-    ></loading-screen>
+    <loading-screen :show="showLoadingScreen" :progress="loadingProgress" :progress-label="progressLabel"
+      :progress-description="progressDescription"></loading-screen>
 
-    <info-card
-      id="info-card"
-      :config="config"
-      ref="infocardRef"
-      @closeInfocardEvent="closeInfocard"
-    />
+    <info-card id="info-card" :config="config" ref="infocardRef" @closeInfocardEvent="closeInfocard" />
 
     <div id="annotations" style="z-index: 99"></div>
 
-    <q-page-sticky
-      id="arMenu-container"
-      position="top"
-      :offset="[0, 24]"
-      style="z-index: 99"
-    >
-      <a-r-menu
-        id="arMenu"
-        :isRunning="isRunning"
-        :hasQuiz="config.quiz != undefined"
-        :animationReady="animationReady"
-        :deviceSupportsAR="deviceSupportsAR"
-        :arEnabled="config.ar"
-        :animationIsPlaying="animationIsPlaying"
-        :inAR="inAR"
-        @onStartAR="startAR"
-        @onToggleAnimation="toggleAnimation"
-        @onShowQuizIntro="showQuizIntro"
-      >
+    <q-page-sticky id="arMenu-container" position="top" :offset="[0, 24]" style="z-index: 99">
+      <a-r-menu id="arMenu" :isRunning="isRunning" :hasQuiz="config.quiz != undefined" :animationReady="animationReady"
+        :deviceSupportsAR="deviceSupportsAR" :arEnabled="config.ar" :animationIsPlaying="animationIsPlaying"
+        :inAR="inAR" @onStartAR="startAR" @onToggleAnimation="toggleAnimation" @onShowQuizIntro="showQuizIntro">
       </a-r-menu>
     </q-page-sticky>
 
@@ -97,6 +73,9 @@ let inAR = ref(false)
 let modelWasPlaced = false
 let hitTestSourceRequested = ref(false)
 let hitTestSource = ref(null)
+let previousX = ref(0)
+let previousY = ref(0)
+let isDragging = ref(false)
 
 // Grouping
 let sceneContents = new Group() // Holds all the contents, as we want to avoid moving the origin (origin = experience.scene.position)
@@ -121,8 +100,12 @@ onMounted(async () => {
     config.value.quiz.questions
   )
 
-  // FIXME: Make this group unnecessary, we already have a scene which we can display
   sceneContents.name = 'sceneContents'
+
+  //TODO: Put all config related stuff together
+  if (config.value.backgroundColor) {
+    document.querySelector("#three-canvas").style.backgroundColor = config.value.backgroundColor
+  }
 
   // FIXME: This function does too much. I'd rather split it
   await createExperience()
@@ -201,6 +184,8 @@ async function createExperience() {
   }
 
   // Add the contents to the scene
+  // sceneContents.position.y = 0.08
+  // sceneContents.position.z = -0.07
   experience.scene.add(sceneContents)
 
   // FIXME: Fix loading scheduling and loading screen
@@ -424,6 +409,37 @@ async function createExperience() {
   experience.renderer.instance.setAnimationLoop((timestamp, frame) => {
     update(timestamp, frame)
   })
+
+  // Set up the initial touch point when the user first touches the screen
+  experience.canvas.addEventListener('pointerdown', (event) => {
+    if (experience.renderer.instance.xr.isPresenting) {
+      previousX.value = event.screenX;
+      previousY.value = event.screenY;
+      isDragging = true;
+    }
+  });
+
+  // Stop rotating when the user lifts their finger
+  experience.canvas.addEventListener('pointerup', () => {
+    isDragging = false;
+  });
+
+  // This event listener enables rotation in AR mode
+  experience.canvas.addEventListener('pointermove', (event) => {
+    // Only rotate the object in AR mode
+    if (experience.renderer.instance.xr.isPresenting) {
+      let delta = {
+        x: event.screenX - previousX.value,
+        y: event.screenY - previousY.value,
+      }
+      console.log(delta)
+
+      sceneContents.rotation.y += delta.x * 0.009
+
+      previousX.value = event.screenX
+      previousY.value = event.screenY
+    }
+  })
 }
 
 // FIXME: could be removed, as it only touches the experience itself
@@ -555,7 +571,9 @@ function showQuizIntro() {
         color: 'primary',
       },
     }).onOk(() => {
-      //
+      // Stop the animation from playing and start the quiz
+      animationIsPlaying.value = false
+      playAnimations(false)
       startQuiz()
     })
   } else {

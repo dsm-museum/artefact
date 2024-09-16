@@ -1,7 +1,7 @@
 {
   "title": "Das Chronometer",
-  "description": "Beschreibung des Chronometer hier",
-  "thumbnail": "",
+  "description": "Diese spezielle Schiffsuhr hat der Berliner Uhrmacher Christian Friedrich Tiede (1794-1877) hergestellt. Die Holzkiste hat drei Teile. Jeden Tag öffnete ein Schiffsoffizier die oberste Deckelklappe, unter der ein Glasfenster war, um die Uhrzeit abzulesen. Der Mechanismus im Inneren der Uhr besteht aus Messing und ist an einem Gelenk aufgehängt. Dadurch konnten Bewegungen des Schiffes im Seegang ausgeglichen werden und das Gerät war auch vor Erschütterungen geschützt.",
+  "thumbnail": "media/thumbnail_web.jpg",
   "order": 5,
   "assets": [
     {
@@ -10,6 +10,7 @@
     }
   ],
   "ar": true,
+  "backgroundColor": "#2f505e",
   "annotationScale": 1,
   "cameraPosition": { "x": 0.22, "y": 0.23, "z": 0.44},
   "origin": {"x": 0, "y": 0, "z": 0},
@@ -23,6 +24,7 @@
       "verticesOnModel": [14969, 13330, 13333],
       "position": {"x": -0.03, "y": 0.21, "z": -0.15},
       "media": "",
+      "audio": "media/chronometer-1.mp3",
       "content": ["Früher gab es Uhren, die Chronometer oder Schiffsuhren genannt wurden. Sie waren sehr wichtig für die Navigation auf dem Meer und wurden von den 1760er Jahren bis ins 20. Jahrhundert verwendet. Die älteren Chronometer sahen aus wie Taschenuhren, aber dieses Exemplar hat eine Holzkiste, die typisch ist für das 19. Jahrhundert. Diese spezielle Schiffsuhr hat der Berliner Uhrmacher Christian Friedrich Tiede (1794-1877) hergestellt. Anhand der Seriennummer 118 kann man sie etwa auf die Zeit 1835 bis 1840 datieren. Die Holzkiste hat drei Teile. Jeden Tag öffnete ein Schiffsoffizier die oberste Deckelklappe, unter der ein Glasfenster war, um die Uhrzeit abzulesen. Der gesamte Deckel konnte nur mit dem dazugehörigen Schlüssel geöffnet werden, beispielsweise um die Uhr aufzuziehen. Das musste alle 56 Stunden oder 2,3 Tage passieren, wie die Gangreserve auf dem Ziffernblatt zeigt. Der Mechanismus im Inneren der Uhr besteht aus Messing und ist an einem Gelenk aufgehängt. Dadurch konnten Bewegungen des Schiffes im Seegang ausgeglichen werden und das Gerät war auch vor Erschütterungen geschützt."]
     },
     {
@@ -34,6 +36,7 @@
       "verticesOnModel": [150, 151, 101],
       "position": {"x": 0.15, "y": 0.09, "z": 0.0},
       "media": "",
+      "audio": "media/chronometer-3.mp3",
       "content": ["Das Verfahren zur Bestimmung des Längengrades auf See mithilfe der Schiffsuhr war relativ einfach. Kapitäne, andere Schiffsoffiziere und auch die Kadetten, das sind Auszubildende, haben es angewendet. Weil sich die Erde in 24 Stunden einmal komplett um ihre Achse dreht, also 15 Grad pro Stunde, konnte man aus dem Zeitunterschied zwischen zwei Orten auf der Erdoberfläche auch den Winkelunterschied zwischen diesen Orten ableiten. An Bord des Schiffes wurde die Schiffsuhr mitgeführt, die die Zeit am Bezugsort anzeigte, oft die Zeit von Greenwich bei London (0. Längengrad). Der Offizier an Bord bestimmte die Schiffszeit täglich, indem er den Stand der Sonne im Zenit (Mittagszeit) beobachtete. Wenn es zum Beispiel einen Zeitunterschied von +6 Stunden zwischen der Greenwich- Zeit und der Schiffszeit gab, konnte man daraus einen Winkelunterschied von 90 Grad (6 x 15) berechnen. Das Schiff befand sich dann also gerade an einer Position von 90 Grad östlicher Länge, im Indischen Ozean oder im Südpolarmeer."]
     },
     {
@@ -45,6 +48,7 @@
       "verticesOnModel": [175, 129, 127],
       "position": {"x": 0.15, "y": 0.02, "z": 0.15},
       "media": "",
+      "audio": "media/chronometer-4.mp3",
       "content": ["Im 16. und 17. Jahrhundert konnten europäische Seeleute mithilfe von Winkelmessinstrumenten wie dem Jacobsstab, dem Seeastrolabium und später dem Sextanten den Breitengrad auf See genau bestimmen. Das bedeutet, sie konnten die Position ihres Schiffes in Nord-Süd-Richtung zwischen dem Äquator und den Erdpolen feststellen. Es war aber viel schwieriger für Schiffskapitäne, den Längengrad, also die Ost-West- Position ihres Schiffes, genau zu bestimmen. Deshalb gab es im frühen 18. Jahrhundert viele Schiffsunglücke an Felsküsten oder Irrfahrten in unbekannten Ozeanen. Um dieses Problem zu lösen, versprach das englische Parlament im Jahr 1714 eine Belohnung von 20.000 Pfund für denjenigen, der eine praktische Lösung für das Längenproblem finden würde. Der englische Uhrmacher John Harrison (1693-1776) begann ab 1727 die Entwicklung eines Marinechronometers, also einer Schiffsuhr, die er 1759 als Modell H4 präsentierte. Diese Erfindung erwies sich bald als sehr nützlich für die Navigation auf dem Meer. Besonders während der zweiten Weltreise des Kartografen James Cook (1728-1779) in den Jahren 1772 bis 1775 wurde das Marinechronometer erfolgreich eingesetzt."]
     },
     {
@@ -56,6 +60,7 @@
       "verticesOnModel": [2478, 2511, 2477],
       "position": {"x": -0.14, "y": 0.1, "z": 0.05},
       "media": "",
+      "audio": "media/chronometer-2.mp3",
       "content": ["Globalisierung bedeutet, dass die ganze Welt wirtschaftlich miteinander verknüpft ist und Seeschiffe sind für die Globalisierung sehr wichtig. Schon im 19. Jahrhundert hat sich die Globalisierung durch neue Technologien im Transport und in der Kommunikation verstärkt. Zum Beispiel haben Dampfschiffe und regelmäßige Schiffsverbindungen den Transport von Waren und Menschen über die Ozeane beschleunigt. Auf Weltkarten konnte man die Erde als ein zusammenhängendes Gebiet sehen und man konnte erkennen, wie die Verkehrswege über das Meer verlaufen. Dadurch wirkten die Meere weniger beängstigend. Die Navigation auf See wurde mit Instrumenten wie der Schiffsuhr erleichtert. Um diese Instrumente zu benutzen, musste man grundlegendes Wissen über die kugelrunde Form der Erde, ihre Drehung um die eigene Achse und das Gradnetz haben."]
     },
     {
@@ -67,6 +72,7 @@
       "verticesOnModel": [548, 549, 550],
       "position": {"x": -0.06, "y": 0.08, "z": 0.22},
       "media": "",
+      "audio": "media/chronometer-5.mp3",
       "content": ["Unter dem Ziffernblatt der Schiffsuhr mit den Stunden-, Minuten- und Sekundenzeigern befindet sich der eigentliche Mechanismus des Chronometers. Dieser Mechanismus besteht aus drei Teilen, die miteinander verbunden sind:",
       "1. Beim Aufziehen des Chronometers wird eine Kette um eine Kegelschnecke gewickelt. Dadurch wird das Hauptfederblatt im zylinderförmigen Gehäuse gespannt. Das Hauptfederblatt ist die Energiequelle für das Chronometer. Die Kegelschnecke sorgt dafür, dass die Federenergie gleichmäßig abgebaut wird, während das Chronometer läuft.",
       "2. Das Unruhrad mit einer Spiralfeder schwingt mit einer bestimmten Frequenz um seine Achse. Diese Frequenz bestimmt die Geschwindigkeit, mit der das Chronometer läuft. Das Unruhrad besteht aus zwei verschiedenen Metallen, um Temperaturschwankungen auszugleichen, die beispielsweise bei der Überquerung des Äquators auftreten können.",
@@ -74,143 +80,118 @@
     }
   ],
   "quiz": {
-    "title": "Das Quiz zum APEX",
-    "description": "Das Quiz zum APEX",
+    "title": "Das Quiz zum Chronometer",
+    "description": "Das Quiz zum Chronometer",
     "questions": [
       {
         "id": "the-object",
-        "question": "Warum wurde das APEX nie regulär genutzt?",
+        "question": "Was war der Hauptverwendungszweck des Chronometers?",
         "answers": [
           {
             "id": 0,
-            "text": "Bevor mit der Förderung begonnen werden konnte, mussten die Schürfrechte geklärt werden.",
-            "correct": true
+            "text": "die Ortszeit in einem unbekannten Hafen anzuzeigen",
+            "correct": false
           },
           {
             "id": 1,
-            "text": "Es stellte sich heraus, dass Bodenschätze vom Meeresgrund qualitativ schlecht sind.",
-            "correct": false
+            "text": "die Zeitmessung zur Bestimmung der Schiffsposition",
+            "correct": true
           },
           {
             "id": 2,
-            "text": "Das Fördern von marinen Bodenschätzen war aus technischen Gründen nicht möglich.",
-            "correct": false
-          },
-          {
-            "id": 3,
-            "text": "Es wurden vor Inbetriebnahme Mängel an dem Gerät festgestellt.",
+            "text": "die Arbeitszeiten der Schiffsbesatzung zu strukturieren",
             "correct": false
           }
         ],
-        "explanationText": "Bevor mit der Förderung begonnen werden konnte, mussten die Schürfrechte geklärt werden."
+        "explanationText": "Mithilfe der Schiffsposition und des Chronometers kann die Zeit gemessen werden."
       },
       {
         "id": "the-objectgroup",
-        "question": "Wofür werden Unterwasserroboter nicht genutzt?",
+        "question": "Wer nutzte während einer Seereise das Chronometer zur Schiffsortbestimmung?",
         "answers": [
           {
             "id": 0,
-            "text": "Für das Absenken von Temperaturen in den überhitzten Ozeanen",
-            "correct": true
+            "text": " der Kapitän und der Eigentümer des Schiffes",
+            "correct": false
           },
           {
             "id": 1,
-            "text": "Für die Seenotrettung.",
-            "correct": false
+            "text": "der Kapitän sowie die anderen Schiffsoffiziere und Auszubildenden",
+            "correct": true
           },
           {
             "id": 2,
-            "text": "Für das Messen von Temperaturen und Strömungen in den Meeren.",
-            "correct": false
-          },
-          {
-            "id": 3,
-            "text": "Für die Untersuchung von Höhlen.",
+            "text": "die Mechaniker und Ingenieure an Bord",
             "correct": false
           }
         ],
-        "explanationText": "Für das Absenken von Temperaturen in den überhitzten Ozeanen."
+        "explanationText": "Das Chronometer nutzten sowohl der Kapitän als auch die anderen Schiffsoffiziere und Auszubildenden."
       },
       {
         "id": "mensch-und-meer",
-        "question": "Warum lässt sich das APEX mit einem Marsroboter vergleichen?",
+        "question": "Wer begann 1727 mit der Entwicklung des Chronometers?",
         "answers": [
           {
             "id": 0,
-            "text": "Die Erforschung der Tiefsee und des Weltraums galten als prestigeträchtige Pionierleistungen.",
-            "correct": true
+            "text": "James Cook",
+            "correct": false
           },
           {
             "id": 1,
-            "text": "Projekte in der Tiefsee und im Weltall werden von Raumfahrtbehörden geplant.",
+            "text": "Isaac Newton",
             "correct": false
           },
           {
             "id": 2,
-            "text": "Für Meeres- und Weltraumroboter werden die gleichen Materialien verwendet.",
-            "correct": false
-          },
-          {
-            "id": 3,
-            "text": "Es herrschen im Weltraum und in der Tiefsee gleiche Bedingungen.",
-            "correct": false
+            "text": "John Harrison",
+            "correct": true
           }
         ],
-        "explanationText": "Die Erforschung der Tiefsee und des Weltraums galten als prestigeträchtige Pionierleistungen."
+        "explanationText": "John Harrison begann 1727 mit der Entwicklung des Chronometers."
       },
       {
         "id": "global-perspective",
-        "question": "Warum stellt der Bergbau eine Gefahr für die Umwelt dar?",
+        "question": "Welches grundsätzliche Wissen benötigte man für die Navigation mit einem Chronometer?",
         "answers": [
           {
             "id": 0,
-            "text": "Die Rohstoffvorkommen sind Lebensraum von Meereslebewesen.",
-            "correct": true
+            "text": "meeresbiologisches Wissen",
+            "correct": false
           },
           {
             "id": 1,
-            "text": "Die Beprobung des Ozeanbodens löst Erdbeben aus.",
-            "correct": false
+            "text": "Kenntnisse zur Kugelgestalt der Erde, ihrer Rotation und dem Gradnetz",
+            "correct": true
           },
           {
             "id": 2,
-            "text": "Die Förder-Roboter werden mit Uran betrieben.",
-            "correct": false
-          },
-          {
-            "id": 3,
-            "text": "Beim Abbau werden gefährliche Stoffe aufgewirbelt.",
+            "text": "Wissen über die Navigationskunst in Antike und Mittelalter",
             "correct": false
           }
         ],
-        "explanationText": "Die Rohstoffvorkommen sind Lebensraum von Meereslebewesen."
+        "explanationText": "Um mit dem Chronometer zu navigieren benötigte man Wissen zur Kugelgestalt der Erde, ihrer Rotation und dem Gradnetz."
       },
       {
         "id": "technical",
-        "question": "Welche technische Innovation wünschten sich die Meeresforscher von den Ingenieuren des APEX?",
+        "question": "Welche Funktion besitzt das Hauptfederblatt des Chronometers?",
         "answers": [
           {
             "id": 0,
-            "text": "Elektronik, die es erleichtert, einen senkrechten Bohrkern aus dem Ozeanboden zu entnehmen.",
-            "correct": true
+            "text": "es reguliert die Gerätetemperatur",
+            "correct": false
           },
           {
             "id": 1,
-            "text": "Eine Sonde, die direkt am Meeresgrund Gesteine bestimmt.",
-            "correct": false
+            "text": "es dient als Energiespeicher für das Gerät",
+            "correct": true
           },
           {
             "id": 2,
-            "text": "Ein Baggermodul, mit dem sich die Oberfläche abtragen lässt.",
-            "correct": false
-          },
-          {
-            "id": 3,
-            "text": "Einen stärkeren Antrieb, um das APEX präziser bewegen zu können.",
+            "text": "es sorgt für gleichmäßige Bewegungen der Uhrzeiger",
             "correct": false
           }
         ],
-        "explanationText": "Elektronik, die es erleichtert, einen senkrechten Bohrkern aus dem Ozeanboden zu entnehmen."
+        "explanationText": "Das Hauptfederblatt des Chronometers dient als Energiespeicher für das Gerät."
       }
     ]
   }

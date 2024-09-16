@@ -21,7 +21,7 @@ module.exports = configure(function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
-    boot: ['load_configs'], // removed i18n
+    boot: ['load_configs'],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ['app.scss'],
@@ -64,7 +64,6 @@ module.exports = configure(function (ctx) {
       },
       devtool: 'source-map',
       // transpile: false,
-      //publicPath: '/artefact',
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
       // (from node_modules, which are by default not transpiled).
@@ -95,12 +94,12 @@ module.exports = configure(function (ctx) {
       server: {
         type: 'https',
         options: {
-          key: 'C:\\Self-Signed-Certificates\\localhost-key-new.pem',
-          cert: 'C:\\Self-Signed-Certificates\\localhost-new.pem',
+          key: 'C:\\Self-Signed-Certificates\\localhost-key.pem',
+          cert: 'C:\\Self-Signed-Certificates\\localhost.pem',
         },
       },
       port: 8080,
-      open: true, // opens browser window automatically
+      open: false, // opens browser window automatically
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework

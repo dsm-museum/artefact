@@ -43,6 +43,9 @@
 
                 <!-- Text Content -->
                 <div class="col-xs-12 col-sm-12 col-md-7 col-lg-9">
+                  <audio controls v-if="checkProperty(annotation, 'audio')" class="q-mb-md"
+                    style="width: 100%; display: block;"
+                    :src='"./models/" + props.config.urlPath + "/" + annotation.audio'></audio>
                   <div v-for="paragraph in annotation.content" :key="paragraph" class="q-mb-sm" v-html="paragraph">
                   </div>
                 </div>

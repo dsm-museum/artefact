@@ -498,6 +498,9 @@ function showQuizIntro() {
         color: "primary"
       }
     }).onOk(() => {
+      // Stop the animation from playing and start the quiz
+      animationIsPlaying.value = false
+      playAnimations(false)
       startQuiz()
     })
   } else {
