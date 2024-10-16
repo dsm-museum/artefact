@@ -2,7 +2,7 @@
   "title": "Die Flussmine",
   "description": "Die Metallhülle der Mine besteht aus zwei hohlen Halbkugeln. Mit Hilfe des hier markierten Bauteils, einer sogenannten Ringmutter, sind sie miteinander verschraubt. Dieser Aufbau und die dunkle Färbung geben dem Objekt ein gefährliches Aussehen. Dabei hat es nur einen Durchmesser von ca. 40 cm. Sehr wahrscheinlich handelt es sich um eine britische Treibmine aus der Zeit des Zweiten Weltkrieges. Solche relativ kleinen Minen wurden in Flüssen und Flussmündungen eingesetzt. Ein Uhrwerk machte die Mine nach einer vorher festgelegten Zeit scharf.",
   "thumbnail": "media/flussmine_thumbnail.jpg",
-  "order": 0,
+  "order": 2,
   "assets": [
     {
       "id": "model",

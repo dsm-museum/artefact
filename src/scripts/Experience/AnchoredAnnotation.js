@@ -189,7 +189,14 @@ export default class AnchoredAnnotation {
   }
 
   update() {
-    this.mesh.updateMatrixWorld(true)
+    try {
+      this.mesh.updateMatrixWorld(true)
+    } catch (error) {
+      /*console.warn(
+        `AnchoredAnnotation: No mesh with the name ${this.annotationData.meshName} for anchoring the annotation could be found in the file.`
+      )*/
+      return
+    }
 
     // Update position of the vertex, remember this is world space
     // TODO: Change to barycentric coordinates to get the center of all 3 verticesOnModel
