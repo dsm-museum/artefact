@@ -1,144 +1,80 @@
-import {
-  AxesHelper,
-  MathUtils,
-  Object3D,
-  Raycaster,
-  Vector2,
-  Vector3,
-} from 'three'
-import { TransformControls } from 'three/examples/jsm/controls/TransformControls'
+import { Pane } from 'tweakpane'
+import ar2 from '../../../assets/inspector/augmented-reality-2.svg'
+import cube from '../../../assets/inspector/cube.svg'
 
-export class Inspector {
-  constructor(parent, scene) {
-    this.parent = parent
-    this.scene = scene
-    this.scene.add(this.createAxesHelper())
+export default class Inspector {
+  constructor() {
+    this.sceneHierarchy = new Pane()
+    this.sceneHierarchy.containerElem_.style.right = ''
+    this.sceneHierarchy.containerElem_.style.top = ''
+    this.sceneHierarchy.containerElem_.style.left = '8px'
+    this.sceneHierarchy.containerElem_.style.top = '8px'
+    this.sceneHierarchy.containerElem_.style.overflowY = 'scroll'
+    this.sceneHierarchy.containerElem_.style.height = '100%'
 
-    this.panel = this.createPanel()
-    this.parent.insertBefore(this.panel, this.parent.firstChild)
-    this.buildSceneTree()
+    this.INSPECTOR_DEPTH = 2
+
+    this.init()
+    console.log(window.APP.scene.children)
   }
 
-  createPanel() {
-    let panel = document.createElement('div')
-    panel.id = 'three-inspector'
-    panel.innerText = 'INSPECTOR'
-    panel.appendChild(document.createElement('hr'))
-    panel.style.color = '#ffffff'
-    panel.style.padding = '8px'
-    panel.style.borderRadius = '4px'
-    panel.style.margin = '4px'
-    panel.style.position = 'absolute'
-    panel.style.backgroundColor = '#2e3440'
-    return panel
+  init() {
+    for (let child of window.APP.scene.children) {
+      this.getSceneDepth(this.sceneHierarchy, child, 0)
+    }
   }
 
-  createBlade(entity) {
-    let blade = null
-    let bladeName = 'Undefined'
-
-    // If the entity does not have children
-    if (entity.children.length == 0) {
-      blade = document.createElement('div')
-      bladeName = entity.name
-        ? entity.name
-        : 'Untitled ' + (entity.type ? entity.type : 'Untyped')
-      blade.innerText = bladeName
-    } else {
-      blade = document.createElement('details')
-      bladeName = entity.name
-        ? entity.name
-        : 'Untitled ' + (entity.type ? entity.type : 'Untyped')
-
-      // Add summary heading
-      let summary = document.createElement('summary')
-      summary.innerText = '> ' + bladeName
-      blade.appendChild(summary)
-
-      let childList = document.createElement('ul')
-      blade.appendChild(childList)
-
-      for (let child of entity.children) {
-        let elem = document.createElement('li')
-        elem.innerText = child.name ? child.name : child.type
-        childList.appendChild(elem)
-      }
+  getSceneDepth(parent = null, element, depth) {
+    if (depth > this.INSPECTOR_DEPTH) {
+      return
     }
 
-    // Add to the inspector
-    blade.style.color = '#ffffff'
-    this.panel.appendChild(blade)
-  }
-
-  createTransformControls(
-    scene,
-    camera,
-    renderer,
-    initialPosition = new Vector3(0, 0, 0)
-  ) {
-    let root = new Object3D()
-    root.name = 'Transform Control Root'
-
-    if (initialPosition) {
-      root.position.set(initialPosition.x, initialPosition.y, initialPosition.z)
+    if (depth == this.INSPECTOR_DEPTH) {
+      let more =
+        element.children.length != 0 ? ` (${element.children.length} more)` : ''
+      parent.addBlade({
+        view: 'text',
+        disabled: true,
+        parse: (v) => String(v),
+        value: (element.name || element.type) + more,
+      })
+      return
     }
 
-    let transformControls = new TransformControls(camera, renderer.domElement)
-    transformControls.name = 'Transform Controls'
+    let currentBlade = null
 
-    scene.add(root)
-    scene.add(transformControls)
-    transformControls.attach(root)
-
-    return transformControls
-  }
-
-  createAxesHelper() {
-    let posCoords = new AxesHelper(5)
-    posCoords.name = 'Axes Helper'
-    return posCoords
-  }
-
-  createRaycaster(camera) {
-    let raycaster = new Raycaster()
-    let pointer = new Vector2()
-    let scene = this.scene
-
-    function onPointerMove(event) {
-      pointer.x = (event.clientX / window.innerWidth) * 2 - 1
-      pointer.y = -(event.clientY / window.innerHeight) * 2 + 1
-    }
-
-    function onClick(event) {
-      raycaster.setFromCamera(pointer, camera)
-
-      let intersects = raycaster.intersectObjects(scene.children)
-
-      let filtered = intersects.filter((elem) => {
-        return !['Line', 'AxesHelper', 'TransformControlsPlane'].includes(
-          elem.object.type
-        )
+    if (element.children.length == 0) {
+      // get the current element
+      currentBlade = parent.addBlade({
+        view: 'text',
+        disabled: true,
+        parse: (v) => String(v),
+        value: element.name || element.type,
       })
 
-      console.log(filtered)
-      /*if (intersects.length > 0) {
-        if (intersects[0].object.type in ['Line', 'AxesHelper'] == false) {
-          console.log(intersects[0])
-        }
-      }*/
+      this.addIcon(currentBlade, element.type)
+    } else {
+      currentBlade = parent.addFolder({
+        title: element.name || element.type,
+        expanded: true,
+      })
     }
 
-    window.addEventListener('pointermove', onPointerMove)
-
-    window.addEventListener('click', onClick)
-
-    return raycaster
+    // try to get children
+    for (let child of element.children) {
+      this.getSceneDepth(currentBlade, child, depth + 1)
+    }
   }
 
-  buildSceneTree() {
-    // Iterate over first level and indicate that there are child elements
-    for (let entity of this.scene.children) {
-      this.createBlade(entity)
-    }
+  addIcon(domElem, type = null, isFolder = false) {
+    let iconElem = document.createElement('img')
+    iconElem.style.stroke = 'white'
+    iconElem.style.width = '16px'
+    iconElem.style.height = '16px'
+    iconElem.src = cube
+
+    let view = domElem.controller_.view.element
+    view.style.display = 'flex'
+    view.prepend(iconElem)
   }
 }

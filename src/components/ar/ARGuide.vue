@@ -1,18 +1,9 @@
 <template>
-  <q-dialog
-    id="ar-guide"
-    class="no-pointer-events non-selectable"
-    seamless
-    no-backdrop-dismiss
-    no-esc-dismiss
-    transition-show="fade"
-    transition-hide="fade"
-    v-model="isOpen"
-  >
+  <q-dialog id="ar-guide" class="no-pointer-events non-selectable" seamless no-backdrop-dismiss no-esc-dismiss
+    transition-show="fade" transition-hide="fade" v-model="isOpen">
     <q-card
       class="no-pointer-events non-selectable rounded-borders q-pa-sm q-py-md text-white text-center text-weight-bold"
-      style="width: 250px"
-    >
+      style="width: 250px">
       {{ currentStatus }}
     </q-card>
   </q-dialog>
@@ -28,13 +19,13 @@ export default {
       isOpen: false,
       statusMessages: {
         hidden: "",
-        findSurface: "Bewegen Sie Ihr Smartphone, um eine Fläche zu finden",
+        findSurface: "Bewegen Sie Ihr Gerät, um eine Fläche zu finden",
         placeInitial:
-          "Klicken Sie auf den Bildschirm, um das Schiff auf den Kreis zu platzieren.",
+          "Klicken Sie auf den Bildschirm, um das Objekt auf den Kreis zu platzieren.",
         trackingLost:
-          "Bewegen Sie Ihr Smartphone, um die Fläche erneut zu finden",
+          "Bewegen Sie Ihr Gerät, um die Fläche erneut zu finden",
         placeSecond:
-          "Klicken Sie auf den Bildschirm, um das Schiff auf den Kreis zu platzieren",
+          "Klicken Sie auf den Bildschirm, um das Objekt auf den Kreis zu platzieren",
         finished: "Klicken Sie auf das Symbol oben links, um die Animation abzuspielen oder auf die schwebenden Symbole"
       },
       currentStatus: "No Status",
@@ -47,7 +38,7 @@ export default {
   },
   methods: {
     setStatus(statusName) {
-      if(statusName === "hidden") {
+      if (statusName === "hidden") {
         this.currentStatus = "was hidden before"
         this.isOpen = false;
       } else {

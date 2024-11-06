@@ -35,7 +35,7 @@
               </div>
 
               <div class="row q-col-gutter-md">
-                <div v-if="checkProperty(annotation, 'media')" class="col-xs-12 col-sm-12 col-md-5 col-lg-3">
+                <div v-if="checkProperty(annotation, 'media')" class="col-xs-12 col-sm-12 col-md-5 col-lg-3 q-mb-sm">
                   <q-img id="image" @click='showLightbox(annotation.mediaDescription)'
                     :alt="annotation.mediaDescription ? annotation.mediaDescription : ''" class="cursor-pointer"
                     :src='"./models/" + props.config.urlPath + "/" + annotation.media' spinner-color="primary" />
@@ -43,6 +43,7 @@
 
                 <!-- Text Content -->
                 <div class="col-xs-12 col-sm-12 col-md-7 col-lg-9">
+                  <!--div class="text-h6 text-weight-bold text-left text-uppercase">Als Audio anhören:</div-->
                   <audio controls v-if="checkProperty(annotation, 'audio')" class="q-mb-md"
                     style="width: 100%; display: block;"
                     :src='"./models/" + props.config.urlPath + "/" + annotation.audio'></audio>

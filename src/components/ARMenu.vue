@@ -1,13 +1,13 @@
 <template>
-  <div class="row items-center q-gutter-md">
-    <q-btn @click="emitOnToggleAnimation" :loading="!animationReady" :disabled="!animationReady" unelevated color="white"
-      text-color="primary" :icon="_animationIsPlaying ? 'pause' : 'play_arrow'" class="col text-bold rounded shadow-1"
-      padding="1.4em 1.4em" />
+  <div class="row items-center">
+    <q-btn @click="emitOnToggleAnimation" :loading="!animationReady" :disabled="!animationReady" unelevated
+      color="white" text-color="primary" :icon="_animationIsPlaying ? 'pause' : 'play_arrow'"
+      class="col-4 text-bold rounded shadow-1" padding="1.4em 1.4em" />
     <q-btn @click="emitOnShowQuizIntro" flat unelevated color="transparent" :ripple="false" text-color="white"
       :icon="isRunning ? 'close' : 'artefact:quiz'" class="col text-bold square rounded no-hover icon-fix drop-shadow"
       :class="_hasQuiz != undefined ? '' : 'hidden'" size="3.5em" padding="none" style="width: 200px;" />
     <q-btn @click="emitOnStartAR" unelevated color="white" :text-color="!_deviceSupportsAR ? 'grey' : 'primary'"
-      :icon="inAR ? 'close' : 'mdi-cube-scan'" class="col text-bold rounded shadow-1" padding="1.4em 1.4em"
+      :icon="inAR ? 'close' : 'mdi-cube-scan'" class="col-4 text-bold rounded shadow-1" padding="1.4em 1.4em"
       :class="arEnabled ? '' : 'hidden'" />
   </div>
 </template>

@@ -9,7 +9,9 @@ import { useQuasar } from 'quasar'
 // Here are all custom icons defined that are used in the UI (in the navigation bar e.g.)
 const customIcon = {
   'yourprefix:youricon': 'img:icons/myicon.svg',
-  'artefact:quiz': 'img:icons/quiz-icon.svg'
+  'artefact:quiz': 'img:icons/quiz-icon.svg',
+  'chronometer:upward': 'img:icons/chronometer-upward.svg',
+  'chronometer:downward': 'img:icons/chronometer-downward.svg'
 }
 
 /** Entrypoint of the app */

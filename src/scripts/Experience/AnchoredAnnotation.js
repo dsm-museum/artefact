@@ -72,6 +72,7 @@ export default class AnchoredAnnotation {
 
     // We need a parent mesh to raycast against
     let targetMesh = new Mesh(targetGeometry, targetMaterial)
+    targetMesh.name = this.annotationData.id + '_icon_mesh'
 
     // position the target mesh icon at the specified location
     targetMesh.position.set(position.x, position.y, position.z)
@@ -128,18 +129,20 @@ export default class AnchoredAnnotation {
     line = new Line(geometry, material)
 
     // Add white line endpoint on the model
-    line.add(
-      new Mesh(
-        new SphereGeometry(0.002, 16, 16),
-        new MeshBasicMaterial({
-          color: 0xffffff,
-          transparent: true,
-          opacity: 1.0,
-        })
-      )
+    let mesh = new Mesh(
+      new SphereGeometry(0.002, 16, 16),
+      new MeshBasicMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 1.0,
+      })
     )
+    mesh.name = 'endpoint-bubble'
+
+    line.add(mesh)
     line.computeLineDistances()
 
+    line.name = this.annotationData.id + '_line'
     return line
   }
 
@@ -178,6 +181,14 @@ export default class AnchoredAnnotation {
         mesh = elem
       }
     })
+
+    if (!mesh) {
+      console.warn(
+        `AnchoredAnnotation: No mesh with the name ${this.annotationData.meshName} for anchoring the annotation could be found in the file.`
+      )
+    }
+
+    // mesh is either a mesh or null
     return mesh
   }
 

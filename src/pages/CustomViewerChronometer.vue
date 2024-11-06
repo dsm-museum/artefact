@@ -12,6 +12,25 @@
         :deviceSupportsAR="deviceSupportsAR" :arEnabled="config.ar" :animationIsPlaying="animationIsPlaying"
         :inAR="inAR" @onStartAR="startAR" @onToggleAnimation="toggleAnimation" @onShowQuizIntro="showQuizIntro">
       </a-r-menu>
+
+      <div class="row items-center">
+        <q-slider class="col q-mx-md" :color="sliderColor" :label-text-color="sliderLabelColor"
+          @update:model-value="updateTimeFactor" v-model="sliderValue" markers snap label
+          :label-value="sliderLabelValue" :step="1" switch-label-side :min="0" :max="7" />
+
+        <div class="col-4 justify-between">
+          <q-btn-group>
+            <q-btn @click="toggleMechanism(false)" text-color="primary" color="white" :icon="raiseButtonIcon">
+              <q-tooltip class="bg-primary">{{ raiseButtonText }}</q-tooltip>
+            </q-btn>
+
+            <q-btn @click="toggleXRay" text-color="primary" color="white" :icon="xRayButtonIcon">
+              <q-tooltip class="bg-primary">Modell durchleuchten</q-tooltip>
+            </q-btn>
+          </q-btn-group>
+        </div>
+      </div>
+
     </q-page-sticky>
 
     <q-resize-observer @resize="resize" />
@@ -25,7 +44,7 @@ import { toRaw, onMounted, onUnmounted, ref } from 'vue'
 import anime from 'animejs/lib/anime.es'
 import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
-import { Group, LoopPingPong, Vector3 } from 'three'
+import { Group, Mesh, Vector3 } from 'three'
 
 /* Own Imports */
 import Experience from 'src/scripts/Experience/Experience'
@@ -39,6 +58,8 @@ import QuizCardDialog from 'src/components/dialogs/QuizCardDialog.vue'
 import { modelconfigs } from 'src/boot/load_configs'
 import Quiz from 'src/scripts/Quiz/Quiz'
 import QuizResultDialog from 'src/components/dialogs/QuizResultDialog.vue'
+import Inspector from 'src/scripts/Experience/utils/Inspector'
+import { xRayShader } from 'src/scripts/Experience/shaders/XRayShader'
 
 // Route and config
 let route
@@ -76,6 +97,23 @@ let hitTestSource = ref(null)
 let previousX = ref(0)
 let previousY = ref(0)
 let isDragging = ref(false)
+
+// Chronometer Time Factor
+let sliderValue = ref(0.0) // 2 is realtime
+let sliderLabelValue = ref("Gestoppt")
+let timeFactor = ref(0.0)
+let animationActions = ref(null)
+
+// XRay
+let xRayToggle = ref(false)
+let xRayButtonIcon = ref("visibility")
+let raiseToggle = ref(false)
+let raiseButtonIcon = ref("chronometer:upward")
+let raiseButtonText = ref("Chronometer anheben")
+let originalMaterials = {}
+let mechanismRaised = ref(false)
+let sliderColor = ref("primary")
+let sliderLabelColor = ref("white")
 
 // Grouping
 let sceneContents = new Group() // Holds all the contents, as we want to avoid moving the origin (origin = experience.scene.position)
@@ -160,6 +198,10 @@ onMounted(async () => {
 
   // Add other event listeners
   addEventListeners()
+
+
+  // Debug Chronometer Rotation here
+  //let inspector = new Inspector()
 })
 
 // Destructor, triggered on page navigation
@@ -172,6 +214,9 @@ async function createExperience() {
   experience = new Experience({
     cameraPosition: toRaw(config.value.cameraPosition),
   })
+
+  experience.controls.instance.autoRotate = false
+  experience.controls.instance.minDistance = 0.05
 
   // set orbit position
   if (config.value.origin) {
@@ -193,6 +238,8 @@ async function createExperience() {
   let mainModelUrl = `./models/${route.params.id}/${config.value.assets[0].url}`
   try {
     mainModel = await experience.resources.load(mainModelUrl)
+
+    mainModel.scene.name = "Chronometer.glb"
   } catch (error) {
     console.error(
       `No model was found. Stopping Animation and Annotation loading.`
@@ -211,8 +258,19 @@ async function createExperience() {
     mainModel = null
   }
 
-  // Debug Chronometer Rotation here
-  console.log(mainModel);
+  mainModel.scene.traverse((child) => {
+    if (child instanceof Mesh) {
+      originalMaterials[child.name] = child.material
+    }
+  })
+
+  // Debug log the mesh parts
+  /*mainModel.scene.traverse((elem) => {
+    console.log(elem);
+  })*/
+
+  //console.log(originalMaterials);
+
 
 
   // FIXME: Reverse this (mainModel == null) { return; } and put all further logic that requires
@@ -226,7 +284,7 @@ async function createExperience() {
       mainModel.scene,
       'mainMixer'
     )
-    let actions = experience.animationSystem.createClips(
+    animationActions = experience.animationSystem.createClips(
       mainModel.animations,
       mixer
     )
@@ -313,7 +371,7 @@ async function createExperience() {
   if (mainModel != null) {
     increaseProgress()
   } else {
-    progressLabel.value = ':('
+    progressLabel.value = '  '
   }
 
   // Connect the resize event for correct resizing of the scene
@@ -436,7 +494,7 @@ async function createExperience() {
         x: event.screenX - previousX.value,
         y: event.screenY - previousY.value,
       }
-      console.log(delta)
+      //console.log(delta)
 
       sceneContents.rotation.y += delta.x * 0.009
 
@@ -444,6 +502,187 @@ async function createExperience() {
       previousY.value = event.screenY
     }
   })
+
+  setAnimationSpeed()
+}
+
+function toggleXRay() {
+  xRayToggle.value = !xRayToggle.value
+
+  if (xRayToggle.value) {
+    xRayButtonIcon.value = "visibility_off"
+    mainModel.scene.traverse((child) => {
+      if (child instanceof Mesh) {
+        child.material = xRayShader
+      }
+    })
+  } else {
+    xRayButtonIcon.value = "visibility"
+
+    // Show all original textures
+    mainModel.scene.traverse((child) => {
+      if (child instanceof Mesh) {
+        child.material = originalMaterials[child.name]
+      }
+    })
+  }
+}
+
+// This is based on the time factor value, as the slider value itself does not allow for 0.5 steps
+function setSliderLabelValue(value) {
+
+  switch (value) {
+    case 0:
+      sliderLabelValue.value = "Gestoppt"
+      break
+    case 1:
+      sliderLabelValue.value = "0.5x Echtzeit"
+      break
+    case 2:
+      sliderLabelValue.value = "Echtzeit"
+      break
+    case 3:
+      sliderLabelValue.value = "2x Echtzeit"
+      break
+    case 4:
+      sliderLabelValue.value = "10x Echtzeit"
+      break
+    case 5:
+      sliderLabelValue.value = "100x Echtzeit"
+      break
+    case 6:
+      sliderLabelValue.value = "1.000x Echtzeit"
+      break
+    case 7:
+      sliderLabelValue.value = "10.000x Echtzeit"
+      break
+    case 8:
+      sliderLabelValue.value = "100.000x Echtzeit"
+      break
+    default:
+      sliderLabelValue.value = "oh no"
+  }
+}
+
+function setAnimationSpeed() {
+  let actions = []
+  for (let action of animationActions) {
+    //console.log(action._clip.name);
+
+    actions.push(action._clip.name)
+
+    // This clips out when setting time_factor to 1.000 and more
+    if (action._clip.name == "Unruhrad(1s)Action.001") {
+      action.setDuration(1.0 / timeFactor.value)
+      //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} ${action._clip.duration == 1 ? "Sekunde" : "Sekunden"} lang.`)
+    }
+
+    if (action._clip.name == "Federhemmung.Feder(1s)Action.001") {
+
+      // this keeps the model spinning by stopping the duration change on high frequencies
+      let duration = Math.max(1.0 / timeFactor.value, 0.2) // 1 second
+      action.setDuration(1.0 / timeFactor.value) // 1 second
+
+      //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} ${action._clip.duration == 1 ? "Sekunde" : "Sekunden"} lang.`)
+    }
+
+    if (action._clip.name == "Hemmungsrad(15s)Action") {
+      action.setDuration(15.0 / timeFactor.value) // 15 Seconds
+      //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} ${action._clip.duration == 1 ? "Sekunde" : "Sekunden"} lang.`)
+    }
+
+    if (action._clip.name == "Sekundenrad(1min)Action.001") {
+      action.setDuration(60.0 / timeFactor.value) // 15 Seconds
+      //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} ${action._clip.duration == 1 ? "Sekunde" : "Sekunden"} lang.`)
+    }
+
+    if (action._clip.name == "Drittes Rad(6min30sek).001Action") {
+      action.setDuration(60 * 6.5 / timeFactor.value) // 1 Second * 60 * 6.5 = 6 minutes and 30 seconds
+      //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} ${action._clip.duration == 1 ? "Sekunde" : "Sekunden"} lang.`)
+    }
+
+    if (action._clip.name == "Zentralrad(1h)Action") {
+      action.setDuration(3600 / timeFactor.value) // 1 Second * 3600 = 1 hour
+      //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} Sekunden lang.`)
+    }
+
+    if (action._clip.name == "MinutenradAction") {
+      action.setDuration(13020 / timeFactor.value) // 1 Second * 13020 = 3 hours 37min
+      //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} Sekunden lang.`)
+    }
+
+    if (action._clip.name == "Zentralrad.Minutenritzel(1h)Action") {
+      action.setDuration(3600 / timeFactor.value) // 1 Second * 3600 = 1 hour
+      //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} Sekunden lang.`)
+    }
+
+    if (action._clip.name == "Stundenrad(12h)Action.001") {
+      action.setDuration(3600 * 12 / timeFactor.value) // 1 Second * 3600 * 12 = 12 hours
+      //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} Sekunden lang.`)
+    }
+
+    if (action._clip.name == "Gangreserverad(ca.59h8min)Action.001") {
+      action.setDuration(212880 / timeFactor.value) // 59 hours 8 mins
+      //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} Sekunden lang.`)
+    }
+
+    if (action._clip.name == "SekundenzylinderAction") {
+      action.setDuration(60 / timeFactor.value) //1 minute
+      //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} Sekunden lang.`)
+    }
+
+    if (action._clip.name == "Schneckenwelle_Ritzel(8h18m)Action") {
+      action.setDuration(29880 / timeFactor.value) // 498 Minutes == 29880 seconds, 8h 18m
+    }
+
+  }
+
+  //console.log(actions)
+}
+
+
+function updateTimeFactor(value) {
+  switch (value) {
+    case 0:
+      sliderLabelValue.value = "Gestoppt"
+      timeFactor.value = 0
+      break
+    case 1:
+      sliderLabelValue.value = "0.5x Echtzeit"
+      timeFactor.value = 0.5
+      break
+    case 2:
+      sliderLabelValue.value = "Echtzeit"
+      timeFactor.value = 1.0
+      break
+    case 3:
+      sliderLabelValue.value = "2x Echtzeit"
+      timeFactor.value = 2.0
+      break
+    case 4:
+      sliderLabelValue.value = "10x Echtzeit"
+      timeFactor.value = 10.0
+      break
+    case 5:
+      sliderLabelValue.value = "100x Echtzeit"
+      timeFactor.value = 100.0
+      break
+    case 6:
+      sliderLabelValue.value = "1.000x Echtzeit"
+      timeFactor.value = 1000.0
+      break
+    case 7:
+      sliderLabelValue.value = "10.000x Echtzeit"
+      timeFactor.value = 10000.0
+      break
+    case 8:
+      sliderLabelValue.value = "100.000x Echtzeit"
+      timeFactor.value = 100000.0
+      break
+    default:
+      timeFactor.value = -1
+  }
+  setAnimationSpeed()
 }
 
 // FIXME: could be removed, as it only touches the experience itself
@@ -531,16 +770,28 @@ function toggleAnimation() {
 }
 
 function playAnimations(enabled) {
-  for (let animationClip of experience.animationSystem.animationClips) {
-    animationClip.action.loop = LoopPingPong
+  if (enabled) {
+    sliderColor.value = "orange"
+    sliderLabelColor.value = "primary"
+    experience.annotationSystem.hideAnnotations(true)
+    if (timeFactor.value <= 0.0) {
+      timeFactor.value = 1000.0
+      sliderValue.value = 6.0
+      setSliderLabelValue(6)
+      setAnimationSpeed()
+    }
+  } else {
+    sliderColor.value = "primary"
+    sliderLabelColor.value = "white"
+    experience.annotationSystem.hideAnnotations(false)
+  }
 
+  for (let animationClip of experience.animationSystem.animationClips) {
     if (enabled) {
       animationClip.action.paused = false
       animationClip.action.play()
-      experience.annotationSystem.hideAnnotations(true)
     } else {
       animationClip.action.paused = true
-      experience.annotationSystem.hideAnnotations(false)
     }
   }
 }
@@ -651,7 +902,7 @@ function onXRSelect(event) {
       anime({
         targets: [sceneContents.position],
         x: newPosition.x,
-        y: newPosition.y,
+        y: newPosition.y + 0.3,
         z: newPosition.z,
         easing: 'easeOutQuint',
         duration: 700,
@@ -680,7 +931,74 @@ function onXRSelect(event) {
 }
 
 function openInfocard(id) {
+  if (id == "technical") {
+    toggleMechanism(true)
+  }
   infocardRef.value.open(id)
+}
+
+// This raises and lowers the chronometer mechanism
+function toggleMechanism(shouldOpen) {
+
+  // Models to raise
+  let modelsToRaise = ["I-09128-00_Glasscheibe", "InsideParts002", "Ziffernblatt002"]
+
+  // If it should raise and is not raised yet
+  if (shouldOpen) {
+    if (mechanismRaised.value == false) {
+      mechanismRaised.value = true
+      raiseButtonIcon.value = "chronometer:downward"
+      raiseButtonText.value = "Chronometer absenken"
+      mainModel.scene.traverse((child) => {
+        if (modelsToRaise.includes(child.name)) {
+
+          // Animate child position
+          anime({
+            targets: [child.position],
+            y: child.position.y + 0.06,
+            easing: 'easeOutQuint',
+            duration: 450,
+          })
+        }
+      })
+    }
+    return
+  }
+
+  // Lower mechanism
+  if (mechanismRaised.value == true) {
+    raiseButtonIcon.value = "chronometer:upward"
+    raiseButtonText.value = "Chronometer anheben"
+    mainModel.scene.traverse((child) => {
+      if (modelsToRaise.includes(child.name)) {
+
+        // Animate child position
+        anime({
+          targets: [child.position],
+          y: child.position.y - 0.06,
+          easing: 'easeOutQuint',
+          duration: 450,
+        })
+      }
+    })
+  } else { // Raise mechanism
+    raiseButtonIcon.value = "chronometer:downward"
+    raiseButtonText.value = "Chronometer absenken"
+    mainModel.scene.traverse((child) => {
+      if (modelsToRaise.includes(child.name)) {
+
+        // Animate child position
+        anime({
+          targets: [child.position],
+          y: child.position.y + 0.06,
+          easing: 'easeOutQuint',
+          duration: 450,
+        })
+      }
+    })
+  }
+
+  mechanismRaised.value = !mechanismRaised.value
 }
 
 function closeInfocard() {
