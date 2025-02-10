@@ -20,7 +20,8 @@
 
         <div class="col-4 justify-between">
           <q-btn-group>
-            <q-btn @click="toggleMechanism(false)" text-color="primary" color="white" :icon="raiseButtonIcon">
+            <q-btn @click="toggleMechanism(false)" text-color="primary" :disable="!mechanismButtonEnabled" color="white"
+              :icon="raiseButtonIcon">
               <q-tooltip class="bg-primary">{{ raiseButtonText }}</q-tooltip>
             </q-btn>
 
@@ -44,7 +45,7 @@ import { toRaw, onMounted, onUnmounted, ref } from 'vue'
 import anime from 'animejs/lib/anime.es'
 import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
-import { Group, Mesh, Vector3 } from 'three'
+import { CanvasTexture, DirectionalLight, DirectionalLightHelper, Group, Mesh, Sprite, SpriteMaterial, Vector3 } from 'three'
 
 /* Own Imports */
 import Experience from 'src/scripts/Experience/Experience'
@@ -60,6 +61,7 @@ import Quiz from 'src/scripts/Quiz/Quiz'
 import QuizResultDialog from 'src/components/dialogs/QuizResultDialog.vue'
 import Inspector from 'src/scripts/Experience/utils/Inspector'
 import { xRayShader } from 'src/scripts/Experience/shaders/XRayShader'
+import { addVertexLabels } from 'src/scripts/Experience/utils/addVertexLabels'
 
 // Route and config
 let route
@@ -114,10 +116,13 @@ let originalMaterials = {}
 let mechanismRaised = ref(false)
 let sliderColor = ref("primary")
 let sliderLabelColor = ref("white")
+let mechanismButtonEnabled = ref(true)
 
 // Grouping
 let sceneContents = new Group() // Holds all the contents, as we want to avoid moving the origin (origin = experience.scene.position)
 let mainModel
+let chainModel
+let chainActions
 
 // Signal definitions
 const emit = defineEmits(['statuschange'])
@@ -202,6 +207,19 @@ onMounted(async () => {
 
   // Debug Chronometer Rotation here
   //let inspector = new Inspector()
+
+  // Büchse
+  /*let model = mainModel.scene.getObjectByName("I-09128-00_lowPoly003")
+
+  //Holzbox
+  //let model = mainModel.scene.getObjectByName("I-09128-00_Box001")
+  console.log(model);
+
+  addVertexLabels(model, experience.scene, {
+    color: 'red',
+    backgroundColor: 'rgba(0,0,0,0.0)',
+    size: 30
+  });*/
 })
 
 // Destructor, triggered on page navigation
@@ -238,7 +256,6 @@ async function createExperience() {
   let mainModelUrl = `./models/${route.params.id}/${config.value.assets[0].url}`
   try {
     mainModel = await experience.resources.load(mainModelUrl)
-
     mainModel.scene.name = "Chronometer.glb"
   } catch (error) {
     console.error(
@@ -296,8 +313,18 @@ async function createExperience() {
 
     if (!entry.replaces) {
       let url = `./models/${route.params.id}/${config.value.assets[i].url}`
+
       let model = await experience.resources.load(url)
       model.scene.name = config.value.assets[i].id
+
+
+      // FIXME: This is specific to the chain model of the chronometer and will not work for other models!
+      chainModel = model
+      chainModel.scene.traverse((child) => {
+        if (child instanceof Mesh) {
+          originalMaterials[child.name] = child.material
+        }
+      })
       sceneContents.add(model.scene)
 
       // Add animations if they exist
@@ -306,7 +333,7 @@ async function createExperience() {
           model.scene,
           'mixer' + model.scene.name
         )
-        let actions = experience.animationSystem.createClips(
+        chainActions = experience.animationSystem.createClips(
           model.animations,
           mixer
         )
@@ -504,6 +531,96 @@ async function createExperience() {
   })
 
   setAnimationSpeed()
+  if (true) {
+    setCustomLighting()
+  }
+}
+
+function setCustomLighting() {
+  let lights = []
+
+  // Save the default lights
+  for (let i in experience.scene.children) {
+    if (experience.scene.children[i].type.includes("DirectionalLight")) {
+      lights.push(experience.scene.children[i])
+    }
+  }
+
+  // Remove them
+  for (let i of lights) {
+    experience.scene.remove(i)
+  }
+
+  // Add three-point lighting
+
+  // Key Light
+  let keyLight = new DirectionalLight(0xffffff, 1.0)
+  keyLight.position.set(-0.2, 0.18, 0.3)
+  let keyLightHelper = new DirectionalLightHelper(keyLight, 0.1, 0xe0de35)
+  let keyLightHelperLabel = add3DLabel("Key Light", "#e0de35")
+  keyLightHelperLabel.position.copy(keyLight.position)
+
+  // Fill Light
+  let fillLight = new DirectionalLight(0xffffff, 0.8)
+  fillLight.position.set(0.3, 0.1, 0.3)
+  let fillLightHelper = new DirectionalLightHelper(fillLight, 0.1, 0x65c2b9)
+  let fillLightHelperLabel = add3DLabel("Fill Light", "#65c2b9")
+  fillLightHelperLabel.position.copy(fillLight.position)
+
+  // Back Light
+  let backLight = new DirectionalLight(0xffffff, 0.5)
+  backLight.position.set(-0.3, 0.2, -0.3)
+  let backLightHelper = new DirectionalLightHelper(backLight, 0.1, 0xcfb2fc)
+  let backLightHelperLabel = add3DLabel("Back Light", "#cfb2fc")
+  backLightHelperLabel.position.copy(backLight.position)
+
+
+  // add all lights
+  experience.scene.add(keyLight)
+  experience.scene.add(fillLight)
+  experience.scene.add(backLight)
+
+  // Debug Helpers
+  if (false) {
+    experience.scene.add(keyLightHelper)
+    experience.scene.add(keyLightHelperLabel)
+
+    experience.scene.add(fillLightHelper)
+    experience.scene.add(fillLightHelperLabel)
+
+    experience.scene.add(backLightHelper)
+    experience.scene.add(backLightHelperLabel)
+  }
+}
+
+function add3DLabel(messageText, textColor) {
+  let size = 50
+
+  // Create a canvas for the label
+  const canvas = document.createElement('canvas')
+  const context = canvas.getContext('2d')
+  const text = `${messageText}`
+  context.font = `12px Arial`
+  const textWidth = context.measureText(text).width
+
+  canvas.width = textWidth + 10
+  canvas.height = size + 10
+
+  // Draw label background and text
+  context.fillStyle = 'transparent'
+  context.fillRect(0, 0, canvas.width, canvas.height)
+  context.fillStyle = textColor
+  context.fillText(text, 5, size)
+
+  // Create a texture and sprite material from the canvas
+  const texture = new CanvasTexture(canvas)
+  const material = new SpriteMaterial({ map: texture, depthTest: false })
+  const sprite = new Sprite(material)
+
+  // Position the sprite at the vertex
+  //sprite.position.copy(vertex)
+  sprite.scale.set(0.1, 0.1, 0.1) // Adjust scale as needed
+  return sprite
 }
 
 function toggleXRay() {
@@ -516,11 +633,21 @@ function toggleXRay() {
         child.material = xRayShader
       }
     })
+    chainModel.scene.traverse((child) => {
+      if (child instanceof Mesh) {
+        child.material = xRayShader
+      }
+    })
   } else {
     xRayButtonIcon.value = "visibility"
 
     // Show all original textures
     mainModel.scene.traverse((child) => {
+      if (child instanceof Mesh) {
+        child.material = originalMaterials[child.name]
+      }
+    })
+    chainModel.scene.traverse((child) => {
       if (child instanceof Mesh) {
         child.material = originalMaterials[child.name]
       }
@@ -631,12 +758,20 @@ function setAnimationSpeed() {
       //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} Sekunden lang.`)
     }
 
-    if (action._clip.name == "Schneckenwelle_Ritzel(8h18m)Action") {
+    if (action._clip.name == "Chronometer_bottom_part_dynamic_#1.006Action.003") {
       action.setDuration(29880 / timeFactor.value) // 498 Minutes == 29880 seconds, 8h 18m
     }
 
+    if (action._clip.name == "Chronometer_bottom_part_dynamic_#2.002Action") {
+      action.setDuration(29880 / timeFactor.value) // 498 Minutes == 29880 seconds, 8h 18m
+    }
   }
 
+  // Sets the speed of the second model, the chain
+  // The original animation is 40 seconds long and should be X hours long
+  chainActions[0].setDuration(29880 / timeFactor.value) // 498 Minutes == 29880 seconds, 8h 18m
+
+  //console.log(mainModel.scene.children)
   //console.log(actions)
 }
 
@@ -938,17 +1073,39 @@ function openInfocard(id) {
 }
 
 // This raises and lowers the chronometer mechanism
-function toggleMechanism(shouldOpen) {
+function toggleMechanism(shouldOpenOverride) {
+
+  // Handle chain parts
+  let chain = sceneContents.getObjectByName("chain")
 
   // Models to raise
-  let modelsToRaise = ["I-09128-00_Glasscheibe", "InsideParts002", "Ziffernblatt002"]
+  // TODO: Get all models to raise once in an onloaded callback, instead of every click on the button...
+  let modelsToRaise = ["I-09128-00_Glasscheibe",
+    "InsideParts002",
+    "Ziffernblatt002",
+    //"bottom_plate_cleaned002",
+    //"Chronometer_bottom_part_hole002",
+    //"Chronometer_bottom_part_dynamic_mount002",
+    //"Chronometer_bottom_part_metal_mount002",
+    //"TopRing_cleaned002",
+    //"Chronometer_top_part_metal_bar002",
+    //"Chronometer_top_part_metal_small002",
+    //"Chronometer_bottom_part_metal_mount_below002",
+    //"Federhemmung",
+    //"Chronometer_bottom_part_dynamic_#3002",
+    //"Spiral003"
+  ]
 
-  // If it should raise and is not raised yet
-  if (shouldOpen) {
+  // The override happens, when the annotation nr 5 is opened
+  if (shouldOpenOverride) {
+    //console.log(sceneContents);
+
     if (mechanismRaised.value == false) {
       mechanismRaised.value = true
       raiseButtonIcon.value = "chronometer:downward"
       raiseButtonText.value = "Chronometer absenken"
+
+      // Handle main model parts
       mainModel.scene.traverse((child) => {
         if (modelsToRaise.includes(child.name)) {
 
@@ -958,7 +1115,29 @@ function toggleMechanism(shouldOpen) {
             y: child.position.y + 0.06,
             easing: 'easeOutQuint',
             duration: 450,
+            begin: function (anim) {
+              mechanismButtonEnabled.value = false
+
+            },
+            complete: function (anim) {
+              mechanismButtonEnabled.value = true
+            }
           })
+        }
+      })
+
+      // Handle chain
+      anime({
+        targets: [chain.position],
+        y: chain.position.y + 0.06,
+        easing: 'easeOutQuint',
+        duration: 450,
+        begin: function (anim) {
+          mechanismButtonEnabled.value = false
+
+        },
+        complete: function (anim) {
+          mechanismButtonEnabled.value = true
         }
       })
     }
@@ -967,25 +1146,47 @@ function toggleMechanism(shouldOpen) {
 
   // Lower mechanism
   if (mechanismRaised.value == true) {
+    mechanismRaised.value = false
     raiseButtonIcon.value = "chronometer:upward"
     raiseButtonText.value = "Chronometer anheben"
     mainModel.scene.traverse((child) => {
       if (modelsToRaise.includes(child.name)) {
-
         // Animate child position
         anime({
           targets: [child.position],
           y: child.position.y - 0.06,
           easing: 'easeOutQuint',
           duration: 450,
+          begin: function (anim) {
+            mechanismButtonEnabled.value = false
+          },
+          complete: function (anim) {
+            mechanismButtonEnabled.value = true
+          }
         })
       }
+
+      // Handle chain 
+      anime({
+        targets: [chain.position],
+        y: chain.position.y - 0.06,
+        easing: 'easeOutQuint',
+        duration: 450,
+        begin: function (anim) {
+          mechanismButtonEnabled.value = false
+        },
+        complete: function (anim) {
+          mechanismButtonEnabled.value = true
+        }
+      })
     })
   } else { // Raise mechanism
+    mechanismRaised.value = true
     raiseButtonIcon.value = "chronometer:downward"
     raiseButtonText.value = "Chronometer absenken"
     mainModel.scene.traverse((child) => {
       if (modelsToRaise.includes(child.name)) {
+        //console.log(child.position.y);
 
         // Animate child position
         anime({
@@ -993,12 +1194,31 @@ function toggleMechanism(shouldOpen) {
           y: child.position.y + 0.06,
           easing: 'easeOutQuint',
           duration: 450,
+          begin: function (anim) {
+            mechanismButtonEnabled.value = false
+          },
+          complete: function (anim) {
+            mechanismButtonEnabled.value = true
+          }
         })
       }
+
+      // Handle chain
+
+      anime({
+        targets: [chain.position],
+        y: chain.position.y + 0.06,
+        easing: 'easeOutQuint',
+        duration: 450,
+        begin: function (anim) {
+          mechanismButtonEnabled.value = false
+        },
+        complete: function (anim) {
+          mechanismButtonEnabled.value = true
+        }
+      })
     })
   }
-
-  mechanismRaised.value = !mechanismRaised.value
 }
 
 function closeInfocard() {

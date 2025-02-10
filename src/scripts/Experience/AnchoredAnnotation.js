@@ -147,9 +147,18 @@ export default class AnchoredAnnotation {
   }
 
   getVertexPosition(verticesOnModelList = [new Vector3(0, 0, 0)]) {
-    let positionAttribute = this.mesh.geometry.getAttribute('position')
+    let positionAttribute = null
     let centroid = new Vector3(0, 0, 0)
     let positions = []
+
+    if (this.mesh) {
+      positionAttribute = this.mesh.geometry.getAttribute('position')
+    } else {
+      console.log(
+        `AnchoredAnnotation: Geometry of ${this.mesh.name} is undefined`
+      )
+      return centroid
+    }
 
     // Get all vertex positions
     for (let currentVertex of verticesOnModelList) {
