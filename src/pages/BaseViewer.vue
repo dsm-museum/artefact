@@ -23,7 +23,6 @@
 <script setup>
 import { toRaw, onMounted, onUnmounted, ref } from 'vue'
 import anime from 'animejs/lib/anime.es'
-import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { Group, LoopPingPong, Vector3 } from 'three'
 
@@ -36,13 +35,20 @@ import ErrorDialog from 'src/components/dialogs/ErrorDialog.vue'
 import ConfirmationDialog from 'src/components/dialogs/ConfirmationDialog.vue'
 import OKCancelDialog from 'src/components/dialogs/OKCancelDialog.vue'
 import QuizCardDialog from 'src/components/dialogs/QuizCardDialog.vue'
-import { modelconfigs } from 'src/boot/load_configs'
 import Quiz from 'src/scripts/Quiz/Quiz'
 import QuizResultDialog from 'src/components/dialogs/QuizResultDialog.vue'
+import appConfig from "src/config.json"
+
+const props = defineProps({
+  modelId: {
+    type: String,
+    required: true
+  }
+})
 
 // Route and config
 let route
-let config = ref({})
+let config = {}
 let experience
 const $q = useQuasar()
 
@@ -79,6 +85,7 @@ let isDragging = ref(false)
 
 // Grouping
 let sceneContents = new Group() // Holds all the contents, as we want to avoid moving the origin (origin = experience.scene.position)
+sceneContents.name = "sceneContents"
 let mainModel
 
 // Signal definitions
@@ -86,30 +93,59 @@ const emit = defineEmits(['statuschange'])
 
 // Start of the page
 onMounted(async () => {
-  // Get the route and which model to load
-  route = useRoute()
-
-  // FIXME: Get a default value in the BaseViewer class
-  // to signal that no model should be loaded. Maybe 'null'?
-  route.params.id = 'chronometer'
-  config.value = modelconfigs[route.params.id]
-
-  // FIXME: Make merging annotations and quiz obsolete, how?
-  annotationsAndQuiz = mergeAnnotationsAndQuiz(
-    config.value.annotations,
-    config.value.quiz.questions
-  )
-
-  sceneContents.name = 'sceneContents'
+  config = appConfig[props.modelId]
 
   //TODO: Put all config related stuff together
-  if (config.value.backgroundColor) {
-    document.querySelector("#three-canvas").style.backgroundColor = config.value.backgroundColor
+  if (config.backgroundColor) {
+    document.querySelector("#three-canvas").style.backgroundColor = config.backgroundColor
   }
 
   // FIXME: This function does too much. I'd rather split it
   await createExperience()
 
+  // Add annotation and quiz content to the scene if it exists
+  if (mainModel) {
+    let index = 0
+    // For every annotation hotspot (that optionally has a quiz)...
+    for (let data of config.content) {
+      let annotation = experience.annotationSystem.createAnchoredAnnotation(data, props.modelId, mainModel)
+      data.index = index
+
+      if (config.annotationScale) {
+        annotation.target.scale.setScalar(config.annotationScale)
+      }
+
+      sceneContents.add(annotation.target)
+      sceneContents.add(annotation.line)
+
+      experience.click(annotation.target, () => {
+        if (!quiz.isRunning) {
+          openInfocard(data.id)
+        } else {
+          if (data.index <= quiz.answeredQuestions) {
+            quizDialog = $q.dialog({
+              component: QuizCardDialog,
+              componentProps: {
+                quiz: quiz,
+                data: data,
+                config: config.content,
+                urlPath: config.url,
+                tab: data.id,
+              },
+            })
+          } else {
+            //console.log("locked")
+          }
+        }
+      })
+
+      index++
+    }
+
+  }
+
+
+  /*
   // FIXME: Put this into its own function, with try catch
   // Insert annotations into the scene
   if (mainModel) {
@@ -130,7 +166,7 @@ onMounted(async () => {
       sceneContents.add(annotation.line)
 
       // Thats okay, but needs reworking, maybe put it in own function
-      experience.click(annotation.target, (event) => {
+      experience.click(annotation.target, () => {
         if (!quiz.isRunning) {
           openInfocard(data.id)
         } else {
@@ -150,12 +186,11 @@ onMounted(async () => {
         }
       })
     }
-  }
+  }*/
 
   // Prepare quiz content
-  if (config.value.quiz) {
-    // FIXME: Get rid of toRaw call
-    quiz = new Quiz(toRaw(config.value.quiz))
+  if (config.content[0].quiz) {
+    quiz = new Quiz(config)
   }
 
   // Add other event listeners
@@ -170,12 +205,12 @@ onUnmounted(() => {
 // FIXME: This function does too much
 async function createExperience() {
   experience = new Experience({
-    cameraPosition: toRaw(config.value.cameraPosition),
+    cameraPosition: toRaw(config.cameraPosition),
   })
 
   // set orbit position
-  if (config.value.origin) {
-    let target = config.value.origin
+  if (config.origin) {
+    let target = config.origin
     experience.controls.instance.target = new Vector3(
       target.x,
       target.y,
@@ -190,10 +225,11 @@ async function createExperience() {
 
   // FIXME: Fix loading scheduling and loading screen
   // Load the main model
-  let mainModelUrl = `./models/${route.params.id}/${config.value.assets[0].url}`
+  //const mainModelUrl = () => import(`./models/${props.modelId}/${config.assets[0].url}`);
+  let mainModelUrl = `./models/${props.modelId}/${config.assets[0].url}`
   try {
     mainModel = await experience.resources.load(mainModelUrl)
-  } catch (error) {
+  } catch {
     console.error(
       `No model was found. Stopping Animation and Annotation loading.`
     )
@@ -222,20 +258,20 @@ async function createExperience() {
       mainModel.scene,
       'mainMixer'
     )
-    let actions = experience.animationSystem.createClips(
+    /*let actions = */experience.animationSystem.createClips(
       mainModel.animations,
       mixer
     )
   }
 
   // Load all the placeholder models if they exist
-  for (let i = 1; i < config.value.assets.length; i++) {
-    let entry = config.value.assets[i]
+  for (let i = 1; i < config.assets.length; i++) {
+    let entry = config.assets[i]
 
     if (!entry.replaces) {
-      let url = `./models/${route.params.id}/${config.value.assets[i].url}`
+      let url = `./models/${props.modelId}/${config.assets[i].url}`
       let model = await experience.resources.load(url)
-      model.scene.name = config.value.assets[i].id
+      model.scene.name = config.assets[i].id
       sceneContents.add(model.scene)
 
       // Add animations if they exist
@@ -244,29 +280,29 @@ async function createExperience() {
           model.scene,
           'mixer' + model.scene.name
         )
-        let actions = experience.animationSystem.createClips(
+        /*let actions = */ experience.animationSystem.createClips(
           model.animations,
           mixer
         )
       }
     } else {
-      let url = `./models/${route.params.id}/${config.value.assets[i].url}`
+      let url = `./models/${props.modelId}/${config.assets[i].url}`
       let model = await experience.resources.load(url)
-      model.scene.name = config.value.assets[i].id
+      model.scene.name = config.assets[i].id
       // Add animations if they exist
       if (model.animations.length > 0) {
         let mixer = experience.animationSystem.createMixer(
           model.scene,
           'mixer' + model.scene.name
         )
-        let actions = experience.animationSystem.createClips(
+        /*let actions = */ experience.animationSystem.createClips(
           model.animations,
           mixer
         )
       }
       sceneContents.add(model.scene)
       let toReplace = experience.scene.getObjectByName(
-        config.value.assets[i].replaces
+        config.assets[i].replaces
       )
       sceneContents.remove(toReplace)
     }
@@ -342,7 +378,7 @@ async function createExperience() {
     //mixers.value.push(mixer)
 
     // Create the clip actions
-    let actions = experience.animationSystem.createClips(
+    /*let actions = */ experience.animationSystem.createClips(
       gltfFile.animations,
       mixer
     )
@@ -371,7 +407,7 @@ async function createExperience() {
     //mixers.value.push(mixer)
 
     // Create the clip actions
-    let actions = experience.animationSystem.createClips(
+    /*let actions = */ experience.animationSystem.createClips(
       gltfFile.animations,
       mixer
     )
@@ -389,11 +425,11 @@ async function createExperience() {
     }
   })
 
-  experience.webXRSystem.addEventListener('xrstarted', (event) => {
+  experience.webXRSystem.addEventListener('xrstarted', () => {
     onSessionStarted()
   })
 
-  experience.webXRSystem.addEventListener('xrended', (event) => {
+  experience.webXRSystem.addEventListener('xrended', () => {
     console.log('Session Ended')
     onSessionEnded()
   })
@@ -415,13 +451,13 @@ async function createExperience() {
     if (experience.renderer.instance.xr.isPresenting) {
       previousX.value = event.screenX;
       previousY.value = event.screenY;
-      isDragging = true;
+      isDragging.value = true;
     }
   });
 
   // Stop rotating when the user lifts their finger
   experience.canvas.addEventListener('pointerup', () => {
-    isDragging = false;
+    isDragging.value = false;
   });
 
   // This event listener enables rotation in AR mode
@@ -635,7 +671,7 @@ function onSessionEnded() {
 }
 
 /* Function that executes on WebXR input source primary action */
-function onXRSelect(event) {
+function onXRSelect() {
   if (experience.webXRSystem.xrIndicator.isEnabled()) {
     if (!modelWasPlaced) {
       sceneContents.visible = true
@@ -715,27 +751,6 @@ function resetQuiz() {
   }
 }
 
-// FIXME: Get rid of this
-function mergeAnnotationsAndQuiz(annotations, questions) {
-  let merged = []
-  let index = 0
-
-  for (let annotation of annotations) {
-    let entry = {}
-
-    entry.index = index
-    entry.id = annotation.id
-    entry.icon = annotation.icon
-    entry.annotation = annotation
-    entry.question = questions.find((question) => question.id === annotation.id)
-
-    index++
-    merged.push(entry)
-  }
-
-  return merged
-}
-
 // FIXME: Separate this so it can be extended from
 function addEventListeners() {
   // Triggers a dialog after every answer
@@ -762,16 +777,20 @@ function addEventListeners() {
         let id = annotation.annotationData.id
 
         // find the right question
-        let question = config.value.quiz.questions.find(
-          (question) => question.id === id
-        )
+        let annotationContent = config.content.find((contentElem) => {
+          if (contentElem.id === id) {
+            return contentElem
+          }
+        })
 
-        if (question.answered != true) {
+        console.log(annotationContent);
+
+        if (annotationContent.quiz.answered != true) {
           annotation.setQuestionIcon()
           return
         }
 
-        if (question.answeredCorrect === true) {
+        if (annotationContent.quiz.answeredCorrect === true) {
           annotation.setCorrectIcon()
         } else {
           annotation.setWrongIcon()

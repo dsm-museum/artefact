@@ -1,10 +1,9 @@
-import EventEmitter from '../Experience/utils/EventEmitter'
 import { EventDispatcher } from 'three'
 
 export default class Quiz extends EventDispatcher {
-  constructor(_data, _shuffle = true) {
+  constructor(_config, _shuffle = true) {
     super()
-    this.data = this.setData(_data, _shuffle)
+    this.data = this.setData(_config, _shuffle)
     this.length = this.getLength()
 
     // Status Information
@@ -16,12 +15,26 @@ export default class Quiz extends EventDispatcher {
     this.answeredQuestions = 0
   }
 
-  setData(data, shuffle) {
-    if (shuffle) {
-      for (let index in data.questions) {
-        data.questions[index].answers.sort(() => Math.random() - 0.5)
-        data.questions[index].answered = false
-        data.questions[index].answeredCorrect = false
+  setData(config, shuffle) {
+    let data = { questions: [] }
+
+    for (let index in config.content) {
+      let currentQuiz = config.content[index].quiz
+      data.questions.push(currentQuiz)
+
+      // For every annotation
+      for (let index in config.content) {
+        // Shuffle the questions if needed
+        if (shuffle) {
+          config.content[index].quiz.answers.sort(() => Math.random() - 0.5)
+        }
+
+        // Add the "answered" and "answeredCorrect" property
+        // for every quiz question and set it to false
+        config.content[index].quiz.answers.forEach((element) => {
+          element.answered = false
+          element.answeredCorrect = false
+        })
       }
     }
 
@@ -53,7 +66,6 @@ export default class Quiz extends EventDispatcher {
 
   start() {
     this.isRunning = true
-    //this.trigger('start')
     this.dispatchEvent({ type: 'start' })
   }
 

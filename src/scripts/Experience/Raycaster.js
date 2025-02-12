@@ -29,9 +29,7 @@ export default class Raycaster extends EventDispatcher {
     this.experience.canvas.addEventListener('pointerup', (event) => {
       // Calculates the distance between touch start and end, accounting for finger movement.
       let distance = Math.sqrt(
-        this.lastPointerContact.distanceToSquared(
-          new Vector2(event.clientX, event.clientY)
-        )
+        this.lastPointerContact.distanceToSquared(new Vector2(event.clientX, event.clientY)),
       )
 
       // Triggers click if distance is about 20 units.
@@ -80,7 +78,7 @@ export default class Raycaster extends EventDispatcher {
 
     let keys = Object.keys(this.targets)
 
-    keys.forEach((key, index) => {
+    keys.forEach((key) => {
       this.object3Ds.push(this.targets[key].object)
     })
   }

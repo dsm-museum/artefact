@@ -27,7 +27,7 @@
 <script setup>
 import { useDialogPluginComponent } from 'quasar'
 
-const props = defineProps({
+defineProps({
   persistent: {
     type: Boolean,
     default: false,

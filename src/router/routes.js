@@ -5,22 +5,42 @@ const routes = [
     // The main path, shows the index page by default
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/Models.vue') }],
+    children: [{ path: '', component: () => import('src/pages/ModelList.vue') }],
   },
   {
     // Lists all the models available in the app
     path: '/models',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/Models.vue') }],
+    children: [{ path: '', component: () => import('src/pages/ModelList.vue') }],
   },
-  /* Custom route for flussmine */
+  /* Custom routes for objects */
   {
     path: '/models/flussmine',
     component: () => import('layouts/ARLayout.vue'),
     children: [
       {
         path: '',
-        component: () => import('src/pages/CustomViewerFlussmine.vue'),
+        component: () => import('src/pages/ViewerFlussmine.vue'),
+      },
+    ],
+  },
+  {
+    path: '/models/fehmarnbelt',
+    component: () => import('layouts/ARLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('src/pages/ViewerFehmarnbelt.vue'),
+      },
+    ],
+  },
+  {
+    path: '/models/apex',
+    component: () => import('layouts/ARLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('src/pages/ViewerApex.vue'),
       },
     ],
   },
@@ -31,17 +51,6 @@ const routes = [
       {
         path: '',
         component: () => import('src/pages/CustomViewerChronometer.vue'),
-      },
-    ],
-  },
-  {
-    // Generates a route for configured models in public/models
-    path: '/models/:id',
-    component: () => import('layouts/ARLayout.vue'),
-    children: [
-      {
-        path: '',
-        component: () => import('src/pages/Viewer.vue'),
       },
     ],
   },

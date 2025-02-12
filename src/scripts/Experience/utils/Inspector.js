@@ -1,5 +1,4 @@
 import { Pane } from 'tweakpane'
-import ar2 from '../../../assets/inspector/augmented-reality-2.svg'
 import cube from '../../../assets/inspector/cube.svg'
 
 export default class Inspector {
@@ -30,8 +29,7 @@ export default class Inspector {
     }
 
     if (depth == this.INSPECTOR_DEPTH) {
-      let more =
-        element.children.length != 0 ? ` (${element.children.length} more)` : ''
+      let more = element.children.length != 0 ? ` (${element.children.length} more)` : ''
       parent.addBlade({
         view: 'text',
         disabled: true,
@@ -66,7 +64,7 @@ export default class Inspector {
     }
   }
 
-  addIcon(domElem, type = null, isFolder = false) {
+  addIcon(domElem) {
     let iconElem = document.createElement('img')
     iconElem.style.stroke = 'white'
     iconElem.style.width = '16px'

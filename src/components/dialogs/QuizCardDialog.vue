@@ -9,17 +9,18 @@
       </div>
 
       <div class="bg-white">
-        <q-tabs v-model="currentTab" class="text-black" active-color="primary" indicator-color="primary" align="justify">
-          <q-tab :id="info.question.id + '-tab'" v-for="info in orderInfo" :key="info.index" :name="info.question.id"
-            :icon="getIcon(info)" :content-class="getColor(info)" :disable="isDisabled(info.index)">
+        <q-tabs v-model="currentTab" class="text-black" active-color="primary" indicator-color="primary"
+          align="justify">
+          <q-tab v-for="annotation in config" :id="annotation.id + '-tab'" :key="annotation.index" :name="annotation.id"
+            :icon="getIcon(annotation)" :content-class="getColor(annotation)" :disable="isDisabled(annotation)">
           </q-tab>
         </q-tabs>
 
         <q-separator />
 
         <q-tab-panels keep-alive v-model="currentTab" animated>
-          <q-tab-panel v-for="info in orderInfo" :key="info.index" :name="info.question.id">
-            <AnswerList :question="info.question" @evaluate="evaluate"></AnswerList>
+          <q-tab-panel v-for="annotation in config" :key="annotation.index" :name="annotation.id">
+            <AnswerList :question="annotation.quiz" @evaluate="evaluate"></AnswerList>
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -29,14 +30,11 @@
 
 <script setup>
 import { useDialogPluginComponent } from 'quasar'
-import { ref, toRef, toRaw } from 'vue'
+import { ref, toRef } from 'vue'
 import AnswerList from '../quiz/AnswerList.vue'
 
 // quiz contains the whole quiz class instance and tab is the tab id that has been clicked on
-const props = defineProps(['quiz', 'orderInfo', 'tab', 'urlPath'])
-
-const tab1 = "about-the-ship"
-
+const props = defineProps(['quiz', 'config', 'data', 'tab', 'urlPath'])
 const emits = defineEmits([
   ...useDialogPluginComponent.emits,
   'closeInfocardEvent',
@@ -47,53 +45,51 @@ const emits = defineEmits([
 // PROPS
 //const quizRef = toRef(props, 'quiz')
 const tabRef = toRef(props, 'tab')
-const quizRef = toRef(props, 'quiz')
+//const quizRef = toRef(props, 'quiz')
 
 // we create a new reactive copy from the tab that has been clicked on
 // the reason is, we cant change the prop (tabRef), which is required when we want to navigate with the displayed tabs in the quiz card dialog
 let currentTab = ref(tabRef.value)
 
-function isDisabled(greaterThan) {
-  return greaterThan > quizRef.value.answeredQuestions
+function isDisabled(currentQuestion) {
+  return currentQuestion.index > props.quiz.answeredQuestions
 }
 
-function getIcon(info) {
-
+function getIcon(annotation) {
+  //console.log("annotation", annotation)
   // check if question is still locked
-  if (info.index > quizRef.value.answeredQuestions) {
+  if (annotation.index > props.quiz.answeredQuestions) {
     return `o_lock`
-  } else if (info.index == quizRef.value.answeredQuestions) {
-    //return `dsm:${id}`
-    return `img:models/${props.urlPath}/${info.icon}`
+  } else if (annotation.index == props.quiz.answeredQuestions) {
+    return `img:models/${props.urlPath}/${annotation.icon}`
   }
 
-  let currentQuestion = quizRef.value.data.questions.find(elem => elem.id == info.id)
+  //console.log(props.config)
+  let currentQuestion = props.config.find(elem => elem.id == annotation.id)
 
-
-  if (currentQuestion.answered) {
-    return currentQuestion.answeredCorrect ? `done` : `close`
+  if (currentQuestion.quiz.answered) {
+    return currentQuestion.quiz.answeredCorrect ? `done` : `close`
   } else {
     return `o_lock`
   }
 }
 
-function getColor(info) {
-  let currentQuestion = quizRef.value.data.questions.find(elem => elem.id == info.id)
+function getColor(annotation) {
+  let currentQuestion = props.config.find(elem => elem.id == annotation.id)
 
-  if (currentQuestion.answered) {
-    return currentQuestion.answeredCorrect ? `text-green-8` : `text-red-8`
+  if (currentQuestion.quiz.answered) {
+    return currentQuestion.quiz.answeredCorrect ? `text-green-8` : `text-red-8`
   }
 }
 
 // Changes the view to the next tab in order
 function getNext() {
   // Get the index of currentTab.value in the orderInfo
-
-  let nextTab = props.orderInfo.find(elem => elem.index == quizRef.value.answeredQuestions)
+  let nextTab = props.config.find(elem => elem.index == props.quiz.answeredQuestions)
 
   if (nextTab !== -1 && nextTab !== undefined) {
     setTimeout(() => {
-      currentTab.value = nextTab.question.id
+      currentTab.value = nextTab.id
     }, 520)
   }
 }
@@ -104,12 +100,12 @@ function close() {
 }
 
 function evaluate(question, selectedAnswer) {
-  quizRef.value.evaluateAnswer(question, selectedAnswer)
+  props.quiz.evaluateAnswer(question, selectedAnswer)
 
   getNext()
 }
 
-const { dialogRef, onDialogOk, onDialogCancel, onDialogHide } = useDialogPluginComponent()
+const { dialogRef, onDialogCancel } = useDialogPluginComponent()
 
 
 

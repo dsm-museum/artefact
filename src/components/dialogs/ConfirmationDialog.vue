@@ -56,7 +56,7 @@ const bgColor = computed({
   },
 })
 
-const emits = defineEmits([...useDialogPluginComponent.emits])
+defineEmits([...useDialogPluginComponent.emits])
 
 const { dialogRef, onDialogOK, onDialogHide } = useDialogPluginComponent()
 

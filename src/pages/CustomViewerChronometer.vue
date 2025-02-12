@@ -43,9 +43,8 @@
 <script setup>
 import { toRaw, onMounted, onUnmounted, ref } from 'vue'
 import anime from 'animejs/lib/anime.es'
-import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
-import { CanvasTexture, DirectionalLight, DirectionalLightHelper, Group, Mesh, Sprite, SpriteMaterial, Vector3 } from 'three'
+import { CanvasTexture, DirectionalLight, Group, Mesh, Sprite, SpriteMaterial, Vector3 } from 'three'
 
 /* Own Imports */
 import Experience from 'src/scripts/Experience/Experience'
@@ -56,16 +55,15 @@ import ErrorDialog from 'src/components/dialogs/ErrorDialog.vue'
 import ConfirmationDialog from 'src/components/dialogs/ConfirmationDialog.vue'
 import OKCancelDialog from 'src/components/dialogs/OKCancelDialog.vue'
 import QuizCardDialog from 'src/components/dialogs/QuizCardDialog.vue'
-import { modelconfigs } from 'src/boot/load_configs'
 import Quiz from 'src/scripts/Quiz/Quiz'
 import QuizResultDialog from 'src/components/dialogs/QuizResultDialog.vue'
-import Inspector from 'src/scripts/Experience/utils/Inspector'
+//import Inspector from 'src/scripts/Experience/utils/Inspector'
 import { xRayShader } from 'src/scripts/Experience/shaders/XRayShader'
-import { addVertexLabels } from 'src/scripts/Experience/utils/addVertexLabels'
+//import { addVertexLabels } from 'src/scripts/Experience/utils/addVertexLabels'
+import appConfig from "src/config.json"
 
-// Route and config
-let route
-let config = ref({})
+// Config
+let config = {}
 let experience
 const $q = useQuasar()
 
@@ -109,7 +107,7 @@ let animationActions = ref(null)
 // XRay
 let xRayToggle = ref(false)
 let xRayButtonIcon = ref("visibility")
-let raiseToggle = ref(false)
+//let raiseToggle = ref(false)
 let raiseButtonIcon = ref("chronometer:upward")
 let raiseButtonText = ref("Chronometer anheben")
 let originalMaterials = {}
@@ -120,6 +118,8 @@ let mechanismButtonEnabled = ref(true)
 
 // Grouping
 let sceneContents = new Group() // Holds all the contents, as we want to avoid moving the origin (origin = experience.scene.position)
+sceneContents.name = 'sceneContents'
+
 let mainModel
 let chainModel
 let chainActions
@@ -129,25 +129,21 @@ const emit = defineEmits(['statuschange'])
 
 // Start of the page
 onMounted(async () => {
-  // Get the route and which model to load
-  route = useRoute()
+  config = appConfig["chronometer"]
 
-  // FIXME: Get a default value in the BaseViewer class
-  // to signal that no model should be loaded. Maybe 'null'?
-  route.params.id = 'chronometer'
-  config.value = modelconfigs[route.params.id]
 
   // FIXME: Make merging annotations and quiz obsolete, how?
-  annotationsAndQuiz = mergeAnnotationsAndQuiz(
-    config.value.annotations,
-    config.value.quiz.questions
-  )
+  //console.log(toRaw(config.annotations));
 
-  sceneContents.name = 'sceneContents'
+  /*annotationsAndQuiz.value = mergeAnnotationsAndQuiz(
+    config.annotations,
+    config.quiz.questions
+  )*/
+
 
   //TODO: Put all config related stuff together
-  if (config.value.backgroundColor) {
-    document.querySelector("#three-canvas").style.backgroundColor = config.value.backgroundColor
+  if (config.backgroundColor) {
+    document.querySelector("#three-canvas").style.backgroundColor = config.backgroundColor
   }
 
   // FIXME: This function does too much. I'd rather split it
@@ -155,25 +151,22 @@ onMounted(async () => {
 
   // FIXME: Put this into its own function, with try catch
   // Insert annotations into the scene
+  // Add annotation and quiz content to the scene if it exists
   if (mainModel) {
-    for (let data of annotationsAndQuiz) {
-      // FIXME: Get rid of this toRaw call
-      let annotation = experience.annotationSystem.createAnchoredAnnotation(
-        toRaw(data.annotation),
-        config.value.urlPath,
-        mainModel
-      )
+    let index = 0
+    // For every annotation hotspot (that optionally has a quiz)...
+    for (let data of config.content) {
+      let annotation = experience.annotationSystem.createAnchoredAnnotation(data, "chronometer", mainModel)
+      data.index = index
 
-      // TODO: Find better way to scale the annotation
-      if (config.value.annotationScale) {
-        annotation.target.scale.setScalar(config.value.annotationScale)
+      if (config.annotationScale) {
+        annotation.target.scale.setScalar(config.annotationScale)
       }
 
       sceneContents.add(annotation.target)
       sceneContents.add(annotation.line)
 
-      // Thats okay, but needs reworking, maybe put it in own function
-      experience.click(annotation.target, (event) => {
+      experience.click(annotation.target, () => {
         if (!quiz.isRunning) {
           openInfocard(data.id)
         } else {
@@ -182,8 +175,9 @@ onMounted(async () => {
               component: QuizCardDialog,
               componentProps: {
                 quiz: quiz,
-                orderInfo: annotationsAndQuiz,
-                urlPath: config.value.urlPath,
+                data: data,
+                config: config.content,
+                urlPath: config.url,
                 tab: data.id,
               },
             })
@@ -192,13 +186,16 @@ onMounted(async () => {
           }
         }
       })
+
+      index++
     }
+
   }
 
   // Prepare quiz content
-  if (config.value.quiz) {
+  if (config.content[0].quiz) {
     // FIXME: Get rid of toRaw call
-    quiz = new Quiz(toRaw(config.value.quiz))
+    quiz = new Quiz(config)
   }
 
   // Add other event listeners
@@ -230,15 +227,15 @@ onUnmounted(() => {
 // FIXME: This function does too much
 async function createExperience() {
   experience = new Experience({
-    cameraPosition: toRaw(config.value.cameraPosition),
+    cameraPosition: config.cameraPosition,
   })
 
   experience.controls.instance.autoRotate = false
   experience.controls.instance.minDistance = 0.05
 
   // set orbit position
-  if (config.value.origin) {
-    let target = config.value.origin
+  if (config.origin) {
+    let target = config.origin
     experience.controls.instance.target = new Vector3(
       target.x,
       target.y,
@@ -253,11 +250,11 @@ async function createExperience() {
 
   // FIXME: Fix loading scheduling and loading screen
   // Load the main model
-  let mainModelUrl = `./models/${route.params.id}/${config.value.assets[0].url}`
+  let mainModelUrl = `./models/chronometer/${config.assets[0].url}`
   try {
     mainModel = await experience.resources.load(mainModelUrl)
     mainModel.scene.name = "Chronometer.glb"
-  } catch (error) {
+  } catch {
     console.error(
       `No model was found. Stopping Animation and Annotation loading.`
     )
@@ -301,21 +298,21 @@ async function createExperience() {
       mainModel.scene,
       'mainMixer'
     )
-    animationActions = experience.animationSystem.createClips(
+    animationActions.value = experience.animationSystem.createClips(
       mainModel.animations,
       mixer
     )
   }
 
   // Load all the placeholder models if they exist
-  for (let i = 1; i < config.value.assets.length; i++) {
-    let entry = config.value.assets[i]
+  for (let i = 1; i < config.assets.length; i++) {
+    let entry = config.assets[i]
 
     if (!entry.replaces) {
-      let url = `./models/${route.params.id}/${config.value.assets[i].url}`
+      let url = `./models/chronometer/${config.assets[i].url}`
 
       let model = await experience.resources.load(url)
-      model.scene.name = config.value.assets[i].id
+      model.scene.name = config.assets[i].id
 
 
       // FIXME: This is specific to the chain model of the chronometer and will not work for other models!
@@ -339,23 +336,23 @@ async function createExperience() {
         )
       }
     } else {
-      let url = `./models/${route.params.id}/${config.value.assets[i].url}`
+      let url = `./models/chronometer/${config.assets[i].url}`
       let model = await experience.resources.load(url)
-      model.scene.name = config.value.assets[i].id
+      model.scene.name = config.assets[i].id
       // Add animations if they exist
       if (model.animations.length > 0) {
         let mixer = experience.animationSystem.createMixer(
           model.scene,
           'mixer' + model.scene.name
         )
-        let actions = experience.animationSystem.createClips(
+        /*let actions = */ experience.animationSystem.createClips(
           model.animations,
           mixer
         )
       }
       sceneContents.add(model.scene)
       let toReplace = experience.scene.getObjectByName(
-        config.value.assets[i].replaces
+        config.assets[i].replaces
       )
       sceneContents.remove(toReplace)
     }
@@ -431,15 +428,15 @@ async function createExperience() {
     //mixers.value.push(mixer)
 
     // Create the clip actions
-    let actions = experience.animationSystem.createClips(
+    /*let actions = */ experience.animationSystem.createClips(
       gltfFile.animations,
       mixer
     )
 
     // Load additional 3d models if defined
-    if (config.value.additionalModels) {
-      for (let model of config.value.additionalModels) {
-        let path = `./models/${route.params.id}/${model}`
+    if (config.additionalModels) {
+      for (let model of config.additionalModels) {
+        let path = `./models/chronometer/${model}`
         experience.resources.load(path)
       }
     }
@@ -460,7 +457,7 @@ async function createExperience() {
     //mixers.value.push(mixer)
 
     // Create the clip actions
-    let actions = experience.animationSystem.createClips(
+    /*let actions = */ experience.animationSystem.createClips(
       gltfFile.animations,
       mixer
     )
@@ -478,11 +475,11 @@ async function createExperience() {
     }
   })
 
-  experience.webXRSystem.addEventListener('xrstarted', (event) => {
+  experience.webXRSystem.addEventListener('xrstarted', () => {
     onSessionStarted()
   })
 
-  experience.webXRSystem.addEventListener('xrended', (event) => {
+  experience.webXRSystem.addEventListener('xrended', () => {
     console.log('Session Ended')
     onSessionEnded()
   })
@@ -504,13 +501,13 @@ async function createExperience() {
     if (experience.renderer.instance.xr.isPresenting) {
       previousX.value = event.screenX;
       previousY.value = event.screenY;
-      isDragging = true;
+      isDragging.value = true;
     }
   });
 
   // Stop rotating when the user lifts their finger
   experience.canvas.addEventListener('pointerup', () => {
-    isDragging = false;
+    isDragging.value = false;
   });
 
   // This event listener enables rotation in AR mode
@@ -531,9 +528,9 @@ async function createExperience() {
   })
 
   setAnimationSpeed()
-  if (true) {
-    setCustomLighting()
-  }
+  //if (true) {
+  setCustomLighting()
+  //}
 }
 
 function setCustomLighting() {
@@ -556,21 +553,21 @@ function setCustomLighting() {
   // Key Light
   let keyLight = new DirectionalLight(0xffffff, 1.0)
   keyLight.position.set(-0.2, 0.18, 0.3)
-  let keyLightHelper = new DirectionalLightHelper(keyLight, 0.1, 0xe0de35)
+  //let keyLightHelper = new DirectionalLightHelper(keyLight, 0.1, 0xe0de35)
   let keyLightHelperLabel = add3DLabel("Key Light", "#e0de35")
   keyLightHelperLabel.position.copy(keyLight.position)
 
   // Fill Light
   let fillLight = new DirectionalLight(0xffffff, 0.8)
   fillLight.position.set(0.3, 0.1, 0.3)
-  let fillLightHelper = new DirectionalLightHelper(fillLight, 0.1, 0x65c2b9)
+  //let fillLightHelper = new DirectionalLightHelper(fillLight, 0.1, 0x65c2b9)
   let fillLightHelperLabel = add3DLabel("Fill Light", "#65c2b9")
   fillLightHelperLabel.position.copy(fillLight.position)
 
   // Back Light
   let backLight = new DirectionalLight(0xffffff, 0.5)
   backLight.position.set(-0.3, 0.2, -0.3)
-  let backLightHelper = new DirectionalLightHelper(backLight, 0.1, 0xcfb2fc)
+  //let backLightHelper = new DirectionalLightHelper(backLight, 0.1, 0xcfb2fc)
   let backLightHelperLabel = add3DLabel("Back Light", "#cfb2fc")
   backLightHelperLabel.position.copy(backLight.position)
 
@@ -581,7 +578,7 @@ function setCustomLighting() {
   experience.scene.add(backLight)
 
   // Debug Helpers
-  if (false) {
+  /*if (false) {
     experience.scene.add(keyLightHelper)
     experience.scene.add(keyLightHelperLabel)
 
@@ -590,7 +587,7 @@ function setCustomLighting() {
 
     experience.scene.add(backLightHelper)
     experience.scene.add(backLightHelperLabel)
-  }
+  }*/
 }
 
 function add3DLabel(messageText, textColor) {
@@ -693,7 +690,8 @@ function setSliderLabelValue(value) {
 
 function setAnimationSpeed() {
   let actions = []
-  for (let action of animationActions) {
+
+  for (let action of animationActions.value) {
     //console.log(action._clip.name);
 
     actions.push(action._clip.name)
@@ -707,7 +705,7 @@ function setAnimationSpeed() {
     if (action._clip.name == "Federhemmung.Feder(1s)Action.001") {
 
       // this keeps the model spinning by stopping the duration change on high frequencies
-      let duration = Math.max(1.0 / timeFactor.value, 0.2) // 1 second
+      /*let duration = */ Math.max(1.0 / timeFactor.value, 0.2) // 1 second
       action.setDuration(1.0 / timeFactor.value) // 1 second
 
       //console.log(`Animation \"${action._clip.name}\" ist ${action._clip.duration * 1 / action.timeScale} ${action._clip.duration == 1 ? "Sekunde" : "Sekunden"} lang.`)
@@ -1025,7 +1023,7 @@ function onSessionEnded() {
 }
 
 /* Function that executes on WebXR input source primary action */
-function onXRSelect(event) {
+function onXRSelect() {
   if (experience.webXRSystem.xrIndicator.isEnabled()) {
     if (!modelWasPlaced) {
       sceneContents.visible = true
@@ -1115,11 +1113,11 @@ function toggleMechanism(shouldOpenOverride) {
             y: child.position.y + 0.06,
             easing: 'easeOutQuint',
             duration: 450,
-            begin: function (anim) {
+            begin: function () {
               mechanismButtonEnabled.value = false
 
             },
-            complete: function (anim) {
+            complete: function () {
               mechanismButtonEnabled.value = true
             }
           })
@@ -1132,11 +1130,11 @@ function toggleMechanism(shouldOpenOverride) {
         y: chain.position.y + 0.06,
         easing: 'easeOutQuint',
         duration: 450,
-        begin: function (anim) {
+        begin: function () {
           mechanismButtonEnabled.value = false
 
         },
-        complete: function (anim) {
+        complete: function () {
           mechanismButtonEnabled.value = true
         }
       })
@@ -1157,25 +1155,25 @@ function toggleMechanism(shouldOpenOverride) {
           y: child.position.y - 0.06,
           easing: 'easeOutQuint',
           duration: 450,
-          begin: function (anim) {
+          begin: function () {
             mechanismButtonEnabled.value = false
           },
-          complete: function (anim) {
+          complete: function () {
             mechanismButtonEnabled.value = true
           }
         })
       }
 
-      // Handle chain 
+      // Handle chain
       anime({
         targets: [chain.position],
         y: chain.position.y - 0.06,
         easing: 'easeOutQuint',
         duration: 450,
-        begin: function (anim) {
+        begin: function () {
           mechanismButtonEnabled.value = false
         },
-        complete: function (anim) {
+        complete: function () {
           mechanismButtonEnabled.value = true
         }
       })
@@ -1194,10 +1192,10 @@ function toggleMechanism(shouldOpenOverride) {
           y: child.position.y + 0.06,
           easing: 'easeOutQuint',
           duration: 450,
-          begin: function (anim) {
+          begin: function () {
             mechanismButtonEnabled.value = false
           },
-          complete: function (anim) {
+          complete: function () {
             mechanismButtonEnabled.value = true
           }
         })
@@ -1210,10 +1208,10 @@ function toggleMechanism(shouldOpenOverride) {
         y: chain.position.y + 0.06,
         easing: 'easeOutQuint',
         duration: 450,
-        begin: function (anim) {
+        begin: function () {
           mechanismButtonEnabled.value = false
         },
-        complete: function (anim) {
+        complete: function () {
           mechanismButtonEnabled.value = true
         }
       })
@@ -1259,21 +1257,30 @@ function resetQuiz() {
 
 // FIXME: Get rid of this
 function mergeAnnotationsAndQuiz(annotations, questions) {
+
   let merged = []
   let index = 0
 
   for (let annotation of annotations) {
+
     let entry = {}
 
     entry.index = index
     entry.id = annotation.id
     entry.icon = annotation.icon
     entry.annotation = annotation
-    entry.question = questions.find((question) => question.id === annotation.id)
+    entry.question = questions.find((question) => {
+      if (question.id === annotation.id) {
+        return question
+      }
+    })
 
     index++
     merged.push(entry)
   }
+
+  //console.log(merged);
+
 
   return merged
 }
@@ -1304,16 +1311,20 @@ function addEventListeners() {
         let id = annotation.annotationData.id
 
         // find the right question
-        let question = config.value.quiz.questions.find(
-          (question) => question.id === id
-        )
+        let annotationContent = config.content.find((contentElem) => {
+          if (contentElem.id === id) {
+            return contentElem
+          }
+        })
 
-        if (question.answered != true) {
+        console.log(annotationContent);
+
+        if (annotationContent.quiz.answered != true) {
           annotation.setQuestionIcon()
           return
         }
 
-        if (question.answeredCorrect === true) {
+        if (annotationContent.quiz.answeredCorrect === true) {
           annotation.setCorrectIcon()
         } else {
           annotation.setWrongIcon()

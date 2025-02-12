@@ -1,0 +1,24 @@
+{
+  "annotations": [],
+  "quiz": {
+    "title": "Das Quiz zur Fehmarnbelt",
+    "description": "Das Quiz zur Fehmarnbelt",
+    "questions": [
+      {
+        "id": "technical"
+      },
+      {
+        "id": "global-perspective"
+      },
+      {
+        "id": "mensch-und-meer"
+      },
+      {
+        "id": "the-ship"
+      },
+      {
+        "id": "the-model"
+      }
+    ]
+  }
+}

@@ -35,7 +35,7 @@ export default class Resources extends EventEmitter {
     this.loadingManager = new LoadingManager()
 
     // onStart (when a resource starts being loaded)
-    this.loadingManager.onStart = (url, itemsLoaded, itemsTotal) => {
+    this.loadingManager.onStart = (url) => {
       console.log(url)
     }
   }
@@ -77,7 +77,7 @@ export default class Resources extends EventEmitter {
     let result = this.loaders.gltfLoader.loadAsync(source)
     result.catch((e) => {
       console.error(
-        `The specified model "${source}" could not be loaded. Please check if the path is correct.`
+        `The specified model "${source}" could not be loaded. Please check if the path is correct.`,
       )
       console.error(e)
     })

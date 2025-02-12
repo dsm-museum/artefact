@@ -12,8 +12,8 @@
 
       <div class="bg-white">
         <q-tabs v-model="tab" class="text-primary" active-color="primary" indicator-color="primary" align="justify">
-          <q-tab v-for="annotation in props.config.annotations" :key="annotation.id" :name="annotation.id"
-            :icon="'img:models/' + props.config.urlPath + '/' + annotation.icon" content-class="icon-color">
+          <q-tab v-for="annotation in props.config.content" :key="annotation.id" :name="annotation.id"
+            :icon="'img:models/' + props.config.url + '/' + annotation.icon" content-class="icon-color">
           </q-tab>
         </q-tabs>
 
@@ -21,7 +21,7 @@
 
         <q-tab-panels v-model="tab" animated>
 
-          <q-tab-panel v-for="annotation in props.config.annotations" :key="annotation.id" :name="annotation.id"
+          <q-tab-panel v-for="annotation in props.config.content" :key="annotation.id" :name="annotation.id"
             class="container">
             <div class="q-px-md q-pb-md text-justify">
               <div class="text-weight-bold text-uppercase text-secondary text-left">
@@ -38,7 +38,7 @@
                 <div v-if="checkProperty(annotation, 'media')" class="col-xs-12 col-sm-12 col-md-5 col-lg-3 q-mb-sm">
                   <q-img id="image" @click='showLightbox(annotation.mediaDescription)'
                     :alt="annotation.mediaDescription ? annotation.mediaDescription : ''" class="cursor-pointer"
-                    :src='"./models/" + props.config.urlPath + "/" + annotation.media' spinner-color="primary" />
+                    :src='"./models/" + props.config.url + "/" + annotation.media' spinner-color="primary" />
                 </div>
 
                 <!-- Text Content -->
@@ -46,7 +46,7 @@
                   <!--div class="text-h6 text-weight-bold text-left text-uppercase">Als Audio anhören:</div-->
                   <audio controls v-if="checkProperty(annotation, 'audio')" class="q-mb-md"
                     style="width: 100%; display: block;"
-                    :src='"./models/" + props.config.urlPath + "/" + annotation.audio'></audio>
+                    :src='"./models/" + props.config.url + "/" + annotation.audio'></audio>
                   <div v-for="paragraph in annotation.content" :key="paragraph" class="q-mb-sm" v-html="paragraph">
                   </div>
                 </div>
@@ -77,11 +77,12 @@ const emit = defineEmits(["closeInfocardEvent", "animateCameraEvent"])
 let viewer = ref(null)
 let isOpen = ref(false)
 let tab = ref("")
-let lightboxOpen = ref(false)
 
 onMounted(async () => { })
 
 const open = (index) => {
+  console.log(index);
+
   isOpen.value = true
   tab.value = index
 }
@@ -106,7 +107,7 @@ function showLightbox(mediaDescription) {
     tooltip: false,
     zoomRatio: 0.3,
     zIndex: 9999,
-    title: (image, imageData) => { return mediaDescription != undefined ? mediaDescription : "" },
+    title: () => { return mediaDescription != undefined ? mediaDescription : "" },
     toolbar: {
       zoomIn: true,
       zoomOut: true,
@@ -129,13 +130,9 @@ function showLightbox(mediaDescription) {
   viewer.value.show()
 }
 
-function closeLightbox() {
-  lightboxOpen.value = false
-}
-
 function checkProperty(obj, propertyName) {
   return (
-    obj.hasOwnProperty(propertyName) &&
+    Object.prototype.hasOwnProperty.call(obj, propertyName) &&
     obj[propertyName] !== undefined &&
     obj[propertyName] !== null &&
     obj[propertyName] !== ""

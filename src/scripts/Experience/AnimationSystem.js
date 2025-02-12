@@ -1,4 +1,4 @@
-import { AnimationClip, AnimationMixer } from 'three'
+import { AnimationMixer } from 'three'
 
 /**
  * AnimationSystem

@@ -1,0 +1,24 @@
+{
+  "annotations": [],
+  "quiz": {
+    "title": "Das Quiz zum APEX",
+    "description": "Das Quiz zum APEX",
+    "questions": [
+      {
+        "id": "the-object"
+      },
+      {
+        "id": "the-objectgroup"
+      },
+      {
+        "id": "mensch-und-meer"
+      },
+      {
+        "id": "global-perspective"
+      },
+      {
+        "id": "technical"
+      }
+    ]
+  }
+}

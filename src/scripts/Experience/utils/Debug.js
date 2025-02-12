@@ -1,4 +1,4 @@
-import { AxesHelper, BoxGeometry, MeshBasicMaterial, Object3D } from 'three'
+import { AxesHelper, BoxGeometry, Mesh, MeshBasicMaterial, Object3D } from 'three'
 
 function createDebugOutline() {
   console.log('debug')

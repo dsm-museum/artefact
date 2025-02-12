@@ -8,7 +8,6 @@ import {
   MeshBasicMaterial,
   Color,
   Mesh,
-  BoxHelper,
 } from 'three'
 
 import anime from 'animejs'
@@ -87,9 +86,7 @@ export default class AnchoredAnnotation {
   }
 
   createIcon() {
-    let map = textureLoader.load(
-      './models/' + this.urlPath + '/' + this.annotationData.icon
-    )
+    let map = textureLoader.load('./models/' + this.urlPath + '/' + this.annotationData.icon)
 
     let spriteMaterial = new SpriteMaterial({
       map: map,
@@ -135,7 +132,7 @@ export default class AnchoredAnnotation {
         color: 0xffffff,
         transparent: true,
         opacity: 1.0,
-      })
+      }),
     )
     mesh.name = 'endpoint-bubble'
 
@@ -154,21 +151,14 @@ export default class AnchoredAnnotation {
     if (this.mesh) {
       positionAttribute = this.mesh.geometry.getAttribute('position')
     } else {
-      console.log(
-        `AnchoredAnnotation: Geometry of ${this.mesh.name} is undefined`
-      )
+      console.log(`AnchoredAnnotation: Geometry of ${this.mesh.name} is undefined`)
       return centroid
     }
 
     // Get all vertex positions
     for (let currentVertex of verticesOnModelList) {
       let currentVertexPosition = new Vector3(0, 0, 0)
-      positions.push(
-        currentVertexPosition.fromBufferAttribute(
-          positionAttribute,
-          currentVertex
-        )
-      )
+      positions.push(currentVertexPosition.fromBufferAttribute(positionAttribute, currentVertex))
     }
 
     // Add all positions together...
@@ -193,7 +183,7 @@ export default class AnchoredAnnotation {
 
     if (!mesh) {
       console.warn(
-        `AnchoredAnnotation: No mesh with the name ${this.annotationData.meshName} for anchoring the annotation could be found in the file.`
+        `AnchoredAnnotation: No mesh with the name ${this.annotationData.meshName} for anchoring the annotation could be found in the file.`,
       )
     }
 
@@ -203,15 +193,14 @@ export default class AnchoredAnnotation {
 
   getFovHeight() {
     const fov = this.experience.camera.instance.fov * (Math.PI / 180) // FOV to radians
-    const height =
-      2 * Math.tan(fov / 2.0) * this.experience.camera.instance.position.z
+    const height = 2 * Math.tan(fov / 2.0) * this.experience.camera.instance.position.z
     return height
   }
 
   update() {
     try {
       this.mesh.updateMatrixWorld(true)
-    } catch (error) {
+    } catch {
       /*console.warn(
         `AnchoredAnnotation: No mesh with the name ${this.annotationData.meshName} for anchoring the annotation could be found in the file.`
       )*/
@@ -222,14 +211,12 @@ export default class AnchoredAnnotation {
     // TODO: Change to barycentric coordinates to get the center of all 3 verticesOnModel
     let startVertexPosition = null
 
-    startVertexPosition = this.getVertexPosition(
-      this.annotationData.verticesOnModel
-    )
+    startVertexPosition = this.getVertexPosition(this.annotationData.verticesOnModel)
 
     let endPosition = new Vector3(
       this.annotationData.position.x,
       this.annotationData.position.y,
-      this.annotationData.position.z
+      this.annotationData.position.z,
     )
 
     // Transform to the local space of the parent object
@@ -254,16 +241,14 @@ export default class AnchoredAnnotation {
 
     let x = Math.round(
       (0.5 + this.annotationVector.x / 2) *
-        (this.experience.canvas.width / Math.min(window.devicePixelRatio, 2))
+        (this.experience.canvas.width / Math.min(window.devicePixelRatio, 2)),
     )
     let y = Math.round(
       (0.5 - this.annotationVector.y / 2) *
-        (this.experience.canvas.height / Math.min(window.devicePixelRatio, 2))
+        (this.experience.canvas.height / Math.min(window.devicePixelRatio, 2)),
     )
 
-    const distance = this.target.position.distanceTo(
-      this.experience.camera.instance.position
-    )
+    const distance = this.target.position.distanceTo(this.experience.camera.instance.position)
 
     const objectSize = this.fovHeight / distance
 
