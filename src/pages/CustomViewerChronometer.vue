@@ -763,6 +763,10 @@ function setAnimationSpeed() {
     if (action._clip.name == "Chronometer_bottom_part_dynamic_#2.002Action") {
       action.setDuration(29880 / timeFactor.value) // 498 Minutes == 29880 seconds, 8h 18m
     }
+
+    if (action._clip.name == "Schneckenwelle_Ritzel(8h18m)Action") {
+      action.setDuration(29880 / timeFactor.value)
+    }
   }
 
   // Sets the speed of the second model, the chain
