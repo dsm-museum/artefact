@@ -223,6 +223,14 @@ async function createExperience() {
   // sceneContents.position.z = -0.07
   experience.scene.add(sceneContents)
 
+  // FIXME: Use EventDispatcher from three instead of EventEmitter
+  experience.resources.on('progress', (loaded, total, description) => {
+    console.log("onprogress", loaded, total, description)
+    loadingProgress.value = loaded / total
+    progressLabel.value = ((loaded / total) * 100).toFixed(0)
+    progressDescription.value = 'Lade ' + description
+  })
+
   // FIXME: Fix loading scheduling and loading screen
   // Load the main model
   //const mainModelUrl = () => import(`./models/${props.modelId}/${config.assets[0].url}`);
@@ -247,12 +255,19 @@ async function createExperience() {
     mainModel = null
   }
 
+  // TODO: Cleanup, this should trigger elsewhere and be streamlined with the multi-model approach
+  //experience.resources.trigger("loaded", mainModel)
+
   // FIXME: Reverse this (mainModel == null) { return; } and put all further logic that requires
   // the main model together
   if (mainModel !== null) {
     // Give a name
     mainModel.name = 'mainModel'
+
     sceneContents.add(mainModel.scene)
+    console.log(mainModel.scene.children[0])
+    mainModel.scene.children[0].receiveShadow = true
+    mainModel.scene.children[0].castShadow = true
 
     let mixer = experience.animationSystem.createMixer(
       mainModel.scene,
@@ -353,16 +368,9 @@ async function createExperience() {
     resize()
   })
 
-  // FIXME: Use EventDispatcher from three instead of EventEmitter
-  experience.resources.on('progress', (loaded, toLoad, description) => {
-    loadingProgress.value = loaded / toLoad
-    progressLabel.value = ((loaded / toLoad) * 100).toFixed(0)
-    progressDescription.value = 'Lade ' + description
-  })
-
   // The "loaded" event is triggered after the first 3d model is loaded.
   // If there are other 3d models defined in the "additionalModels" section of the config
-  experience.resources.on('loaded', () => {
+  /*experience.resources.on('loaded', () => {
     // Make the model non-reactive as that is needed for the renderer to show the animation
     let gltfFile = toRaw(experience.resources.items['model'])
 
@@ -378,21 +386,21 @@ async function createExperience() {
     //mixers.value.push(mixer)
 
     // Create the clip actions
-    /*let actions = */ experience.animationSystem.createClips(
-      gltfFile.animations,
-      mixer
-    )
+    let actions = experience.animationSystem.createClips(
+    gltfFile.animations,
+    mixer
+  )
 
-    // Load additional 3d models if defined
-    if (config.value.additionalModels) {
-      for (let model of config.value.additionalModels) {
-        let path = `./models/${route.params.id}/${model}`
-        experience.resources.load(path)
-      }
+  // Load additional 3d models if defined
+  if (config.value.additionalModels) {
+    for (let model of config.value.additionalModels) {
+      let path = `./models/${route.params.id}/${model}`
+      experience.resources.load(path)
     }
+  }
 
-    showLoadingScreen.value = false
-  })
+  showLoadingScreen.value = false
+})*/
 
   // Is triggered for every 3d model loading after the first file
   experience.resources.on('modelReady', (gltfFile) => {

@@ -10,6 +10,6 @@ import BaseViewer from './BaseViewer.vue';
 const MODEL_ID = "flussmine"
 
 onMounted(async () => {
-  console.log("onMounted Testviewer.vue: Start")
+  //console.log("onMounted Testviewer.vue: Start")
 })
 </script>

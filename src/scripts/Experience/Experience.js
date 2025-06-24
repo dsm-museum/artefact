@@ -10,6 +10,8 @@ import Resources from './utils/Resources'
 import Raycaster from './Raycaster'
 import { disposeThree } from './utils/threeCleanup'
 import { WebXRSystem } from './WebXRSystem'
+import { DirectionalLightHelper } from 'three'
+import { Object3D } from 'three'
 
 let instance = null
 
@@ -34,9 +36,7 @@ export default class Experience {
     this.camera = new Camera(_config.cameraPosition)
     this.controls = new Controls()
     this.renderer = new Renderer()
-    this.annotationSystem = new AnnotationSystem(
-      document.querySelector('#annotations')
-    )
+    this.annotationSystem = new AnnotationSystem(document.querySelector('#annotations'))
     this.animationSystem = new AnimationSystem()
     this.raycaster = new Raycaster()
 
@@ -60,6 +60,16 @@ export default class Experience {
 
     directionalLight2.position.set(-1, 0.7, -1)
     directionalLight.position.set(1, 0.5, 1.5)
+
+    /*let dirlightTarget = new Object3D()
+    dirlightTarget.position.set(0, 0, 0)
+    this.scene.add(dirlightTarget)
+    let dirLightHelper1 = new DirectionalLightHelper(directionalLight, 1.0)
+    let dirLightHelper2 = new DirectionalLightHelper(directionalLight2, 1.0)
+    dirLightHelper1.target = dirlightTarget
+    dirLightHelper2.target = dirlightTarget
+
+    this.scene.add(dirLightHelper1, dirLightHelper2)*/
 
     this.scene.add(directionalLight)
     this.scene.add(directionalLight2)

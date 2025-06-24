@@ -11,6 +11,6 @@ import BaseViewer from './BaseViewer.vue';
 const MODEL_ID = "chronometer"
 
 onMounted(async () => {
-  console.log("onMounted Testviewer.vue: Start")
+  //console.log("onMounted Testviewer.vue: Start")
 })
 </script>

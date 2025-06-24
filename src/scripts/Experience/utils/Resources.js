@@ -15,16 +15,16 @@ export default class Resources extends EventEmitter {
     this.toLoad = this.sources.length
     this.loaded = 0
 
-    //this.setLoadingManager();
+    this.setLoadingManager()
     this.setLoaders()
-    this.startLoading()
+    //this.startLoading()
   }
 
   setLoaders() {
     this.loaders = {}
-    this.loaders.gltfLoader = new GLTFLoader()
-    this.loaders.dracoLoader = new DRACOLoader()
-    this.loaders.textureLoader = new TextureLoader()
+    this.loaders.gltfLoader = new GLTFLoader(this.loadingManager)
+    this.loaders.dracoLoader = new DRACOLoader(this.loadingManager)
+    this.loaders.textureLoader = new TextureLoader(this.loadingManager)
     this.loaders.dracoLoader.setDecoderPath('./draco/')
     this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader)
     this.loaders.gltfLoader.setMeshoptDecoder(MeshoptDecoder)
@@ -38,9 +38,14 @@ export default class Resources extends EventEmitter {
     this.loadingManager.onStart = (url) => {
       console.log(url)
     }
+
+    // When an item finished loading
+    this.loadingManager.onProgress = (item, loaded, total) => {
+      //console.log(item, loaded, total)
+    }
   }
 
-  startLoading() {
+  /*startLoading() {
     for (const source of this.sources) {
       switch (source.type) {
         case 'gltfModel':
@@ -58,10 +63,10 @@ export default class Resources extends EventEmitter {
           break
       }
     }
-  }
+  }*/
 
   // Loads the first 3d model and triggers the "loaded" event
-  loadInitial(source, file) {
+  /*loadInitial(source, file) {
     this.items[source.id] = file
     this.loaded++
 
@@ -70,20 +75,21 @@ export default class Resources extends EventEmitter {
     if (this.loaded === this.toLoad) {
       this.trigger('loaded')
     }
-  }
+  }*/
 
   // Loads a 3d model and triggers the modelReady event
   async load(source) {
-    let result = this.loaders.gltfLoader.loadAsync(source)
+    let result = this.loaders.gltfLoader.loadAsync(source, (progressEvent) => {
+      console.log('onprogress', progressEvent.loaded / progressEvent.total)
+      this.trigger('progress', [progressEvent.loaded, progressEvent.total, source.name])
+    })
+
     result.catch((e) => {
       console.error(
         `The specified model "${source}" could not be loaded. Please check if the path is correct.`,
       )
       console.error(e)
     })
-
-    this.trigger('progress', [this.loaded, this.toLoad, source.name])
-
     return result
   }
 }

@@ -54,6 +54,16 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/models/meteor',
+    component: () => import('layouts/ARLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('src/pages/ViewerMeteor.vue'),
+      },
+    ],
+  },
 
   // Always leave this as last one, shows an error page
   {

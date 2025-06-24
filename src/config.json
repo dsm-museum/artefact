@@ -1,4 +1,241 @@
 {
+  "meteor": {
+    "title": "METEOR",
+    "url": "meteor",
+    "description": "Die METEOR wurde im Jahr 1914 als Kanonenboot für die Kaiserliche Marine gebaut. Sie kam im Ersten Weltkrieg aber nicht als Kriegsschiff zum Einsatz und wurde bis 1920 nach den Regeln des Versailler Vertrags zu einem Forschungs- und Vermessungsschiff umgebaut. Bei der Deutschen Atlantischen Expedition (D.A.E.) durchquerte die METEOR in 14 Fahrten den Südatlantik zwischen der Küste Südamerikas und Afrikas. Die Expedition fand vom 16. April 1925 bis zum 2. Juni 1927 statt.",
+    "thumbnail": "media/I-01888_79_002.jpg",
+    "order": 3,
+    "assets": [
+      {
+        "id": "model",
+        "url": "Meteor_4K.glb"
+      }
+    ],
+    "ar": true,
+    "annotationScale": 1,
+    "cameraPosition": { "x": -0.4, "y": 0.2, "z": -0.25 },
+    "origin": { "x": 0.0, "y": 0.08, "z": -0.03 },
+    "content": [
+      {
+        "id": "the-object",
+        "subtitle": "Das Schiff",
+        "title": "METEOR und die Deutsche Atlantische Expedition 1925-1927",
+        "icon": "media/schiff.png",
+        "meshName": "Meteor_Final_4K",
+        "verticesOnModel": [138074, 138074, 138074],
+        "position": { "x": -0.1, "y": 0.08, "z": 0.28 },
+        "media": "media/dasschiff.jpg",
+        "mediaDescription": "Die METEOR in der Magellanstraße (1926)",
+        "content": [
+          "Die METEOR wurde im Jahr 1914 als Kanonenboot für die Kaiserliche Marine gebaut. Sie kam im Ersten Weltkrieg aber nicht als Kriegsschiff zum Einsatz und wurde bis 1920 nach den Regeln des Versailler Vertrags zu einem Forschungs- und Vermessungsschiff umgebaut.",
+          "Unter Deck wurden Arbeitsräume und Wohnräume für Wissenschaftler eingerichtet. Zum Beispiel ein Labor, ein Zeichensaal und eine Dunkelkammer für Fotos. Auf dem Deck gab es vier elektrische Seilwinden, mit denen man Messgeräte ins Meer hinablassen konnte.",
+          "Bei der Deutschen Atlantischen Expedition (D.A.E.) durchquerte die METEOR in 14 Fahrten den Südatlantik zwischen der Küste Südamerikas und Afrikas. Die Expedition fand vom 16. April 1925 bis zum 2. Juni 1927 statt.",
+          "Am Anfang leitete der Meeresforscher Alfred Merz (1880–1925) die wissenschaftliche Arbeit an Bord. Nach seinem Tod übernahm der Kapitän Fritz Spieß (1881–1959) die Leitung der Expedition.",
+          "Dabei forschten die Wissenschaftler zu vielen Themen: zum Beispiel zur Bewegung des Wassers, zur Form des Meeresbodens, zur Chemie des Wassers und zur Wetterlage. Die wichtigsten Forschungsfragen betrafen die großräumigen Wasserbewegungen, sowie die Bodenform des Atlantischen Ozeans."
+        ],
+        "quiz": {
+          "question": "Für welche Forschungen war die METEOR <span style='font-weight:bold'>nicht</span> ausgerüstet?",
+          "explanationText": "Die METEOR war für chemische, meteorologische und biologische Untersuchungen ausgerüstet, nicht aber für astronomische.",
+          "answers": [
+            {
+              "id": 0,
+              "text": "Chemie",
+              "correct": false
+            },
+            {
+              "id": 1,
+              "text": "Astronomie (Sternenkunde)",
+              "correct": true
+            },
+            {
+              "id": 2,
+              "text": "Meteorologie (Wetterforschung)",
+              "correct": false
+            },
+            {
+              "id": 3,
+              "text": "Biologie",
+              "correct": false
+            }
+          ]
+        }
+      },
+      {
+        "id": "the-objectgroup",
+        "subtitle": "Das Schiffsmodell",
+        "title": "Ein Geschenk der ehemaligen METEOR-Crew: Das Modell des Forschungsschiffes",
+        "icon": "media/modell.png",
+        "meshName": "Meteor_Final_4K",
+        "verticesOnModel": [54831, 54831, 54831],
+        "position": { "x": 0.15, "y": 0.1, "z": -0.13 },
+        "media": "media/schiffsmodell.jpg",
+        "mediaDescription": "Die Besatzung der METEOR",
+        "content": [
+          "Mehr als 50 Jahre nach der Deutschen Atlantischen Expedition (D.A.E.) übergaben ehemalige Besatzungsmitglieder der METEOR im Mai 1979 ein Modell ihres Forschungsschiffs an das Deutsche Schifffahrtsmuseum.",
+          "Das Modell wurde im Maßstab 1:100 gebaut, also hundertmal kleiner als das Original. Das Modell zeigt die für die Expedition installierte Ausrüstung an Bord, zum Beispiel:",
+          "<ul><li>die seitlich angebrachten elektrischen Seilwinden</li><li>Entfernungsmesser zur Wetterbeobachtung hinten auf dem Achterdeck</li><li>eine große Seiltrommel vor der Schiffsbrücke für den Tiefseeanker</li><li>und ein sogenanntes Windgeschütz zur Messung von Windrichtung und -stärke (das jedoch kaum genutzt wurde)</li></ul>",
+          "Zusammen mit dem Modell gaben die ehemaligen Besatzungsmitglieder auch ein Fotoalbum mit Bildern der Expedition und den Landgängen ab. Modell und Album zeigen nicht nur die persönlichen Erinnerungen der früheren Besatzung an die Expedition, sondern spiegeln auch ein Weltbild wider, das teilweise noch von kolonialen Vorstellungen geprägt war."
+        ],
+        "quiz": {
+          "question": "Wann kam das Modell der METEOR in die Museumssammlung?",
+          "explanationText": "Im Mai 1979 kam das Modell der METEOR in die Museumssammlung.",
+          "answers": [
+            {
+              "id": 0,
+              "text": "Oktober 1927",
+              "correct": false
+            },
+            {
+              "id": 1,
+              "text": "Mai 1979",
+              "correct": true
+            },
+            {
+              "id": 2,
+              "text": "Januar 1964",
+              "correct": false
+            },
+            {
+              "id": 3,
+              "text": "August 2024",
+              "correct": false
+            }
+          ]
+        }
+      },
+      {
+        "id": "mensch-und-meer",
+        "subtitle": "Mensch und Meer",
+        "title": "Die Wissenschaft von der Zirkulation und Bodenform des Atlantischen Ozeans",
+        "icon": "media/mensch.png",
+        "meshName": "Meteor_Final_4K",
+        "verticesOnModel": [82156, 82156, 82156],
+        "position": { "x": -0.13, "y": 0.13, "z": 0.01 },
+        "media": "media/menschundmeer.jpg",
+        "mediaDescription": "Wissenschaftler und Matrosen an der Serienmaschine mit Wasserschöpfer",
+        "content": [
+          "An Bord der METEOR arbeiteten neun Wissenschaftler aus verschiedenen Bereichen: <ul><li>Ozeanografie (Meereskunde)</li><li>Chemie und Biologie</li><li>Geologie und Mineralogie</li><li>Meteorologie (Wetterforschung)</li><ul>",
+          "Auch die Marinesoldaten, also die Schiffsbesatzung, halfen bei der wissenschaftlichen Arbeit mit. Dafür wurden sie extra geschult und lernten den Umgang mit Messgeräten und die Arbeit im Forschungslabor.",
+          "Um das Wasser des Atlantiks zu untersuchen, nutzten die Forscher sogenannte Serienmaschinen. Das waren große elektrische Seilwinden, an denen spezielle Behälter befestigt wurden, mit denen Wasserproben aus bis zu 5.000 Metern Tiefe geholt werden konnten.",
+          "Im Labor an Bord wurde das Wasser anschließend genau untersucht – zum Beispiel auf seinen Chlorgehalt. Es ist Bestandteil des Meersalzes und so konnten die Forscher herausfinden, wie viel Salz das Wasser enthält. Das war wichtig, um die Meeresströmungen besser zu verstehen.",
+          "Die Richtung und Stärke der Strömungen maßen sie mit speziellen Strömungsmessgeräten. Außerdem führten sie über 67.000 Messungen mit einem Echolot durch. Damit konnten sie die Form des Meeresbodens genau erfassen und eine großflächige Karte erstellen."
+        ],
+        "quiz": {
+          "question": "Warum wurde der Chlorgehalt des Meerwassers untersucht?",
+          "explanationText": "Das Meerwasser wurde auf seinen Chlorgehalt untersucht, der wiederum Aufschluss über den Salzgehalt und die Meeresströmungen gab.",
+          "answers": [
+            {
+              "id": 0,
+              "text": "Um zu wissen, wie dicht das Wasser ist.",
+              "correct": false
+            },
+            {
+              "id": 1,
+              "text": "Um zu erkennen, welche Farbe das Wasser hat.",
+              "correct": false
+            },
+            {
+              "id": 2,
+              "text": "Um darüber den Salzgehalt zu bestimmen und mehr über die Meeresströmungen zu erfahren.",
+              "correct": true
+            },
+            {
+              "id": 3,
+              "text": "Um herauszufinden, welche Temperatur das Wasser hat.",
+              "correct": false
+            }
+          ]
+        }
+      },
+      {
+        "id": "global-perspective",
+        "subtitle": "Globale Perspektive",
+        "title": "Weltkrieg, Weimar, Wirtschaftskrise: Die politische Aufgabe der Deutschen Atlantischen Expedition",
+        "icon": "media/global.png",
+        "meshName": "Meteor_Final_4K",
+        "verticesOnModel": [135462, 135462, 135462],
+        "position": { "x": 0.05, "y": 0.177, "z": -0.35 },
+        "media": "media/globaleperspektive_img.png",
+        "mediaDescription": "Weltkarte mit den deutschen Kolonien bis 1918 (Andrew0921 at the English Wikipedia, CC BY-SA 3.0 <http://creativecommons.org/licenses/by-sa/3.0/>, via Wikimedia Commons)",
+        "content": [
+          "Nach dem Ersten Weltkrieg wurde das Deutsche Kaiserreich aufgelöst und in Deutschland entstand die Weimarer Republik. Anfang der 1920er Jahre gabe es viele Probleme: Die Politik war unsicher, und durch die Hyperinflation verlor das Geld schnell an Wert.",
+          "Durch den Versailler Vertrag von 1919 verlor Deutschland alle Kolonien. Außerdem musste das Land fast alle Kriegs- und Handelsschiffe an die Siegermächte abgeben. Das unvollendete Kanonenboot METEOR durfte jedoch bei der Reichsmarine bleiben. Es wurde entwaffnet und zu einem Forschungs- und Vermessungsschiff umgebaut.",
+          "Nach dem Krieg war Deutschland wirtschaftlich geschwächt. Auch die Wissenschaft war international isoliert. Deshalb organisierten die Reichsmarine und die Notgemeinschaft der deutschen Wissenschaft eine große Forschungsreise: die Deutsche Atlantische Expedition (D.A.E.). Das Ziel war nicht nur, neue wissenschaftliche Erkenntnisse zu gewinnen, sondern auch, das verlorene Ansehen Deutschlands wiederherzustellen und eine symbolische Präsenz in Übersee zu zeigen.",
+          "Die Forscher besuchten Orte in Südamerika und in der früheren deutschen Kolonie Südwestafrika (heute Namibia), um bewusst an die koloniale Vergangenheit Deutschlands zu erinnern."
+        ],
+        "quiz": {
+          "question": "In welchem dieser Länder erinnerte die Besatzung der METEOR an die Zeit der deutschen Kolonien?",
+          "explanationText": "In Namibia erinnerte die Besatzung der METEOR an die Zeit der deutschen Kolonien.",
+          "answers": [
+            {
+              "id": 0,
+              "text": "China",
+              "correct": false
+            },
+            {
+              "id": 1,
+              "text": "Namibia",
+              "correct": true
+            },
+            {
+              "id": 2,
+              "text": "Kamerun",
+              "correct": false
+            },
+            {
+              "id": 3,
+              "text": "Angola",
+              "correct": false
+            }
+          ]
+        }
+      },
+      {
+        "id": "technical",
+        "subtitle": "Technische Perspektive",
+        "title": "Forschung unter Dampf und Segeln",
+        "icon": "media/technik.png",
+        "meshName": "Meteor_Final_4K",
+        "verticesOnModel": [114359, 114359, 114359],
+        "position": { "x": 0.04, "y": 0.207, "z": 0.06 },
+        "media": "media/technik_img.png",
+        "mediaDescription": "Grafik: Schnitt durch die Wasserkesselanlage der Dampfmaschine und den Schornstein, oben links auf dem Deck die Tiefseewinde („Serienmaschine“, vgl. Rubrik ,Mensch und Meer‘)",
+        "content": [
+          "Im Maschinenraum der METEOR sorgte das Personal während der Fahrt ständig dafür, dass die Kohlenfeuer brannten. So wurde Dampf für die beiden Dampfmotoren erzeugt, die die Schiffsschrauben antrieben.",
+          "Der Rauch vom Feuer stieg durch den Schornstein in der Mitte des Schiffes nach oben. Insgesamt hatte das Schiff 440 Tonnen Kohle an Bord. Damit konnte es rund 6.000 Seemeilen (etwa 11.100 Kilometer) weit fahren.",
+          "Diese Reichweite reichte aus, um auch entlegene Regionen im Südatlantik zu erreichen. Für eine Forschungsreise in den deutlich größeren Pazifik, wie sie zeitweise geplant war, hätte der Vorrat jedoch nicht ausgereicht.",
+          "Zusätzlich war das Schiff mit verschiedenen Segeln ausgestattet – darunter Rahsegel, Stagsegel und ein Gaffelsegel. Je nach Windrichtung konnten diese genutzt werden, um Kohle zu sparen oder die Geschwindigkeit zu erhöhen, wenn sie gemeinsam mit dem Dampfantrieb eingesetzt wurden.",
+          "Wie weit und wie schnell das Schiff fahren konnte, hatte direkten Einfluss auf das Expeditionsgebiet und die Menge der gewonnenen Forschungsdaten. "
+        ],
+        "quiz": {
+          "question": "Warum konnte die Expedition nicht im Pazifischen Ozean stattfinden?",
+          "explanationText": "Die Kohlevorräte reichten nicht für die Pazifiküberquerung.",
+          "answers": [
+            {
+              "id": 0,
+              "text": "Der Pazifik war bereits vollständig erforscht.",
+              "correct": false
+            },
+            {
+              "id": 1,
+              "text": "Die Kohlevorräte reichten nicht für die Pazifiküberquerung.",
+              "correct": true
+            },
+            {
+              "id": 2,
+              "text": "Die Messgeräte waren für den Pazifik ungeeignet.",
+              "correct": false
+            },
+            {
+              "id": 3,
+              "text": "Die Dampfmaschine war zu schwach für die hohen Wellen im Pazifik.",
+              "correct": false
+            }
+          ]
+        }
+      }
+    ]
+  },
   "chronometer": {
     "title": "Das Chronometer",
     "url": "chronometer",

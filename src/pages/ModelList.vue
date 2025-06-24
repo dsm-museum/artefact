@@ -10,7 +10,7 @@
         class="my-card cursor-pointer q-hoverable q-mb-lg">
         <span class="q-focus-helper"></span>
         <q-img :ratio="16 / 9" spinner-color="primary" fit="cover" position="50% 50%"
-          :src="`/models/${model.url}/${model.thumbnail}`">
+          :src="`./models/${model.url}/${model.thumbnail}`">
         </q-img>
 
         <q-item class="bg-primary text-white q-pa-md">

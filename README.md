@@ -1,5 +1,4 @@
 <a name="readme-top"></a>
-![Logo of the project](header.png)
 
 <div align="center">
 
@@ -7,19 +6,13 @@
 
 </div>
 
-# About the framework
+# About ARtefact
 
-<img alt="artefact" src="./src/assets/artefact-logo-text.png" height="16px"> is a framework for displaying 3D models, adding annotations and connecting content to them, all in a Progressive Web App. It is developed at the [German Maritime Museum](https://dsm.museum) and built with three.js and Quasar.
+ARtefact is a platform and framework for displaying 3D models, adding annotations and connecting content to them.
+It is developed at the [German Maritime Museum](https://dsm.museum) and built with three.js and Quasar.  
+It has been co-developed with teachers and students with research results available at [https://dl.acm.org/doi/abs/10.1145/3656585](https://dl.acm.org/doi/abs/10.1145/3656585).
 
 If you encounter any problems adding your own 3D models or content, feel free to contact us. We are here to help.
-
-### Built with
-
-[![Vue][vue-shield]][vue-url]
-
-[![Quasar][quasar-shield]][quasar-url]
-
-[![three.js][three-shield]][three-url]
 
 ## Features
 
@@ -112,11 +105,7 @@ For every model, the app needs a config file specifying the model file, annotati
       "icon": "media/icon-about.png",
       "position": [1.0, 0.6, 2.4],
       "media": "media/interior.jpg",
-      "content": [
-        "This is the annotation",
-        "with multiple paragraphs of",
-        "Content."
-      ]
+      "content": ["This is the annotation", "with multiple paragraphs of", "Content."]
     }
   ]
 }

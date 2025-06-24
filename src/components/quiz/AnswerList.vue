@@ -1,5 +1,5 @@
 <template>
-  <h5 class="text-center text-bold">{{ question.question }}</h5>
+  <h5 class="text-center text-bold" v-html="question.question"></h5>
 
   <div class="column justify-center q-gutter-y-sm q-px-sm q-px-md-xl">
 
