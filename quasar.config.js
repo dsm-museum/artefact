@@ -46,7 +46,7 @@ export default defineConfig((/* ctx */) => {
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
-      publicPath: '/ar_dev',
+      publicPath: '/ar',
       // analyze: true,
       // env: {},
       // rawDefine: {}

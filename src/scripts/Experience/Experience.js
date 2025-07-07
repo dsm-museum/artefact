@@ -16,7 +16,7 @@ import { Object3D } from 'three'
 let instance = null
 
 export default class Experience {
-  constructor(_config) {
+  constructor(_config = {}) {
     if (instance) {
       return instance
     }
@@ -27,6 +27,12 @@ export default class Experience {
 
     // Components
     this.canvas = document.querySelector('#three-canvas')
+
+    if (!this.canvas) {
+      return
+    }
+
+    this.disposing = false
     this.resizer = new Resizer()
     this.timer = new Timer()
     this.scene = new Scene()
@@ -44,10 +50,11 @@ export default class Experience {
   }
 
   dispose() {
+    instance = null
     disposeThree(this.renderer.instance, this.scene, false)
     this.webXRSystem.dispose()
     this.annotationSystem.dispose()
-    instance = null
+    this.scene = null
   }
 
   setDefaultLighting() {

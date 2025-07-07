@@ -57,9 +57,7 @@ import OKCancelDialog from 'src/components/dialogs/OKCancelDialog.vue'
 import QuizCardDialog from 'src/components/dialogs/QuizCardDialog.vue'
 import Quiz from 'src/scripts/Quiz/Quiz'
 import QuizResultDialog from 'src/components/dialogs/QuizResultDialog.vue'
-//import Inspector from 'src/scripts/Experience/utils/Inspector'
 import { xRayShader } from 'src/scripts/Experience/shaders/XRayShader'
-//import { addVertexLabels } from 'src/scripts/Experience/utils/addVertexLabels'
 import appConfig from "src/config.json"
 
 // Config
@@ -119,8 +117,7 @@ let mechanismButtonEnabled = ref(true)
 // Grouping
 let sceneContents = new Group() // Holds all the contents, as we want to avoid moving the origin (origin = experience.scene.position)
 sceneContents.name = 'sceneContents'
-
-let mainModel
+let mainModel = null
 let chainModel
 let chainActions
 
@@ -130,16 +127,6 @@ const emit = defineEmits(['statuschange'])
 // Start of the page
 onMounted(async () => {
   config = appConfig["chronometer"]
-
-
-  // FIXME: Make merging annotations and quiz obsolete, how?
-  //console.log(toRaw(config.annotations));
-
-  /*annotationsAndQuiz.value = mergeAnnotationsAndQuiz(
-    config.annotations,
-    config.quiz.questions
-  )*/
-
 
   //TODO: Put all config related stuff together
   if (config.backgroundColor) {
@@ -194,7 +181,6 @@ onMounted(async () => {
 
   // Prepare quiz content
   if (config.content[0].quiz) {
-    // FIXME: Get rid of toRaw call
     quiz = new Quiz(config)
   }
 
@@ -227,7 +213,7 @@ onUnmounted(() => {
 // FIXME: This function does too much
 async function createExperience() {
   experience = new Experience({
-    cameraPosition: config.cameraPosition,
+    cameraPosition: toRaw(config.cameraPosition)
   })
 
   experience.controls.instance.autoRotate = false
@@ -248,12 +234,62 @@ async function createExperience() {
   // sceneContents.position.z = -0.07
   experience.scene.add(sceneContents)
 
-  // FIXME: Fix loading scheduling and loading screen
+  // --- RESOURCE LOADING ---
+  experience.resources.setup(config.assets)
+
+  /*experience.resources.on("finishedSingle", (loaded, total, overallProgress) => {
+    //console.log("finishedSingle", loaded, total, overallProgress)
+    //loadingProgress.value = loaded / total
+    //progressLabel.value = overallProgress
+  })*/
+
+  experience.resources.on("finishedAll", (nrOfAssets, overallProgress) => {
+    //console.log("finishedAll", nrOfAssets)
+    loadingProgress.value = 100
+    progressLabel.value = 100 + '%'
+
+    setTimeout(() => {
+      showLoadingScreen.value = false
+    }, 500)
+  })
+
+  experience.resources.on("progress", (percentage) => {
+    //console.log("percentage", percentage)
+    loadingProgress.value = percentage
+    progressLabel.value = percentage + '%'
+  })
+
+  // Loading flow:
+  // - Some assets need to be there, before the scene can be shown
+  // - The other ones will be handled in config.additionalModels and are not handled in the BaseViewer for now
+  // - we need to sort for assets, where the "replaces" property is null
   // Load the main model
+  //const mainModelUrl = () => import(`./models/${props.modelId}/${config.assets[0].url}`);
   let mainModelUrl = `./models/chronometer/${config.assets[0].url}`
   try {
     mainModel = await experience.resources.load(mainModelUrl)
     mainModel.scene.name = "Chronometer.glb"
+
+    mainModel.scene.traverse((child) => {
+      if (child instanceof Mesh) {
+        originalMaterials[child.name] = child.material
+      }
+    })
+
+    mainModel.name = 'mainModel'
+    sceneContents.add(mainModel.scene)
+
+    let mixer = experience.animationSystem.createMixer(
+      mainModel.scene,
+      'mainMixer'
+    )
+    animationActions.value = experience.animationSystem.createClips(
+      mainModel.animations,
+      mixer
+    )
+
+    // TODO: Check if this is the right place to trigger "loaded"
+    //experience.resources.trigger("loaded", mainModel)
   } catch {
     console.error(
       `No model was found. Stopping Animation and Annotation loading.`
@@ -269,42 +305,16 @@ async function createExperience() {
         persistent: true,
       },
     })
+
     mainModel = null
+
+    progressLabel.value = ':('
+
+    // TODO: Check if we can indeed return safely if no model is found
+    return
   }
 
-  mainModel.scene.traverse((child) => {
-    if (child instanceof Mesh) {
-      originalMaterials[child.name] = child.material
-    }
-  })
-
-  // Debug log the mesh parts
-  /*mainModel.scene.traverse((elem) => {
-    console.log(elem);
-  })*/
-
-  //console.log(originalMaterials);
-
-
-
-  // FIXME: Reverse this (mainModel == null) { return; } and put all further logic that requires
-  // the main model together
-  if (mainModel !== null) {
-    // Give a name
-    mainModel.name = 'mainModel'
-    sceneContents.add(mainModel.scene)
-
-    let mixer = experience.animationSystem.createMixer(
-      mainModel.scene,
-      'mainMixer'
-    )
-    animationActions.value = experience.animationSystem.createClips(
-      mainModel.animations,
-      mixer
-    )
-  }
-
-  // Load all the placeholder models if they exist
+  // Load all other models if they exist (note the `let i = 1` instead of `0`)
   for (let i = 1; i < config.assets.length; i++) {
     let entry = config.assets[i]
 
@@ -358,112 +368,11 @@ async function createExperience() {
     }
   }
 
-  // FIXME: Put this into Resources.js for loading
-  // This hides loading progress jumps organically, by adding up to 100% over a specified time
-  function increaseProgress() {
-    const minAmount = 7
-    const maxAmount = 30
-    const minDuration = 100
-    const maxDuration = 350
-
-    function updateProgress() {
-      if (loadingProgress.value < 100) {
-        const randomProgressAmount =
-          Math.floor(Math.random() * (maxAmount - minAmount + 1)) + minAmount
-        const randomDuration =
-          Math.floor(Math.random() * (maxDuration - minDuration + 1)) +
-          minDuration
-
-        loadingProgress.value = Math.min(
-          loadingProgress.value + randomProgressAmount,
-          100
-        )
-        progressLabel.value = loadingProgress.value + '%'
-
-        setTimeout(updateProgress, randomDuration)
-      } else {
-        setTimeout(() => {
-          showLoadingScreen.value = false
-        }, 300)
-      }
-    }
-
-    updateProgress()
-  }
-
-  // Put this into Resources.js
-  if (mainModel != null) {
-    increaseProgress()
-  } else {
-    progressLabel.value = '  '
-  }
-
   // Connect the resize event for correct resizing of the scene
   experience.resizer.on('resize', () => {
     resize()
   })
 
-  // FIXME: Use EventDispatcher from three instead of EventEmitter
-  experience.resources.on('progress', (loaded, toLoad, description) => {
-    loadingProgress.value = loaded / toLoad
-    progressLabel.value = ((loaded / toLoad) * 100).toFixed(0)
-    progressDescription.value = 'Lade ' + description
-  })
-
-  // The "loaded" event is triggered after the first 3d model is loaded.
-  // If there are other 3d models defined in the "additionalModels" section of the config
-  experience.resources.on('loaded', () => {
-    // Make the model non-reactive as that is needed for the renderer to show the animation
-    let gltfFile = toRaw(experience.resources.items['model'])
-
-    // Add the model to the movable group
-    // Do not add it to the scene but rather the scene contents
-    sceneContents.add(gltfFile.scene)
-
-    // Create the mixer for the mesh
-    let mixer = experience.animationSystem.createMixer(
-      gltfFile.scene,
-      'mainMixer'
-    )
-    //mixers.value.push(mixer)
-
-    // Create the clip actions
-    /*let actions = */ experience.animationSystem.createClips(
-      gltfFile.animations,
-      mixer
-    )
-
-    // Load additional 3d models if defined
-    if (config.additionalModels) {
-      for (let model of config.additionalModels) {
-        let path = `./models/chronometer/${model}`
-        experience.resources.load(path)
-      }
-    }
-
-    showLoadingScreen.value = false
-  })
-
-  // Is triggered for every 3d model loading after the first file
-  experience.resources.on('modelReady', (gltfFile) => {
-    // add the loaded model to the scene contents
-    sceneContents.add(gltfFile.scene)
-
-    // Create the mixer for the mesh
-    let mixer = experience.animationSystem.createMixer(
-      gltfFile.scene,
-      'secondaryMixer'
-    )
-    //mixers.value.push(mixer)
-
-    // Create the clip actions
-    /*let actions = */ experience.animationSystem.createClips(
-      gltfFile.animations,
-      mixer
-    )
-  })
-
-  // Exposing this from the experience; good
   experience.webXRSystem.addEventListener('error', (err) => {
     console.log('error', err)
   })
@@ -518,7 +427,6 @@ async function createExperience() {
         x: event.screenX - previousX.value,
         y: event.screenY - previousY.value,
       }
-      //console.log(delta)
 
       sceneContents.rotation.y += delta.x * 0.009
 
@@ -1257,36 +1165,6 @@ function resetQuiz() {
   for (const annotation of experience.annotationSystem.annotations) {
     annotation.setIcon()
   }
-}
-
-// FIXME: Get rid of this
-function mergeAnnotationsAndQuiz(annotations, questions) {
-
-  let merged = []
-  let index = 0
-
-  for (let annotation of annotations) {
-
-    let entry = {}
-
-    entry.index = index
-    entry.id = annotation.id
-    entry.icon = annotation.icon
-    entry.annotation = annotation
-    entry.question = questions.find((question) => {
-      if (question.id === annotation.id) {
-        return question
-      }
-    })
-
-    index++
-    merged.push(entry)
-  }
-
-  //console.log(merged);
-
-
-  return merged
 }
 
 // FIXME: Separate this so it can be extended from

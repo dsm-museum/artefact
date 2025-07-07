@@ -1,6 +1,4 @@
-import {
-  TextureLoader,
-} from 'three'
+import { TextureLoader } from 'three'
 import Experience from './Experience'
 import AnchoredAnnotation from './AnchoredAnnotation'
 import { SRGBColorSpace } from 'three'
@@ -32,11 +30,7 @@ export default class AnnotationSystem {
   }
 
   createAnchoredAnnotation(annotationData, urlPath, modelToAttachTo) {
-    let annotation = new AnchoredAnnotation(
-      annotationData,
-      urlPath,
-      modelToAttachTo
-    )
+    let annotation = new AnchoredAnnotation(annotationData, urlPath, modelToAttachTo)
 
     // Add the annotation to the internal array
     this.annotations.push(annotation)

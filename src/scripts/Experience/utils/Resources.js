@@ -8,16 +8,33 @@ import { LoadingManager } from 'three'
 export default class Resources extends EventEmitter {
   constructor() {
     super()
+    // This is all unused...
 
-    this.sources = []
+    // TODO: Get the number of assets from config.assets[]
+    /*
+      Events we need:
+        1. loading of config.assets started
+        2. one of the assets finished loading -> increment loadedAssets
+        3. Loading progress of current asset -> 0, 100
+        4. everything is loaded -> return just stats: number of assets, maybe total loading time
+    */
 
-    this.items = {}
-    this.toLoad = this.sources.length
-    this.loaded = 0
+    this.assets = []
+    this.requiredAssets = 0
+    this.loadedAssets = 0
+
+    this.currentAssetProgress = 0
+    this.overallLoadingProgress = 0
 
     this.setLoadingManager()
     this.setLoaders()
-    //this.startLoading()
+  }
+
+  setup(_assets) {
+    this.assets = _assets
+    this.requiredAssets = this.assets.filter((e) => {
+      return e.replaces == null
+    }).length
   }
 
   setLoaders() {
@@ -30,66 +47,68 @@ export default class Resources extends EventEmitter {
     this.loaders.gltfLoader.setMeshoptDecoder(MeshoptDecoder)
   }
 
-  // Seems there is no trivial way to hook into the loading process, before the loading starts and get the name of the resource (to display it in the loading screen as "Started loading <source.name>")
+  // The loading manager can only track overall progress of asset loading (like 4 out of 5 items are loaded)
+  // It does not support partial progress events
   setLoadingManager() {
     this.loadingManager = new LoadingManager()
-
-    // onStart (when a resource starts being loaded)
-    this.loadingManager.onStart = (url) => {
-      console.log(url)
-    }
-
-    // When an item finished loading
-    this.loadingManager.onProgress = (item, loaded, total) => {
-      //console.log(item, loaded, total)
-    }
   }
 
-  /*startLoading() {
-    for (const source of this.sources) {
-      switch (source.type) {
-        case 'gltfModel':
-          this.loaders.gltfLoader.load(source.path, (file) => {
-            this.loadInitial(source, file)
-          })
-          break
-        case 'texture':
-          this.loaders.textureLoader.load(source.path, (file) => {
-            this.loadInitial(source, file)
-          })
-          break
-        case 'dracoModel':
-          //todo
-          break
-      }
-    }
-  }*/
+  // This evaluates the overall loading progress
+  evaluateProgress() {
+    // Get the progress of all previous assets (meaning loaded assets count 100 to the progress)
+    let previousProgress = Number(this.loadedAssets * 100)
 
-  // Loads the first 3d model and triggers the "loaded" event
-  /*loadInitial(source, file) {
-    this.items[source.id] = file
-    this.loaded++
+    // Overall progress is defined as the percentage of all 3D models that needs to be loaded
+    let overallProgress = (previousProgress + this.currentAssetProgress) / this.assets.length
 
-    this.trigger('progress', [this.loaded, this.toLoad, source.name])
+    overallProgress = Math.round(overallProgress)
 
-    if (this.loaded === this.toLoad) {
-      this.trigger('loaded')
-    }
-  }*/
+    return overallProgress
+  }
 
-  // Loads a 3d model and triggers the modelReady event
+  // Loads a 3D model and reports back with an event
   async load(source) {
+    // reset the current asset progress from previously, as loading begins now
+    this.currentAssetProgress = 0
     let result = this.loaders.gltfLoader.loadAsync(source, (progressEvent) => {
-      console.log('onprogress', progressEvent.loaded / progressEvent.total)
-      this.trigger('progress', [progressEvent.loaded, progressEvent.total, source.name])
+      if (progressEvent.total == 0) {
+        console.warn('progressEvent.total is 0')
+        //TODO: what to do, maybe give an estimate somehow? or just return 100, as loaded
+        this.currentAssetProgress = 100
+        return
+      }
+
+      this.currentAssetProgress = Number(
+        ((progressEvent.loaded / progressEvent.total) * 100).toFixed(0),
+      )
+
+      this.overallLoadingProgress = this.evaluateProgress()
+
+      // finally trigger a progress event with the updated loading progress
+      this.trigger('progress', [this.overallLoadingProgress])
     })
 
-    result.catch((e) => {
-      console.error(
-        `The specified model "${source}" could not be loaded. Please check if the path is correct.`,
-      )
-      console.error(e)
-    })
+    result
+      .then((result) => {
+        this.loadedAssets += 1
+        this.trigger('finishedSingle', [
+          this.loadedAssets,
+          this.assets.length,
+          this.overallLoadingProgress,
+        ])
+
+        if (this.loadedAssets == this.assets.length) {
+          this.trigger('finishedAll', [this.loadedAssets, 100])
+        }
+        return result
+      })
+      .catch((e) => {
+        console.error(
+          `The specified model "${source}" could not be loaded. Please check if the path is correct.`,
+        )
+        console.error(e)
+      })
+
     return result
   }
 }

@@ -192,9 +192,13 @@ export default class AnchoredAnnotation {
   }
 
   getFovHeight() {
-    const fov = this.experience.camera.instance.fov * (Math.PI / 180) // FOV to radians
-    const height = 2 * Math.tan(fov / 2.0) * this.experience.camera.instance.position.z
-    return height
+    try {
+      const fov = this.experience.camera.instance.fov * (Math.PI / 180) // FOV to radians
+      const height = 2 * Math.tan(fov / 2.0) * this.experience.camera.instance.position.z
+      return height
+    } catch (e) {
+      console.warn("FOV of the camera can't be determined", e)
+    }
   }
 
   update() {

@@ -1,7 +1,4 @@
-import {
-  WebGLRenderer,
-  ACESFilmicToneMapping,
-} from 'three'
+import { WebGLRenderer, ACESFilmicToneMapping } from 'three'
 import EventEmitter from './utils/EventEmitter'
 import Experience from './Experience'
 import { SRGBColorSpace } from 'three'
