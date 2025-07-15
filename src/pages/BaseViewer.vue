@@ -24,7 +24,7 @@
 import { toRaw, onMounted, onUnmounted, ref } from 'vue'
 import anime from 'animejs/lib/anime.es'
 import { useQuasar } from 'quasar'
-import { Group, LoopPingPong, Vector3 } from 'three'
+import { Group, LoopPingPong, LoopRepeat, Vector3 } from 'three'
 
 /* Own Imports */
 import Experience from 'src/scripts/Experience/Experience'
@@ -413,6 +413,7 @@ function update(timestamp, frame) {
   experience.timer.update()
 
   // Update the annotationSystem and their annotations
+  // this is the memory leak
   experience.annotationSystem.update(frame !== undefined)
 
   // Iterate over every mixer to update the animation
@@ -438,7 +439,7 @@ function toggleAnimation() {
 
 function playAnimations(enabled) {
   for (let animationClip of experience.animationSystem.animationClips) {
-    animationClip.action.loop = LoopPingPong
+    animationClip.action.loop = animationClip.loop
 
     if (enabled) {
       animationClip.action.paused = false

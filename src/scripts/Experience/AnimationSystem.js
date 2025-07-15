@@ -1,3 +1,4 @@
+import { LoopRepeat } from 'three'
 import { AnimationMixer } from 'three'
 
 /**
@@ -34,6 +35,7 @@ export default class AnimationSystem {
         name: animations[i].name,
         action: action,
         mixer: mixer,
+        loop: LoopRepeat, // This is still hardcoded for every animation. Problem is, the animation is inside of the gltf file, I would need to specify a config entry
       })
     }
 

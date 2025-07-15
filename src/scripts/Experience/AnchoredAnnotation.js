@@ -205,9 +205,9 @@ export default class AnchoredAnnotation {
     try {
       this.mesh.updateMatrixWorld(true)
     } catch {
-      /*console.warn(
-        `AnchoredAnnotation: No mesh with the name ${this.annotationData.meshName} for anchoring the annotation could be found in the file.`
-      )*/
+      console.warn(
+        `AnchoredAnnotation: No mesh with the name ${this.annotationData.meshName} for anchoring the annotation could be found in the file.`,
+      )
       return
     }
 
@@ -217,11 +217,14 @@ export default class AnchoredAnnotation {
 
     startVertexPosition = this.getVertexPosition(this.annotationData.verticesOnModel)
 
-    let endPosition = new Vector3(
+    // warning: creating new vector in te update function like this is a memory leak
+    /*let endPosition = new Vector3(
       this.annotationData.position.x,
       this.annotationData.position.y,
       this.annotationData.position.z,
-    )
+    )*/
+
+    //let endPosition = new Vector3(0, 0, 0)
 
     // Transform to the local space of the parent object
     // startVertexPosition is in world space, convert it to local coordinates, so it's correct in ar
@@ -233,7 +236,7 @@ export default class AnchoredAnnotation {
     // Create a new geometry for the line
     let points = []
     points.push(localVertexPosition)
-    points.push(endPosition)
+    points.push(new Vector3().copy(this.annotationData.position))
 
     let geometry = new BufferGeometry().setFromPoints(points)
     this.line.geometry = geometry
@@ -258,6 +261,7 @@ export default class AnchoredAnnotation {
 
     this.domElement.style.transform = `translate(${x}px, ${y}px) scale(${objectSize})`
 
+    points = []
     return distance
   }
 
