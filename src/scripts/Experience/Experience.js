@@ -12,11 +12,13 @@ import { disposeThree } from './utils/threeCleanup'
 import { WebXRSystem } from './WebXRSystem'
 import { DirectionalLightHelper } from 'three'
 import { Object3D } from 'three'
+import { EventDispatcher } from 'three'
 
 let instance = null
 
-export default class Experience {
+export default class Experience extends EventDispatcher {
   constructor(_config = {}) {
+    super()
     if (instance) {
       return instance
     }
@@ -68,7 +70,7 @@ export default class Experience {
     directionalLight2.position.set(-1, 0.7, -1)
     directionalLight.position.set(1, 0.5, 1.5)
 
-    /*let dirlightTarget = new Object3D()
+    let dirlightTarget = new Object3D()
     dirlightTarget.position.set(0, 0, 0)
     this.scene.add(dirlightTarget)
     let dirLightHelper1 = new DirectionalLightHelper(directionalLight, 1.0)
@@ -76,7 +78,7 @@ export default class Experience {
     dirLightHelper1.target = dirlightTarget
     dirLightHelper2.target = dirlightTarget
 
-    this.scene.add(dirLightHelper1, dirLightHelper2)*/
+    this.scene.add(dirLightHelper2)
 
     this.scene.add(directionalLight)
     this.scene.add(directionalLight2)

@@ -65,6 +65,12 @@ const routes = [
     ],
   },
 
+  {
+    path: '/about',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '', component: () => import('pages/About.vue') }],
+  },
+
   // Always leave this as last one, shows an error page
   {
     path: '/:catchAll(.*)*',

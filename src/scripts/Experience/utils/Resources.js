@@ -8,16 +8,6 @@ import { LoadingManager } from 'three'
 export default class Resources extends EventEmitter {
   constructor() {
     super()
-    // This is all unused...
-
-    // TODO: Get the number of assets from config.assets[]
-    /*
-      Events we need:
-        1. loading of config.assets started
-        2. one of the assets finished loading -> increment loadedAssets
-        3. Loading progress of current asset -> 0, 100
-        4. everything is loaded -> return just stats: number of assets, maybe total loading time
-    */
 
     this.assets = []
     this.requiredAssets = 0

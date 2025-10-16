@@ -8,18 +8,18 @@
 
 # About ARtefact
 
-ARtefact is a platform and framework for displaying 3D models, adding annotations and connecting content to them.
-It is developed at the [German Maritime Museum](https://dsm.museum) and built with three.js and Quasar.  
-It has been co-developed with teachers and students with research results available at [https://dl.acm.org/doi/abs/10.1145/3656585](https://dl.acm.org/doi/abs/10.1145/3656585).
+ARtefact is an interactive application for displaying 3D models and annotating highlights on the model with additional content like text, images and audio.
 
-If you encounter any problems adding your own 3D models or content, feel free to contact us. We are here to help.
+It has been co-developed at the [German Maritime Museum](https://dsm.museum) with teachers and students from Bremerhaven with research results available at [https://dl.acm.org/doi/abs/10.1145/3656585](https://dl.acm.org/doi/abs/10.1145/3656585).
+
+It's possible to use this app to display your own content. If you need help or encounter any problems adding your own 3D models or content, feel free to contact us.
 
 ## Features
 
 - Show your various 3D models in an interactive viewer
 - Play an animation that further explains your artefact
 - Test the knowledge of your visitos in a configurable and fun quiz
-- Attach annotations to interesting parts of your 3D model and add accompanying text info in a separate info layer (see below ▼)
+- Attach annotations to interesting parts of your 3D model and add accompanying text info in a separate info layer (see below)
 
 ## Showcase
 
@@ -39,7 +39,7 @@ Our deployed version with adapted content can be found here:
 
 ## Installing / Getting started
 
-<img alt="artefact" src="./src/assets/artefact-logo-text.png" height="16px"> needs at least Node 14 to run. For install instructions, visit the [Node.js documentation](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+ARtefact needs at least Node 14 to run. For install instructions, visit the [Node.js documentation](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
 After having installed Node.js and the npm package manager, install the dependencies needed to run the project
 
@@ -55,7 +55,7 @@ The app is then available via [http://localhost:8080](http://localhost:8080)
 To configure https, see [these instructions](https://quasar.dev/quasar-cli-vite/developing-pwa/handling-service-worker#ssl-certificate).
 
 ```bash
-quasar dev
+npm run dev
 ```
 
 ## Building
@@ -63,26 +63,25 @@ quasar dev
 Build the app for deploying it on a server
 
 ```bash
-quasar build -m pwa
+npm run build
 ```
 
-The app will be built to `dist/pwa` and can then be hosted with a webserver.
+The app will be built to `dist/pwa` and can then be hosted on a webserver.
 
-## Configuration
+## Add your own models
 
-You can add your own model and content by supplying the app with a text file that configures the model and corresponding media files like images and videos. They will be used to build a new page and add it to the model list.
+ARtefact generates a separate page for each model. A model is defined as an entry in the `src/config.json` main file. See the current examples for details.
 
-For a basic setup you will only need a folder, the 3d model you want to show and the config.json file
+Every model and its files are placed in an own folder inside of `public/models`. To add a new model to the app, create a new folder and place the files there.
 
-Every model and its files are placed in an own folder inside of `src/models`. To add a new model to the app, create a new folder and place the files there.
+For a basic setup you will only need a folder and the 3d model you want to show.
 
-If you have a model named `MyShip`, the folder could look like this:
+If you have a model named `MyShip` together wtith some media files, the folder could look like this:
 
 ```
-📂 src/models/
+📂 public/models/
 └── 📂 MyShip/
     ├── model.glb
-    ├── config.json
     └── 📂 media/
         ├── 🖼️ thumbnail.jpg
         ├── 🖼️ interior.jpg
@@ -91,24 +90,6 @@ If you have a model named `MyShip`, the folder could look like this:
         ├── 🎞️ interior.mp4
         ├── 🎞️ exterior.mp4
         └── [...]
-```
-
-For every model, the app needs a config file specifying the model file, annotations and more. See the [`public/models/example/config.json`](./public/models/example/config.json) file for an example:
-
-```json
-{
-  "title": "My Ship",
-  "model": "model.glb",
-  "annotations": [
-    {
-      "id": "first-annotation",
-      "icon": "media/icon-about.png",
-      "position": [1.0, 0.6, 2.4],
-      "media": "media/interior.jpg",
-      "content": ["This is the annotation", "with multiple paragraphs of", "Content."]
-    }
-  ]
-}
 ```
 
 ## Branding
@@ -163,29 +144,30 @@ To create a good set of icons with padding use the following command:
 ./node_modules/.bin/icongenie generate -i ./src/assets/logo.png --padding 20,20
 ```
 
-To change the name and icon of the Progressive Web App, change the `manifest` section of the `quasar.conf.js` file:
+To change the name and icon of the Progressive Web App, change the "name" value in the `src-pwa/manifest.json` file:
 
 ```js
-manifest: {
-  name: `My App`,
-  short_name: `App`,
-  description: `View our 3d models in our Progressive Web App`,
-  display: 'standalone',
-  orientation: 'portrait',
-  background_color: '#ffffff',
-  start_url: './',
-  scope: './',
-  theme_color: '#002c50', // this colors in elements of the OS and browser
-  icons: [
+{
+  "name": "ARtefact",
+  "short_name": "ARtefact",
+  "description": "View our 3d models in our Progressive Web App",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "start_url": "./",
+  "scope": "./",
+  "theme_color": "#002c50",
+  "icons": [
     {
-      src: 'icons/icon-128x128.png', // swap these files to change the icon
-      sizes: '128x128',
-      type: 'image/png',
+      "src": "icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
     },
-    ...
+
+    // ...
+
   ]
-},
-...
+}
 ```
 
 <!-- CONTRIBUTING -->

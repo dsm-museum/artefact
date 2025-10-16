@@ -41,9 +41,12 @@ export default class AnchoredAnnotation {
     let elem = document.createElement('div')
     elem.id = id
     elem.classList.add('annotation')
-    elem.style.width = `${this.size}px`
-    elem.style.height = `${this.size}px`
-    elem.style.transformOrigin = '0% 0%'
+    elem.role = 'button'
+    elem.ariaLabel = 'Eine anklickbare Annotation'
+    elem.tabIndex = 0
+    elem.style.width = `${this.size * 2}px`
+    elem.style.height = `${this.size * 2}px`
+    elem.style.transformOrigin = '25% 25%'
     elem.style.opacity = '1'
     elem.style.position = 'absolute'
     elem.style.boxSizing = 'border-box'
@@ -53,8 +56,12 @@ export default class AnchoredAnnotation {
 
     // Debug styles
     if (this.debug) {
-      elem.style.border = '2px dotted red'
+      elem.style.border = '5px dotted red'
     }
+
+    elem.addEventListener('click', () => {
+      console.log('click')
+    })
 
     return elem
   }
@@ -212,19 +219,9 @@ export default class AnchoredAnnotation {
     }
 
     // Update position of the vertex, remember this is world space
-    // TODO: Change to barycentric coordinates to get the center of all 3 verticesOnModel
     let startVertexPosition = null
 
     startVertexPosition = this.getVertexPosition(this.annotationData.verticesOnModel)
-
-    // warning: creating new vector in te update function like this is a memory leak
-    /*let endPosition = new Vector3(
-      this.annotationData.position.x,
-      this.annotationData.position.y,
-      this.annotationData.position.z,
-    )*/
-
-    //let endPosition = new Vector3(0, 0, 0)
 
     // Transform to the local space of the parent object
     // startVertexPosition is in world space, convert it to local coordinates, so it's correct in ar
@@ -237,6 +234,10 @@ export default class AnchoredAnnotation {
     let points = []
     points.push(localVertexPosition)
     points.push(new Vector3().copy(this.annotationData.position))
+
+    if (this.line.geometry) {
+      this.line.geometry.dispose()
+    }
 
     let geometry = new BufferGeometry().setFromPoints(points)
     this.line.geometry = geometry
@@ -261,7 +262,6 @@ export default class AnchoredAnnotation {
 
     this.domElement.style.transform = `translate(${x}px, ${y}px) scale(${objectSize})`
 
-    points = []
     return distance
   }
 

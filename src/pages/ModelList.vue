@@ -6,8 +6,8 @@
       <!-- horizon line-->
       <div class="q-my-none q-mb-md" style="max-width: 50%; border-bottom: 20px solid #002c50"></div>
 
-      <q-card v-for="model in appConfig" :key="model" @click="$router.push(`/models/${model.url}`)" v-ripple
-        class="my-card cursor-pointer q-hoverable q-mb-lg">
+      <q-card tabindex="0" v-for="model in appConfig" :key="model" @click="$router.push(`/models/${model.url}`)"
+        v-ripple class="my-card cursor-pointer q-hoverable q-mb-lg">
         <span class="q-focus-helper"></span>
         <q-img :ratio="16 / 9" spinner-color="primary" fit="cover" position="50% 50%"
           :src="`./models/${model.url}/${model.thumbnail}`">

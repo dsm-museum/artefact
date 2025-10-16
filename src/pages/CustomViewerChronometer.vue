@@ -8,9 +8,10 @@
     <div id="annotations" style="z-index: 99"></div>
 
     <q-page-sticky id="arMenu-container" position="top" :offset="[0, 24]" style="z-index: 99">
-      <a-r-menu id="arMenu" :isRunning="isRunning" :hasQuiz="config.quiz != undefined" :animationReady="animationReady"
-        :deviceSupportsAR="deviceSupportsAR" :arEnabled="config.ar" :animationIsPlaying="animationIsPlaying"
-        :inAR="inAR" @onStartAR="startAR" @onToggleAnimation="toggleAnimation" @onShowQuizIntro="showQuizIntro">
+      <a-r-menu id="arMenu" :isRunning="isRunning" :hasQuiz="config.quiz != undefined" :hasAnimation="hasAnimation"
+        :animationReady="animationReady" :deviceSupportsAR="deviceSupportsAR" :arEnabled="config.ar"
+        :animationIsPlaying="animationIsPlaying" :inAR="inAR" @onStartAR="startAR" @onToggleAnimation="toggleAnimation"
+        @onShowQuizIntro="showQuizIntro">
       </a-r-menu>
 
       <div class="row items-center">
@@ -68,6 +69,7 @@ const $q = useQuasar()
 // Animation
 // FIXME: Change animationReady false if no animation is found or loading the animation didn't work
 let animationReady = ref(true)
+let hasAnimation = ref(true)
 let animationIsPlaying = ref(false)
 
 // Loading progress

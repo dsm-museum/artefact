@@ -98,7 +98,12 @@ export default class Raycaster extends EventDispatcher {
 
   update() {
     if (Date.now() - this.lastRaycast > this.raycastInterval) {
-      this.instance.setFromCamera(this.pointer, this.experience.camera.instance)
+      if (this.experience.renderer.instance.xr.isPresenting) {
+        let camera = this.experience.renderer.instance.xr.getCamera()
+        this.instance.setFromCamera(this.pointer, camera)
+      } else {
+        this.instance.setFromCamera(this.pointer, this.experience.camera.instance)
+      }
 
       this.intersects = this.instance.intersectObjects(this.object3Ds)
 

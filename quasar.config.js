@@ -3,6 +3,8 @@
 
 import { defineConfig } from '#q-app/wrappers'
 
+console.log(process.env.NODE_ENV)
+
 export default defineConfig((/* ctx */) => {
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
@@ -46,6 +48,7 @@ export default defineConfig((/* ctx */) => {
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
+      //publicPath: process.env.NODE_ENV === 'production' ? '/ar' : '/ar_dev',
       publicPath: '/ar',
       // analyze: true,
       // env: {},

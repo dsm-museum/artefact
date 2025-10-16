@@ -1,14 +1,16 @@
 <template>
   <div class="row items-center">
-    <q-btn @click="emitOnToggleAnimation" :loading="!animationReady" :disabled="!animationReady" unelevated
+    <q-btn @click="emitOnToggleAnimation" aria-label="Animation abspielen / pausieren"
+      :class="hasAnimation ? '' : 'hidden'" :loading="!animationReady" :disabled="!animationReady" unelevated
       color="white" text-color="primary" :icon="_animationIsPlaying ? 'pause' : 'play_arrow'"
       class="col-4 text-bold rounded shadow-1" padding="1.4em 1.4em" />
-    <q-btn @click="emitOnShowQuizIntro" flat unelevated color="transparent" :ripple="false" text-color="white"
-      :icon="isRunning ? 'close' : 'artefact:quiz'" class="col text-bold square rounded no-hover icon-fix drop-shadow"
-      :class="_hasQuiz != undefined ? '' : 'hidden'" size="3.5em" padding="none" style="width: 200px;" />
-    <q-btn @click="emitOnStartAR" unelevated color="white" :text-color="!_deviceSupportsAR ? 'grey' : 'primary'"
-      :icon="inAR ? 'close' : 'mdi-cube-scan'" class="col-4 text-bold rounded shadow-1" padding="1.4em 1.4em"
-      :class="arEnabled ? '' : 'hidden'" />
+    <q-btn @click="emitOnShowQuizIntro" aria-label="Quiz starten / beenden" flat unelevated color="transparent"
+      :ripple="false" text-color="white" :icon="isRunning ? 'close' : 'img:icons/quiz-icon.png'"
+      class="col text-bold square rounded no-hover icon-fix drop-shadow" :class="_hasQuiz != undefined ? '' : 'hidden'"
+      size="3.5em" padding="none" style="width: 200px;" />
+    <q-btn @click="emitOnStartAR" aria-label="Augmented Reality starten / beenden" text-color="primary" unelevated
+      color="white" :icon="inAR ? 'close' : 'mdi-cube-scan'" class="col-4 text-bold rounded shadow-1"
+      padding="1.4em 1.4em" :class="_deviceSupportsAR ? '' : 'hidden'" />
   </div>
 </template>
 
@@ -44,6 +46,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
     required: false
+  },
+  hasAnimation: {
+    default: false,
+    required: true
   }
 })
 

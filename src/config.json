@@ -13,7 +13,7 @@
     ],
     "ar": true,
     "annotationScale": 1,
-    "cameraPosition": { "x": -0.4, "y": 0.2, "z": -0.25 },
+    "cameraPosition": { "x": 0.32, "y": 0.17, "z": 0.51 },
     "origin": { "x": 0.0, "y": 0.08, "z": -0.03 },
     "content": [
       {
@@ -253,7 +253,6 @@
       }
     ],
     "ar": true,
-    "backgroundColor": "#2f505e",
     "annotationScale": 1,
     "cameraPosition": { "x": 0.22, "y": 0.23, "z": 0.44 },
     "origin": { "x": 0, "y": 0, "z": 0 },
@@ -674,6 +673,7 @@
       }
     ],
     "ar": true,
+    "backgroundColor": "#2f505e",
     "cameraPosition": { "x": 0.28, "y": 0.22, "z": -0.27 },
     "content": [
       {

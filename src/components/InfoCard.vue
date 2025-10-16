@@ -34,6 +34,7 @@
                 style="margin: 10px 0px; min-width: 20%; width: 50%; max-width: 70%; height: 16px; background-color: rgb(17, 30, 61);">
               </div>
 
+
               <div class="row q-col-gutter-md">
                 <div v-if="checkProperty(annotation, 'media')" class="col-xs-12 col-sm-12 col-md-5 col-lg-3 q-mb-sm">
                   <q-img id="image" @click='showLightbox(annotation.mediaDescription)'
@@ -41,8 +42,7 @@
                     :src='"./models/" + props.config.url + "/" + annotation.media' spinner-color="primary" />
                 </div>
 
-                <!-- Text Content -->
-                <div class="col-xs-12 col-sm-12 col-md-7 col-lg-9">
+                <div class="col">
                   <!--div class="text-h6 text-weight-bold text-left text-uppercase">Als Audio anhören:</div-->
                   <audio controls v-if="checkProperty(annotation, 'audio')" class="q-mb-md"
                     style="width: 100%; display: block;"

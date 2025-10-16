@@ -8,15 +8,16 @@
     <div id="annotations" style="z-index: 99"></div>
 
     <q-page-sticky id="arMenu-container" position="top" :offset="[0, 24]" style="z-index: 99">
-      <a-r-menu id="arMenu" :isRunning="isRunning" :hasQuiz="config.quiz != undefined" :animationReady="animationReady"
-        :deviceSupportsAR="deviceSupportsAR" :arEnabled="config.ar" :animationIsPlaying="animationIsPlaying"
-        :inAR="inAR" @onStartAR="startAR" @onToggleAnimation="toggleAnimation" @onShowQuizIntro="showQuizIntro">
+      <a-r-menu id="arMenu" :isRunning="isRunning" :hasAnimation="hasAnimation" :hasQuiz="config.quiz != undefined"
+        :animationReady="animationReady" :deviceSupportsAR="deviceSupportsAR" :arEnabled="config.ar"
+        :animationIsPlaying="animationIsPlaying" :inAR="inAR" @onStartAR="startAR" @onToggleAnimation="toggleAnimation"
+        @onShowQuizIntro="showQuizIntro">
       </a-r-menu>
     </q-page-sticky>
 
     <q-resize-observer @resize="resize" />
 
-    <canvas id="three-canvas" />
+    <canvas id="three-canvas" role="img" />
   </q-page>
 </template>
 
@@ -54,6 +55,7 @@ const $q = useQuasar()
 // Animation
 // FIXME: Change animationReady false if no animation is found or loading the animation didn't work
 let animationReady = ref(true)
+let hasAnimation = ref(true)
 let animationIsPlaying = ref(false)
 
 // Loading progress
@@ -193,6 +195,11 @@ async function createExperience() {
     loadingProgress.value = 100
     progressLabel.value = 100 + '%'
 
+    //console.log(experience.animationSystem.animationClips.length)
+    if (experience.animationSystem.animationClips == 0 || experience.animationSystem.animationClips.length == 0) {
+      hasAnimation.value = false
+    }
+
     setTimeout(() => {
       showLoadingScreen.value = false
     }, 500)
@@ -215,19 +222,24 @@ async function createExperience() {
     mainModel = await experience.resources.load(mainModelUrl)
 
     mainModel.name = 'mainModel'
+    console.log(mainModel)
     sceneContents.add(mainModel.scene)
+    experience.resources.trigger("loaded", { mainModel })
 
     let mixer = experience.animationSystem.createMixer(
       mainModel.scene,
       'mainMixer'
     )
-    /*let actions = */experience.animationSystem.createClips(
+    let actions = experience.animationSystem.createClips(
       mainModel.animations,
       mixer
     )
 
+    if (actions.length >= 1) {
+      hasAnimation.value = true
+    }
+
     // TODO: Check if this is the right place to trigger "loaded"
-    //experience.resources.trigger("loaded", mainModel)
   } catch {
     console.error(
       `No model was found. Stopping Animation and Annotation loading.`
@@ -248,7 +260,6 @@ async function createExperience() {
 
     progressLabel.value = ':('
 
-    // TODO: Check if we can indeed return safely if no model is found
     return
   }
 
@@ -266,7 +277,7 @@ async function createExperience() {
         model.scene,
         'mixer' + model.scene.name
       )
-      /*let actions = */ experience.animationSystem.createClips(
+      let actions = experience.animationSystem.createClips(
         model.animations,
         mixer
       )
@@ -281,6 +292,10 @@ async function createExperience() {
       sceneContents.remove(toReplace)
     } else {
       sceneContents.add(model.scene)
+    }
+
+    if (experience.animationSystem.animationClips.length >= 1) {
+      hasAnimation.value = true
     }
   }
 
@@ -362,6 +377,7 @@ function resize() {
 
 // Put the webxr logic inside the experience class
 function update(timestamp, frame) {
+  experience.dispatchEvent({ type: "beforeUpdate", message: animationIsPlaying.value })
   // XR update
   if (frame) {
     const referenceSpace = experience.renderer.instance.xr.getReferenceSpace()
@@ -413,7 +429,6 @@ function update(timestamp, frame) {
   experience.timer.update()
 
   // Update the annotationSystem and their annotations
-  // this is the memory leak
   experience.annotationSystem.update(frame !== undefined)
 
   // Iterate over every mixer to update the animation
@@ -435,6 +450,7 @@ function update(timestamp, frame) {
 function toggleAnimation() {
   animationIsPlaying.value = !animationIsPlaying.value
   playAnimations(animationIsPlaying.value)
+  experience.dispatchEvent({ type: "animationState", message: animationIsPlaying.value })
 }
 
 function playAnimations(enabled) {
